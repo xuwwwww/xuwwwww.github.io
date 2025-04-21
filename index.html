@@ -10,16 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Global Styles */
-    html { scroll-padding-top: 20px; }
+    html { scroll-padding-top: 15px; }
     body {
       margin: 0;
       padding-top: 0;
       font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif;
       color: #2d3748;
       background-color: #f8fafc;
-      line-height: 1.55;
+      line-height: 1.45;
       transition: background-color 0.3s ease;
-      font-size: 15px;
+      font-size: 14.5px;
     }
     body.lang-zh-TW { font-family: 'Noto Sans TC', 'Roboto', 'Segoe UI', Tahoma, sans-serif; }
     body.lang-en { font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif; }
@@ -29,17 +29,18 @@
 
     a { color: #2b6cb0; text-decoration: none; }
     a:hover { text-decoration: underline; color: #2c5282; }
+    p { margin-top: 0.5em; margin-bottom: 0.5em; }
     section {
       max-width: 850px;
-      margin: 20px auto;
+      margin: 15px auto;
       background: #fff;
-      padding: 25px 35px;
-      border-radius: 5px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      padding: 15px 25px; /* Reduced */
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
       border: 1px solid #e2e8f0;
       overflow-x: hidden;
     }
-     section:first-of-type {
+     section:first-of-type { /* Hero */
          margin-top: 0;
          border-top-left-radius: 0;
          border-top-right-radius: 0;
@@ -52,31 +53,31 @@
          border-bottom: 1px solid #e2e8f0;
      }
      section + section {
-         margin-top: 18px;
+         margin-top: 12px;
      }
 
     h2 {
       margin-top: 0;
-      font-size: 1.6rem;
+      font-size: 1.35rem; /* Reduced */
       font-weight: 700;
       color: #1a202c;
-      border-bottom: 2px solid #4a5568;
-      padding-bottom: 8px;
-      margin-bottom: 18px;
+      border-bottom: 1px solid #4a5568;
+      padding-bottom: 4px; /* Reduced */
+      margin-bottom: 10px; /* Reduced */
     }
     h3 {
-        font-size: 1.3rem;
+        font-size: 1.1rem; /* Reduced */
         font-weight: 700;
         color: #2b6cb0;
-        margin-top: 18px;
-        margin-bottom: 8px;
+        margin-top: 10px; /* Reduced */
+        margin-bottom: 4px; /* Reduced */
     }
      h4 {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
         color: #2d3748;
-        margin-top: 12px;
-        margin-bottom: 6px;
+        margin-top: 8px;
+        margin-bottom: 3px;
     }
     h4 a {
         color: inherit;
@@ -88,24 +89,24 @@
         text-decoration: none;
         border-bottom-color: #2b6cb0;
     }
-    ul { padding-left: 20px; list-style: square; margin-top: 4px; margin-bottom: 12px;}
-    li { margin-bottom: 6px; }
+    ul { padding-left: 18px; list-style: square; margin-top: 2px; margin-bottom: 6px;}
+    li { margin-bottom: 3px; }
 
     /* Language Switch Button (Floating Bottom Right) */
     #lang-switch {
         position: fixed;
-        bottom: 20px; /* Slightly higher */
-        right: 20px; /* Slightly more inset */
+        bottom: 20px;
+        right: 20px;
         z-index: 1000;
-        padding: 10px 18px; /* Increased padding */
-        font-size: 0.95rem; /* Increased font size */
+        padding: 12px 20px; /* Increased vertical padding */
+        font-size: 0.95rem;
         background-color: rgba(45, 55, 72, 0.85);
         color: white;
         border: none;
-        border-radius: 25px; /* More rounded */
+        border-radius: 25px;
         cursor: pointer;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.3); /* Slightly stronger shadow */
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
     }
      #lang-switch:hover {
         background-color: rgba(26, 32, 44, 0.95);
@@ -116,7 +117,7 @@
     .hero {
       position: relative;
       width: 100%;
-      min-height: 55vh;
+      min-height: 45vh;
       height: auto;
       background: url('bg.jpg') center/cover no-repeat;
       background-attachment: fixed;
@@ -128,7 +129,7 @@
       border-radius: 0;
       box-shadow: none;
       max-width: none;
-      padding: 40px 20px;
+      padding: 25px 15px;
       border: none;
       box-sizing: border-box;
     }
@@ -141,22 +142,22 @@
         background: rgba(10, 20, 30, 0.75);
         display: block;
      }
-    .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 10px; margin-top: 0; max-width: 880px; }
+    .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 8px; margin-top: 0; max-width: 880px; }
     .profile-img {
-      width: 180px;
-      height: 180px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      border: 6px solid rgba(255, 255, 255, 0.8);
+      border: 4px solid rgba(255, 255, 255, 0.8);
       object-fit: cover;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
-    .name { font-size: 2.5rem; margin: 0 0 8px 0; font-weight: 700; color: #fff;}
-    .title { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 400; color: #a0aec0; }
-    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #a0aec0; }
+    .name { font-size: 2rem; margin: 0 0 5px 0; font-weight: 700; color: #fff;}
+    .title { font-size: 1.05rem; margin: 0 0 5px 0; font-weight: 400; color: #a0aec0; }
+    .university { font-size: 0.95rem; margin: 0 0 10px 0; font-weight: 400; color: #a0aec0; }
     .contact-links a {
         color: #a0aec0;
-        margin: 0 8px;
-        font-size: 0.95rem;
+        margin: 0 5px;
+        font-size: 0.85rem;
         transition: color 0.3s ease;
     }
     .contact-links a:hover {
@@ -164,53 +165,71 @@
         text-decoration: none;
     }
 
-    /* Projects Section etc List styling */
-    #projects ul,
-    #education ul ul,
-    #organizations ul,
-    #awards ul,
-    #leadership ul,
-    #volunteer ul {
-        list-style: none;
-        padding-left: 0;
-    }
-    /* Base styling for main list items */
+    /* Base styling for section list items (applies to most direct li children of ul in sections) */
      #projects > ul > li,
      #education > ul > li,
-     #organizations > ul > li,
-     #awards > ul > li,
-     #leadership > ul > li,
-     #volunteer > ul > li {
+     #awards .awards-column > ul > li,
+     #activities .activity-column ul li { /* Target li inside activity columns */
         background-color: #fdfdfe;
         border: 1px solid #edf2f7;
         border-left: 3px solid #4a5568;
-        padding: 12px 18px;
-        margin-bottom: 12px;
-        border-radius: 4px;
+        padding: 8px 12px;
+        margin-bottom: 5px; /* Reduced */
+        border-radius: 3px;
         transition: box-shadow 0.2s ease;
     }
+     #projects > ul > li:first-child,
+     #education > ul > li:first-child,
+     #activities .activity-column ul li:first-child {
+         margin-top: 0;
+     }
      #projects > ul > li:hover,
      #education > ul > li:hover,
-     #organizations > ul > li:hover,
-     #awards > ul > li:hover,
-     #leadership > ul > li:hover,
-     #volunteer > ul > li:hover {
-        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+     #awards .awards-column > ul > li:hover,
+     #activities .activity-column ul li:hover {
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
+    /* Remove left border for activity columns */
+    #activities .activity-column ul li {
+        border-left: none;
+        padding-left: 8px;
+    }
+
+    /* Nested lists within Projects/Education */
     #projects ul ul,
-    #education ul ul ul {
-       padding-left: 15px;
-       margin-top: 5px;
+    #education ul ul {
+       padding-left: 12px;
+       margin-top: 3px;
+       margin-bottom: 3px;
        list-style: disc;
-       font-size: 0.88rem;
+       font-size: 0.82rem;
        color: #4a5568;
     }
      #projects ul ul li,
-     #education ul ul li,
-     #education ul ul ul li {
-        margin-bottom: 4px;
-        line-height: 1.45;
+     #education ul ul li {
+        margin-bottom: 2px;
+        line-height: 1.35;
+        background-color: transparent; /* Override base li style */
+        border: none;
+        padding: 0;
      }
+     /* Deeply nested list in Education */
+     #education ul ul ul {
+         padding-left: 12px;
+         margin-top: 3px;
+         margin-bottom: 3px;
+         list-style: circle;
+         font-size: 0.82rem;
+         color: #5a6678;
+     }
+      #education ul ul ul li {
+         margin-bottom: 2px;
+         line-height: 1.35;
+         background-color: transparent;
+         border: none;
+         padding: 0;
+      }
+
      #projects strong,
      #education strong {
         font-weight: 500;
@@ -222,122 +241,173 @@
          margin-bottom: 0;
          font-weight: 700;
          color: #4a5568;
-         margin-right: 5px;
+         margin-right: 4px;
      }
+
+    /* Awards Section Grid */
+    #awards .awards-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px; /* Reduced */
+        padding-left: 0;
+        list-style: none;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    #awards .awards-column h3 {
+        margin-top: 0;
+    }
+    #awards .awards-column ul {
+        padding-left: 0;
+        margin-top: 4px;
+        list-style: none;
+    }
+
+    /* Activities Section Grid */
+    #activities .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Three columns */
+        gap: 15px; /* Gap between columns */
+        padding-left: 0;
+        list-style: none;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+     #activities .activity-column h3 {
+         margin-top: 0;
+     }
+     #activities .activity-column ul {
+         padding-left: 0;
+         margin-top: 4px;
+         list-style: none;
+     }
+
 
     /* Minor Projects Grid */
     .minor-projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust minmax as needed */
-        gap: 10px;
-        margin-top: 15px; /* Space above the grid */
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 6px;
+        margin-top: 10px;
+        margin-bottom: 4px;
     }
     .minor-projects-grid li {
         background-color: #f9fafb;
         border: 1px solid #f3f4f6;
-        padding: 10px 12px;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        list-style: none; /* Remove list-style */
-        margin-bottom: 0; /* Remove default li margin */
-        border-left: none; /* Override main li border */
+        padding: 6px 8px;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        list-style: none;
+        margin-bottom: 0;
+        border-left: none;
     }
     .minor-projects-grid li h4 {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         margin-top: 0;
-        margin-bottom: 4px;
-        font-weight: 700; /* Make title slightly bolder */
+        margin-bottom: 2px;
+        font-weight: 700;
         color: #374151;
     }
      .minor-projects-grid li ul {
-        padding-left: 15px;
-        margin-top: 4px;
+        padding-left: 12px;
+        margin-top: 2px;
         margin-bottom: 0;
+        font-size: 0.75rem;
      }
       .minor-projects-grid li ul li {
-         font-size: 0.8rem;
-         line-height: 1.4;
+         font-size: 0.75rem;
+         line-height: 1.3;
+         margin-bottom: 1px;
+         background-color: transparent;
+         border: none;
+         padding: 0;
       }
 
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
     .skills-grid h3 {
-        font-size: 1.15rem;
-        margin-bottom: 8px;
+        font-size: 1.05rem;
+        margin-bottom: 5px;
         color: #2b6cb0;
         border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 5px;
+        padding-bottom: 3px;
         font-weight: 700;
     }
-    .skills-grid ul { padding-left: 0; list-style: none; margin-top: 5px; }
-    .skills-grid li { margin-bottom: 4px; line-height: 1.45;}
+    .skills-grid ul { padding-left: 0; list-style: none; margin-top: 3px; }
+    .skills-grid li { margin-bottom: 2px; line-height: 1.35;}
     .skills-grid > div {
         background-color: #fdfdfe;
-        padding: 12px;
-        border-radius: 4px;
+        padding: 8px;
+        border-radius: 3px;
         border: 1px solid #edf2f7;
     }
 
     /* Footer */
-    footer { text-align: center; padding: 18px 0; color: #4a5568; margin-top: 25px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.85rem;}
+    footer { text-align: center; padding: 10px 0; color: #4a5568; margin-top: 15px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.8rem;} /* Reduced padding/margin */
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
-        body { font-size: 14px; }
+        body { font-size: 13.5px; line-height: 1.4; }
         section {
-            padding-left: 15px;
-            padding-right: 15px;
-            margin-left: auto;
-            margin-right: auto;
-            width: 95%;
-            max-width: 95%;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 12px auto;
+            width: 97%;
+            max-width: 97%;
             box-sizing: border-box;
         }
+         section + section {
+             margin-top: 10px;
+         }
         .hero {
-             padding-top: 40px;
-             padding-bottom: 25px;
-             min-height: 45vh;
+             padding-top: 25px;
+             padding-bottom: 15px;
+             min-height: 35vh;
         }
         .hero-content {
             padding: 5px;
         }
-        h2 { font-size: 1.45rem; margin-bottom: 15px; padding-bottom: 8px;}
-        h3 { font-size: 1.2rem; margin-top: 15px; margin-bottom: 8px;}
-        h4 { font-size: 1.05rem; margin-top: 10px; margin-bottom: 5px;}
+        h2 { font-size: 1.25rem; margin-bottom: 10px; padding-bottom: 5px;}
+        h3 { font-size: 1.1rem; margin-top: 10px; margin-bottom: 5px;}
+        h4 { font-size: 0.95rem; margin-top: 6px; margin-bottom: 3px;}
         .profile-img {
-            width: 120px;
-            height: 120px;
-            border-width: 4px;
+            width: 100px;
+            height: 100px;
+            border-width: 3px;
         }
-        .name { font-size: 1.8rem; }
-        .title { font-size: 1.05rem; }
-        .university { font-size: 0.9rem; }
-        .skills-grid { grid-template-columns: 1fr; gap: 10px; }
+        .name { font-size: 1.6rem; }
+        .title { font-size: 0.95rem; }
+        .university { font-size: 0.85rem; }
+        .skills-grid { grid-template-columns: 1fr; gap: 6px; }
         #lang-switch {
-             padding: 8px 15px; /* Adjusted size for mobile */
+             padding: 8px 15px; /* Adjust height for mobile */
              font-size: 0.85rem;
-             bottom: 15px; /* Consistent positioning */
+             bottom: 15px;
              right: 15px;
         }
          #projects > ul > li,
          #education > ul > li,
-         #organizations > ul > li,
-         #awards > ul > li,
-         #leadership > ul > li,
-         #volunteer > ul > li {
-             padding: 10px 15px;
-             margin-bottom: 10px;
+         #awards .awards-column > ul > li,
+         #activities .activity-column ul li {
+             padding: 6px 10px;
+             margin-bottom: 5px; /* Reduced */
         }
          #projects ul ul,
          #education ul ul ul {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+         }
+         /* Stack awards & activities columns on mobile */
+        #awards .awards-grid,
+        #activities .activities-grid {
+             grid-template-columns: 1fr;
+             gap: 10px;
          }
          .minor-projects-grid {
-             grid-template-columns: 1fr; /* Stack minor projects on mobile */
-             gap: 8px;
+             grid-template-columns: 1fr;
+             gap: 5px;
          }
          .minor-projects-grid li {
-             padding: 8px 10px;
+             padding: 5px 7px;
          }
     }
 
@@ -366,7 +436,13 @@
     </div>
   </section>
 
-  <!-- Adding Education Section based on provided text -->
+  <section id="about">
+      <h2 class="lang-en">About Me</h2>
+      <h2 class="lang-zh-TW">自我簡介</h2>
+      <p class="lang-en">Currently a junior at National Taiwan University of Science and Technology, majoring in Electrical Engineering, double majoring in Computer Science, and minoring in Biomedical Engineering. Dedicated to solving real-world challenges through diligence and innovative engineering methods, actively seeking opportunities to apply computational tools and data analysis.</p>
+      <p class="lang-zh-TW">目前就讀於臺灣科技大學電機工程學系，大三，雙主修資訊工程，輔系醫學工程。致力於透過勤奮與創新工程方法解決現實世界中的挑戰，積極尋求能應用計算工具與資料分析的機會。</p>
+  </section>
+
   <section id="education">
     <h2 class="lang-en">Education</h2>
     <h2 class="lang-zh-TW">學歷</h2>
@@ -503,58 +579,68 @@
 
   </section>
 
-  <section id="organizations">
-      <h2 class="lang-en">Student Organizations & Clubs</h2>
-      <h2 class="lang-zh-TW">學生組織與社團</h2>
-      <ul>
-          <li><span class="lang-en">Member, NTUST Robotics Research Club</span><span class="lang-zh-TW">台科大機器人研究社 社員</span> <span class="lang-en">2024</span><span class="lang-zh-TW">2024</span></li>
-          <li><span class="lang-en">Public Relations, NTUST Racing Team</span><span class="lang-zh-TW">台科大賽車社 公關組</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
-          <li><span class="lang-en">Structure Team Member, NTU Racing Team (Designed, built, and participated in Formula Student competitions)</span><span class="lang-zh-TW">台大賽車社 結構組（設計、製作並參與方程式賽車比賽）</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
-      </ul>
-  </section>
-
   <section id="awards">
     <h2 class="lang-en">Awards and Achievements</h2>
     <h2 class="lang-zh-TW">獲獎與競賽經歷</h2>
-    <h3 class="lang-en">Competitions</h3>
-    <h3 class="lang-zh-TW">競賽</h3>
-    <ul>
-       <li><span class="lang-en">1st Place, Semi-final, Makerthon of National Technical and Vocational University Cup 2025</span><span class="lang-zh-TW">準決賽 第1名, 技職杯黑客松 2025</span></li>
-      <li><span class="lang-en">1st Place, Semi-final & 5th Place, Final, Makerthon of National Technical and Vocational University Cup 2024</span><span class="lang-zh-TW">準決賽 第1名 & 決賽 第5名, 技職杯黑客松 2024</span></li>
-      <li><span class="lang-en">1st Place, Sustainability Hackathon 2024</span><span class="lang-zh-TW">第1名, 永續黑客松 2024</span></li>
-      <li><span class="lang-en">Top 10, Semi-final, Makerthon of National Technical and Vocational University Cup 2023</span><span class="lang-zh-TW">準決賽 前10強, 技職杯黑客松 2023</span></li>
-      <li><span class="lang-en">5th Place, Coding 101 Competition 2023</span><span class="lang-zh-TW">第5名, Coding 101 程式競賽 2023</span></li>
-      <li><span class="lang-en">Participant: Makerthon of NTU EE, Marine Debris Image Recognition Challenge, AI Expo, EPSON Innovation Contest</span><span class="lang-zh-TW">其他參賽經驗：台大電機 Makerthon、海廢影像辨識挑戰、AI Expo、EPSON 創新大賽</span></li>
-    </ul>
-    <h3 class="lang-en">Robotics Competitions</h3>
-    <h3 class="lang-zh-TW">機器人競賽</h3>
-    <ul>
-      <li><span class="lang-en">1st Place, Humanoid Challenge, Taiwan International Robot Tournament (TIRT) 2019</span><span class="lang-zh-TW">第1名, 台灣國際機器人大賽 TIRT 人形機器人挑戰賽 2019</span></li>
-      <li><span class="lang-en">5th Place, Taiwan Finals, World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">第5名, WRO 世界機器人大賽台灣決賽 2017</span></li>
-      <li><span class="lang-en">32nd Place, ROBO-ONE Japan 2020</span><span class="lang-zh-TW">第32名, 日本 ROBO-ONE 2020</span></li>
-    </ul>
+    <div class="awards-grid">
+        <div class="awards-column">
+            <h3 class="lang-en">Competitions</h3>
+            <h3 class="lang-zh-TW">競賽</h3>
+            <ul>
+               <li><span class="lang-en">1st Place, Semi-final, Makerthon of National Technical and Vocational University Cup 2025</span><span class="lang-zh-TW">準決賽 第1名, 技職杯黑客松 2025</span></li>
+              <li><span class="lang-en">1st Place, Semi-final & 5th Place, Final, Makerthon of National Technical and Vocational University Cup 2024</span><span class="lang-zh-TW">準決賽 第1名 & 決賽 第5名, 技職杯黑客松 2024</span></li>
+              <li><span class="lang-en">1st Place, Sustainability Hackathon 2024</span><span class="lang-zh-TW">第1名, 永續黑客松 2024</span></li>
+              <li><span class="lang-en">Top 10, Semi-final, Makerthon of National Technical and Vocational University Cup 2023</span><span class="lang-zh-TW">準決賽 前10強, 技職杯黑客松 2023</span></li>
+              <li><span class="lang-en">5th Place, Coding 101 Competition 2023</span><span class="lang-zh-TW">第5名, Coding 101 程式競賽 2023</span></li>
+              <li><span class="lang-en">Participant: Makerthon of NTU EE, Marine Debris Image Recognition Challenge, AI Expo, EPSON Innovation Contest</span><span class="lang-zh-TW">其他參賽經驗：台大電機 Makerthon、海廢影像辨識挑戰、AI Expo、EPSON 創新大賽</span></li>
+            </ul>
+        </div>
+        <div class="awards-column">
+            <h3 class="lang-en">Robotics Competitions</h3>
+            <h3 class="lang-zh-TW">機器人競賽</h3>
+            <ul>
+              <li><span class="lang-en">1st Place, Humanoid Challenge, Taiwan International Robot Tournament (TIRT) 2019</span><span class="lang-zh-TW">第1名, 台灣國際機器人大賽 TIRT 人形機器人挑戰賽 2019</span></li>
+              <li><span class="lang-en">5th Place, Taiwan Finals, World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">第5名, WRO 世界機器人大賽台灣決賽 2017</span></li>
+              <li><span class="lang-en">32nd Place, ROBO-ONE Japan 2020</span><span class="lang-zh-TW">第32名, 日本 ROBO-ONE 2020</span></li>
+            </ul>
+        </div>
+    </div>
   </section>
 
-  <section id="leadership">
-    <h2 class="lang-en">Leadership and Activities</h2>
-    <h2 class="lang-zh-TW">領導與活動經歷</h2>
-    <ul>
-      <li><span class="lang-en">Vice President, Electrical and Computer Engineering Student Association 2023</span><span class="lang-zh-TW">電資學會副會長 2023</span></li>
-      <li><span class="lang-en">Event Coordinator, Electrical and Computer Engineering Student Association 2024</span><span class="lang-zh-TW">電資學會活動長 2024</span></li>
-      <li><span class="lang-en">Organizer, Newcomer Welcome Event (approx. 100 attendees), Taipei Banner Church</span><span class="lang-zh-TW">台北旌旗教會 新生歡迎會籌辦人 (參與者約100人), Taipei Banner Church</span></li>
-      <li><span class="lang-en">Led 8 out of 11 competition teams</span><span class="lang-zh-TW">領導過11個競賽團隊中的8隊</span></li>
-    </ul>
-  </section>
-
-  <section id="volunteer">
-    <h2 class="lang-en">Volunteer Experience</h2>
-    <h2 class="lang-zh-TW">志工經驗</h2>
-    <ul>
-      <li><span class="lang-en">Indigenous Children's Group Volunteer, NYCU Fellowship</span><span class="lang-zh-TW">原民兒童團契志工, NYCU Fellowship</span></li>
-      <li><span class="lang-en">Children's Group Member for Summer Camp, Stream of Praise</span><span class="lang-zh-TW">暑期兒童營輔導, Stream of Praise</span></li>
-      <li><span class="lang-en">Organized Several Community Free Appliance Repair Sessions, School Club</span><span class="lang-zh-TW">舉辦多場社區免費家電維修服務, School Club</span></li>
-      <li><span class="lang-en">Blood Donation Services Volunteer, School Club</span><span class="lang-zh-TW">捐血服務志工, School Club</span></li>
-    </ul>
+  <section id="activities">
+    <h2 class="lang-en">Activities & Leadership</h2>
+    <h2 class="lang-zh-TW">組織、領導與志工經驗</h2>
+    <div class="activities-grid">
+        <div class="activity-column">
+            <h3 class="lang-en">Student Organizations</h3>
+            <h3 class="lang-zh-TW">學生組織與社團</h3>
+             <ul>
+                 <li><span class="lang-en">Member, NTUST Robotics Research Club</span><span class="lang-zh-TW">台科大機器人研究社 社員</span> <span class="lang-en">2024</span><span class="lang-zh-TW">2024</span></li>
+                 <li><span class="lang-en">Public Relations, NTUST Racing Team</span><span class="lang-zh-TW">台科大賽車社 公關組</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
+                 <li><span class="lang-en">Structure Team Member, NTU Racing Team (Designed, built, and participated in Formula Student competitions)</span><span class="lang-zh-TW">台大賽車社 結構組（設計、製作並參與方程式賽車比賽）</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
+             </ul>
+        </div>
+        <div class="activity-column">
+            <h3 class="lang-en">Leadership</h3>
+            <h3 class="lang-zh-TW">領導經歷</h3>
+             <ul>
+                 <li><span class="lang-en">Vice President, Electrical and Computer Engineering Student Association 2023</span><span class="lang-zh-TW">電資學會副會長 2023</span></li>
+                 <li><span class="lang-en">Event Coordinator, Electrical and Computer Engineering Student Association 2024</span><span class="lang-zh-TW">電資學會活動長 2024</span></li>
+                 <li><span class="lang-en">Organizer, Newcomer Welcome Event (approx. 100 attendees), Taipei Banner Church</span><span class="lang-zh-TW">台北旌旗教會 新生歡迎會籌辦人 (參與者約100人), Taipei Banner Church</span></li>
+                 <li><span class="lang-en">Led 8 out of 11 competition teams</span><span class="lang-zh-TW">領導過11個競賽團隊中的8隊</span></li>
+             </ul>
+        </div>
+         <div class="activity-column">
+            <h3 class="lang-en">Volunteer Experience</h3>
+            <h3 class="lang-zh-TW">志工經驗</h3>
+            <ul>
+                <li><span class="lang-en">Indigenous Children's Group Volunteer, NYCU Fellowship</span><span class="lang-zh-TW">原民兒童團契志工, NYCU Fellowship</span></li>
+                <li><span class="lang-en">Children's Group Member for Summer Camp, Stream of Praise</span><span class="lang-zh-TW">暑期兒童營輔導, Stream of Praise</span></li>
+                <li><span class="lang-en">Organized Several Community Free Appliance Repair Sessions, School Club</span><span class="lang-zh-TW">舉辦多場社區免費家電維修服務, School Club</span></li>
+                <li><span class="lang-en">Blood Donation Services Volunteer, School Club</span><span class="lang-zh-TW">捐血服務志工, School Club</span></li>
+            </ul>
+        </div>
+    </div>
   </section>
 
   <section id="skills">
