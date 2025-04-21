@@ -12,122 +12,126 @@
     /* Global Styles */
     body {
       margin: 0;
-      /* Apply Noto Sans TC for Chinese, Roboto for English */
+      padding-top: 0; /* Remove potential top padding if lang switch was there */
       font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif;
       color: #333;
-      background-color: #eef1f5;
-      line-height: 1.7;
-      transition: background-color 0.3s ease; /* Smooth transition for potential future dark mode */
+      background-color: #f0f2f5; /* Slightly lighter background */
+      line-height: 1.65; /* Slightly reduced line height */
+      transition: background-color 0.3s ease;
     }
-    /* Language Specific Font Application */
     body.lang-zh-TW { font-family: 'Noto Sans TC', 'Roboto', 'Segoe UI', Tahoma, sans-serif; }
     body.lang-en { font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif; }
 
-    /* Hide elements of the non-active language */
     body.lang-en .lang-zh-TW { display: none; }
     body.lang-zh-TW .lang-en { display: none; }
 
     a { color: #0056b3; text-decoration: none; }
     a:hover { text-decoration: underline; }
     section {
-      max-width: 850px;
-      margin: 40px auto;
+      max-width: 880px; /* Slightly wider */
+      margin: 30px auto; /* Reduced vertical margin */
       background: #fff;
-      padding: 40px 50px;
+      padding: 35px 45px; /* Reduced padding */
       border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      border: 1px solid #ddd;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      border: 1px solid #dde1e6;
     }
+     /* First section (hero) has no top margin */
+     section:first-of-type {
+         margin-top: 0;
+     }
+     /* Reduce margin for subsequent sections */
+     section + section {
+         margin-top: 25px;
+     }
+
     h2 {
       margin-top: 0;
-      font-size: 2rem;
+      font-size: 1.9rem; /* Slightly smaller */
       font-weight: 700;
       color: #1a2533;
-      border-bottom: 3px solid #0056b3;
-      padding-bottom: 15px;
-      margin-bottom: 30px;
+      border-bottom: 2px solid #0056b3; /* Slightly thinner border */
+      padding-bottom: 12px; /* Reduced padding */
+      margin-bottom: 25px; /* Reduced margin */
     }
     h3 {
-        font-size: 1.6rem; /* Slightly larger H3 */
-        font-weight: 700; /* Bolder H3 */
+        font-size: 1.5rem;
+        font-weight: 700;
         color: #0056b3;
-        margin-top: 30px; /* More space above H3 */
-        margin-bottom: 15px;
+        margin-top: 25px; /* Reduced margin */
+        margin-bottom: 12px; /* Reduced margin */
     }
-     h4 { /* Style for Lab/Professor names */
-        font-size: 1.3rem;
+     h4 {
+        font-size: 1.2rem; /* Slightly smaller */
         font-weight: 500;
         color: #333;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        /* border-bottom: 1px dashed #ccc; */
-        /* padding-bottom: 5px; */
+        margin-top: 18px; /* Reduced margin */
+        margin-bottom: 8px; /* Reduced margin */
     }
-    ul { padding-left: 25px; list-style: square; }
-    li { margin-bottom: 12px; }
+    ul { padding-left: 22px; list-style: square; } /* Slightly less padding */
+    li { margin-bottom: 10px; } /* Reduced margin */
 
-    /* Language Switch Button */
-    #lang-switch-container {
-        text-align: right;
-        padding: 10px 20px;
-        background-color: #dce3ec;
-        border-bottom: 1px solid #ccc;
-        position: sticky; /* Keep it sticky? or just place it? */
-        top: 0;
-        z-index: 100;
-    }
+    /* Language Switch Button (Floating) */
     #lang-switch {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-        background-color: #0056b3;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 1000;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        background-color: rgba(0, 86, 179, 0.85); /* Semi-transparent */
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 20px; /* Pill shape */
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
      #lang-switch:hover {
-        background-color: #003d80;
+        background-color: rgba(0, 61, 128, 0.95);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     /* Hero Section */
     .hero {
       position: relative;
       width: 100%;
-      height: 65vh;
+      min-height: 60vh; /* Use min-height for flexibility */
+      height: auto;
       background: url('bg.jpg') center/cover no-repeat;
       background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      margin: 0 auto; /* Reset margin for hero */
+      margin: 0 auto; /* Keep margin 0 */
       border-radius: 0;
       box-shadow: none;
       max-width: none;
-      padding: 0;
-      border: none; /* Remove section border for Hero */
+      padding: 50px 20px; /* Add some padding */
+      border: none;
     }
-    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 20, 30, 0.7); }
-    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 40px; }
+    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 20, 30, 0.75); } /* Slightly darker overlay */
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 0; /* Remove fixed top margin */ }
     .profile-img {
-      width: 180px;
-      height: 180px;
+      width: 210px; /* Larger */
+      height: 210px; /* Larger */
       border-radius: 50%;
-      border: 6px solid rgba(255, 255, 255, 0.8);
+      border: 7px solid rgba(255, 255, 255, 0.85); /* Thicker border */
       object-fit: cover;
-      margin-bottom: 25px;
+      margin-bottom: 20px; /* Reduced margin */
     }
-    .name { font-size: 3rem; margin: 0; font-weight: 700; }
-    .title { font-size: 1.4rem; margin: 15px 0 25px; font-weight: 400; }
+    .name { font-size: 3rem; margin: 0 0 10px 0; font-weight: 700; }
+    .title { font-size: 1.3rem; margin: 0 0 10px 0; font-weight: 400; } /* Reduced margins */
+    .university { font-size: 1.1rem; margin: 0 0 20px 0; font-weight: 400; color: #eee; } /* School name style */
     .contact-links a {
         color: #fff;
-        margin: 0 10px;
-        font-size: 1.1rem;
+        margin: 0 8px;
+        font-size: 1rem;
         transition: color 0.3s ease;
     }
     .contact-links a:hover {
-        color: #aaa;
+        color: #ccc;
         text-decoration: none;
     }
 
@@ -136,60 +140,66 @@
         list-style: none;
         padding-left: 0;
     }
-    #projects > ul > li { /* Style for top-level project items (Labs/Groups) */
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-left: 5px solid #0056b3;
-        padding: 25px 30px; /* Increased padding */
-        margin-bottom: 25px; /* Increased space */
+    #projects > ul > li {
+        background-color: #f9fafb; /* Lighter background */
+        border: 1px solid #e5e7eb;
+        border-left: 4px solid #0056b3;
+        padding: 20px 25px; /* Reduced padding */
+        margin-bottom: 20px; /* Reduced space */
         border-radius: 5px;
         transition: box-shadow 0.3s ease;
     }
      #projects > ul > li:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Slightly more shadow on hover */
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
-    #projects ul ul { /* Nested lists for skills/description */
-       padding-left: 20px;
-       margin-top: 10px;
-       list-style: disc; /* Use standard bullets for details */
-       font-size: 0.95rem; /* Slightly smaller font for details */
+    #projects ul ul {
+       padding-left: 18px;
+       margin-top: 8px;
+       list-style: disc;
+       font-size: 0.92rem; /* Slightly smaller */
     }
      #projects ul ul li {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
      }
-     #projects strong { /* Style for "Skills:", "Description:" */
+     #projects strong {
         font-weight: 700;
-        color: #333;
+        color: #111827; /* Darker text for strong */
+     }
+     #projects .skills-label,
+     #projects .desc-label {
+         display: block; /* Make labels block */
+         margin-bottom: 4px;
+         font-weight: 500;
+         color: #374151;
      }
 
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; } /* Reduced gap */
     .skills-grid h3 {
-        font-size: 1.3rem;
-        margin-bottom: 15px; /* Increased margin */
+        font-size: 1.25rem;
+        margin-bottom: 12px;
         color: #0056b3;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px; /* Increased padding */
-        font-weight: 500; /* Less bold than section H3 */
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 8px;
+        font-weight: 500;
     }
     .skills-grid ul { padding-left: 0; list-style: none; }
-    .skills-grid li { margin-bottom: 8px; }
+    .skills-grid li { margin-bottom: 6px; }
     .skills-grid > div {
-        background-color: #fdfdfd;
-        padding: 20px; /* Increased padding */
+        background-color: #f9fafb;
+        padding: 18px; /* Reduced padding */
         border-radius: 5px;
-        border: 1px solid #eee;
+        border: 1px solid #e5e7eb;
     }
 
     /* Footer */
-    footer { text-align: center; padding: 30px 0; color: #666; margin-top: 50px; background-color: #dce3ec; border-top: 1px solid #ccc; }
+    footer { text-align: center; padding: 25px 0; color: #555; margin-top: 40px; background-color: #e4e8f0; border-top: 1px solid #c8cdd5; } /* Adjusted colors */
   </style>
 </head>
 <body class="lang-en">
 
-  <div id="lang-switch-container">
-    <button id="lang-switch">中文</button>
-  </div>
+  <!-- Language Switch Button -->
+  <button id="lang-switch">中文</button>
 
   <section class="hero">
     <div class="overlay"></div>
@@ -200,10 +210,32 @@
       <h1 class="name lang-zh-TW">吳定栩</h1>
       <p class="title lang-en">B.S. Electrical Engineering &amp; Computer Science | Minor in Biomedical Engineering</p>
       <p class="title lang-zh-TW">電機工程 &amp; 資訊工程 雙主修 | 醫學工程 輔系</p>
+      <p class="university lang-en">National Taiwan University of Science and Technology (NTUST)</p>
+      <p class="university lang-zh-TW">國立臺灣科技大學 (NTUST)</p>
+      <!-- Add contact links if available -->
       <div class="contact-links">
          <!-- Example: <a href="mailto:your.email@example.com">Email</a> | <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a> -->
       </div>
     </div>
+  </section>
+
+  <!-- Adding Education Section based on provided text -->
+  <section id="education">
+    <h2 class="lang-en">Education</h2>
+    <h2 class="lang-zh-TW">學歷</h2>
+    <ul>
+        <li>
+            <strong class="lang-en">National Taiwan University of Science and Technology (NTUST), Taipei, Taiwan</strong>
+            <strong class="lang-zh-TW">國立臺灣科技大學 (NTUST)，台北，臺灣</strong>
+            <ul>
+                <li><span class="lang-en">B.S. Electrical Engineering (Major)</span><span class="lang-zh-TW">電機工程學士 (主修)</span> <span class="lang-en">2022 – Present</span><span class="lang-zh-TW">2022 – 至今</span></li>
+                <li><span class="lang-en">Computer Science (Double Major)</span><span class="lang-zh-TW">資訊工程 (雙主修)</span> <span class="lang-en">2023 – Present</span><span class="lang-zh-TW">2023 – 至今</span></li>
+                <li><span class="lang-en">Biomedical Engineering (Minor)</span><span class="lang-zh-TW">醫學工程 (輔系)</span> <span class="lang-en">2024 – Present</span><span class="lang-zh-TW">2024 – 至今</span></li>
+                <li><span class="lang-en">International Program in Advanced Information Systems (Studying)</span><span class="lang-zh-TW">國際資通系統學 (修習)</span> <span class="lang-en">2024 – Present</span><span class="lang-zh-TW">2024 – 至今</span></li>
+                <li><span class="lang-en">Overall GPA: 3.73 / 4.3</span><span class="lang-zh-TW">GPA 總成績：3.73 / 4.3</span></li>
+            </ul>
+        </li>
+    </ul>
   </section>
 
   <section id="projects">
@@ -211,109 +243,170 @@
     <h2 class="lang-zh-TW">研究與實務經驗</h2>
     <ul>
         <li>
-            <h4 class="lang-en">Working in the Lab of Medical Imaging under Prof. T.Y. Huang at NTUST</h4>
-            <h4 class="lang-zh-TW">國立臺灣科技大學 黃知行教授 醫學影像實驗室</h4>
+            <h4 class="lang-en">Lab of Medical Imaging (Advisor: Prof. Teng-Yi Huang)</h4>
+            <h4 class="lang-zh-TW">醫學影像實驗室 (指導教授：黃騰毅 教授)</h4>
             <ul>
                 <li>
                     <strong class="lang-en">Predicting potential rare diseases using medical imaging and clinical records</strong>
-                    <strong class="lang-zh-TW">利用醫學影像與臨床記錄預測潛在罕見疾病</strong>
+                    <strong class="lang-zh-TW">結合醫學影像與臨床紀錄預測潛在罕見疾病</strong>
                     <ul>
-                        <li><span class="lang-en"><strong >Skills:</strong> PyTorch, few-shot NLP classification, RAG, Hugging Face Transformers, LoRA, LLM</span>
-                            <span class="lang-zh-TW"><strong >技能：</strong> PyTorch, 少樣本自然語言處理分類, RAG, Hugging Face Transformers, LoRA, 大型語言模型</span></li>
-                        <li><span class="lang-en"><strong >Description:</strong> Combining SLM with different RAG method, with or without Deep Learning, providing possible rare disease by Medical records</span>
-                            <span class="lang-zh-TW"><strong >描述：</strong> 結合小型語言模型與不同 RAG 方法，無論是否使用深度學習，根據病歷提供可能的罕見疾病預測</span></li>
+                        <li><span class="lang-en"><strong class="skills-label">Skills:</strong> PyTorch, few-shot NLP classification, RAG, Hugging Face Transformers, LoRA, LLM</span>
+                            <span class="lang-zh-TW"><strong class="skills-label">技術:</strong> PyTorch, few-shot NLP classification, RAG, Hugging Face Transformers, LoRA, LLM</span></li>
+                        <li><span class="lang-en"><strong class="desc-label">Description:</strong> Combining SLM with different RAG method, with or without Deep Learning, providing possible rare disease by Medical records</span>
+                            <span class="lang-zh-TW"><strong class="desc-label">描述:</strong> 結合小型語言模型與不同 RAG 方法，無論是否使用深度學習，根據病歷提供可能的罕見疾病預測</span></li>
                     </ul>
                 </li>
             </ul>
         </li>
         <li>
-            <h4 class="lang-en">Working in the Lab of Brain Signal processing under Prof. H.K. Pao at NTUST</h4>
-            <h4 class="lang-zh-TW">國立臺灣科技大學 包宏櫆教授 腦訊號處理實驗室</h4>
+            <h4 class="lang-en">Lab of Brain Signal Processing (Advisor: Prof. Hsing-Kuo Pao)</h4>
+            <h4 class="lang-zh-TW">腦波訊號處理實驗室 (指導教授：鮑興國 教授)</h4>
              <ul>
                 <li>
-                    <strong class="lang-en">Currently working on Integrating NDCT and physical models for realistic LDCT prediction</strong>
-                    <strong class="lang-zh-TW">整合NDCT與物理模型以預測真實感LDCT影像</strong>
+                    <strong class="lang-en">Integrating NDCT and physical models for realistic LDCT prediction</strong>
+                    <strong class="lang-zh-TW">項目：結合 NDCT 與物理模型來模擬真實 LDCT 影像</strong>
                      <ul>
-                        <li><span class="lang-en"><strong >Skills:</strong> PyTorch, Residual denoise, Unet denoise, DDPM, probability simulation</span>
-                             <span class="lang-zh-TW"><strong >技能：</strong> PyTorch, 殘差去噪, Unet去噪, DDPM, 機率模擬</span></li>
-                        <li><span class="lang-en"><strong >Description:</strong> Predict realistic CTs from LDCT with the probability distribution of photon scattering in space through reversed diffusion model</span>
-                            <span class="lang-zh-TW"><strong >描述：</strong> 透過逆向擴散模型，結合空間中光子散射的機率分佈，從低劑量電腦斷層掃描 (LDCT) 預測真實感的電腦斷層掃描 (CT) 影像</span></li>
+                        <li><span class="lang-en"><strong class="skills-label">Skills:</strong> PyTorch, Residual denoise, Unet denoise, DDPM, probability simulation</span>
+                             <span class="lang-zh-TW"><strong class="skills-label">技術:</strong> PyTorch, Residual denoise, Unet denoise, DDPM, probability simulation</span></li>
+                        <li><span class="lang-en"><strong class="desc-label">Description:</strong> Predict realistic CTs from LDCT with the probability distribution of photon scattering in space through reversed diffusion model</span>
+                            <span class="lang-zh-TW"><strong class="desc-label">描述:</strong> 透過逆向擴散模型，結合空間中光子散射的機率分佈，從低劑量電腦斷層掃描 (LDCT) 預測真實感的電腦斷層掃描 (CT) 影像</span></li>
                      </ul>
                 </li>
             </ul>
         </li>
          <li>
-            <h4 class="lang-en">EMG signal prediction (2025)</h4>
-            <h4 class="lang-zh-TW">肌電訊號預測 (2025)</h4>
+            <h4 class="lang-en">EMG Signal Prediction (2025)</h4>
+            <h4 class="lang-zh-TW">EMG 訊號預測 (2025)</h4>
              <ul>
-                <li><span class="lang-en">EMG signal processed to prosthetic output / signal processing, spectrogram CNN window + GRU</span>
-                    <span class="lang-zh-TW">肌電訊號處理為義肢輸出 / 訊號處理、頻譜圖 CNN 窗口 + GRU</span></li>
+                <li><span class="lang-en">EMG signal processed to prosthetic output / signal processing, spectrogram CNN window + GRU combination</span>
+                    <span class="lang-zh-TW">EMG 訊號處理與義肢輸出 / 頻譜圖 CNN + GRU 結合</span></li>
             </ul>
         </li>
          <li>
             <h4 class="lang-en">Low-Data Language Model Classification Training and Prediction (2025)</h4>
-            <h4 class="lang-zh-TW">低資料量語言模型分類訓練與預測 (2025)</h4>
+            <h4 class="lang-zh-TW">低資料語言模型分類訓練與預測 (2025)</h4>
              <ul>
-                <li><span class="lang-en">Single long description NLP classification</span>
-                    <span class="lang-zh-TW">單一長文本描述之自然語言處理分類</span></li>
+                <li><span class="lang-en">NLP classification task for long text descriptions</span>
+                    <span class="lang-zh-TW">長文本描述之 NLP 分類任務</span></li>
             </ul>
         </li>
          <li>
-            <h4 class="lang-en">Optimized model for brain tumor segmentation (2024)</h4>
-            <h4 class="lang-zh-TW">腦腫瘤分割模型優化 (2024)</h4>
+            <h4 class="lang-en">Optimized Model for Brain Tumor Segmentation (2024)</h4>
+            <h4 class="lang-zh-TW">腦瘤分割最佳化模型 (2024)</h4>
              <ul>
-                <li><span class="lang-en">Customized dataset & data loader to Unet brain tumor segmentation</span>
-                    <span class="lang-zh-TW">為 Unet 腦腫瘤分割客製化資料集與資料載入器</span></li>
+                <li><span class="lang-en">Customized dataset & data loader applied to Unet brain tumor segmentation</span>
+                    <span class="lang-zh-TW">自訂資料集與 data loader 應用於 Unet 腦瘤分割</span></li>
             </ul>
         </li>
           <li>
-            <h4 class="lang-en">Participating in a brain-computer interface research group (2024)</h4>
+            <h4 class="lang-en">Participating in Brain-Computer Interface Research Group (2024)</h4>
             <h4 class="lang-zh-TW">參與腦機介面研究小組 (2024)</h4>
              <ul>
-                <li><span class="lang-en">EEG-based Paper Sharing Session</span>
-                    <span class="lang-zh-TW">基於腦電圖 (EEG) 的論文分享會</span></li>
+                <li><span class="lang-en">EEG Reading Group and Literature Sharing</span>
+                    <span class="lang-zh-TW">EEG 讀書會與文獻分享</span></li>
             </ul>
         </li>
         <li>
-            <h4 class="lang-en">Produced several educational videos on stress analysis using SolidWorks (2023)</h4>
-            <h4 class="lang-zh-TW">製作多部使用 SolidWorks 進行應力分析的教學影片 (2023)</h4>
+            <h4 class="lang-en">Produced Several SolidWorks Educational Videos (2023)</h4>
+            <h4 class="lang-zh-TW">製作多部 SolidWorks 教學影片 (2023)</h4>
              <ul>
-                <li><span class="lang-en">Stress simulation & topology optimization tutorial to NTU racing club structure members</span>
-                    <span class="lang-zh-TW">為台大賽車隊結構組成員提供應力模擬與拓撲優化教學</span></li>
+                <li><span class="lang-en">Teaching stress simulation & topology optimization to NTU Racing Team structure members</span>
+                    <span class="lang-zh-TW">教授應力模擬與拓撲優化給 NTU 賽車隊結構組員</span></li>
+            </ul>
+        </li>
+        <!-- Including projects from the original list -->
+        <li>
+            <h4 class="lang-en">AI-Powered Blind Cane (2022)</h4>
+            <h4 class="lang-zh-TW">智慧導盲杖 (2022)</h4>
+             <ul>
+                <li><span class="lang-en">Developed using Raspberry Pi with image recognition capabilities.</span>
+                    <span class="lang-zh-TW">使用 Raspberry Pi 為核心，搭載影像辨識功能。</span></li>
+            </ul>
+        </li>
+         <li>
+            <h4 class="lang-en">IoT Refrigerator (2022)</h4>
+            <h4 class="lang-zh-TW">IoT 冰箱 (2022)</h4>
+             <ul>
+                <li><span class="lang-en">Features remote monitoring and thermoelectric cooling system.</span>
+                    <span class="lang-zh-TW">具遠端監控與熱電致冷功能。</span></li>
+            </ul>
+        </li>
+         <li>
+            <h4 class="lang-en">Remote-Controlled Airplane (2022)</h4>
+            <h4 class="lang-zh-TW">遙控飛機 (2022)</h4>
+             <ul>
+                <li><span class="lang-en">Built using Arduino and SolidWorks.</span>
+                    <span class="lang-zh-TW">使用 Arduino 與 SolidWorks 製作。</span></li>
+            </ul>
+        </li>
+        <li>
+            <h4 class="lang-en">Electric Bicycle (2024)</h4>
+            <h4 class="lang-zh-TW">電動自行車 (2024)</h4>
+             <ul>
+                <li><span class="lang-en">Designed and built independently.</span>
+                    <span class="lang-zh-TW">自行設計與製作。</span></li>
+            </ul>
+        </li>
+         <li>
+            <h4 class="lang-en">10-Digit Calculator in Minecraft (2022)</h4>
+            <h4 class="lang-zh-TW">Minecraft 十位數計算機 (2022)</h4>
+             <ul>
+                <li><span class="lang-en">Constructed using purely logic gates within Minecraft.</span>
+                    <span class="lang-zh-TW">使用 Minecraft 純邏輯門建構。</span></li>
+            </ul>
+        </li>
+         <li>
+            <h4 class="lang-en">MediaTek Fully-Funded Science Fair Project (2019)</h4>
+            <h4 class="lang-zh-TW">獲聯發科全額補助科展專案 (2019)</h4>
+            <ul>
+                 <li><span class="lang-en">Participated in science fair with full funding from MediaTek.</span>
+                    <span class="lang-zh-TW">獲聯發科全額補助參與科學展覽。</span></li>
             </ul>
         </li>
     </ul>
   </section>
 
+   <!-- Adding Student Organizations section -->
+  <section id="organizations">
+      <h2 class="lang-en">Student Organizations & Clubs</h2>
+      <h2 class="lang-zh-TW">學生組織與社團</h2>
+      <ul>
+          <li><span class="lang-en">Member, NTUST Robotics Research Club</span><span class="lang-zh-TW">台科大機器人研究社 社員</span> <span class="lang-en">2024</span><span class="lang-zh-TW">2024</span></li>
+          <li><span class="lang-en">Public Relations, NTUST Racing Team</span><span class="lang-zh-TW">台科大賽車社 公關組</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
+          <li><span class="lang-en">Structure Team Member, NTU Racing Team (Designed, built, and participated in Formula Student competitions)</span><span class="lang-zh-TW">台大賽車社 結構組（設計、製作並參與方程式賽車比賽）</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
+      </ul>
+  </section>
+
   <section id="awards">
-    <h2 class="lang-en">Award and Achievements</h2>
-    <h2 class="lang-zh-TW">獎項與成就</h2>
-    <h3 class="lang-en">Competition</h3>
+    <h2 class="lang-en">Awards and Achievements</h2>
+    <h2 class="lang-zh-TW">獲獎與競賽經歷</h2>
+    <h3 class="lang-en">Competitions</h3>
     <h3 class="lang-zh-TW">競賽</h3>
     <ul>
-      <li><span class="lang-en">1st in semi-final and 5th in the final of Makerthon of National Technical and Vocational University Cup 2024</span><span class="lang-zh-TW">全國技專校院盃創客松競賽 複賽第一、決賽第五 2024</span></li>
-      <li><span class="lang-en">1st in Sustainability Hackathon 2024</span><span class="lang-zh-TW">永續黑客松 第一名 2024</span></li>
-      <li><span class="lang-en">10th in semi-final of Makerthon of National Technical and Vocational University Cup 2023</span><span class="lang-zh-TW">全國技專校院盃創客松競賽 複賽第十 2023</span></li>
-      <li><span class="lang-en">5th in Coding 101 competition 2023</span><span class="lang-zh-TW">Coding 101 competition 第五名 2023</span></li>
-      <li><span class="lang-en">Participant of: Makerthon of NTU EE &amp; Marine Debris Image Recognition Challenge &amp; AI expo &amp; EPSON innovation contest</span><span class="lang-zh-TW">參與：台大電機創客松、海洋廢棄物影像辨識挑戰賽、AI博覽會、EPSON創新競賽</span></li>
+       <li><span class="lang-en">1st Place, Semi-final, Makerthon of National Technical and Vocational University Cup 2025</span><span class="lang-zh-TW">準決賽 第1名, 技職杯黑客松 2025</span></li> <!-- Added 2025 entry -->
+      <li><span class="lang-en">1st Place, Semi-final & 5th Place, Final, Makerthon of National Technical and Vocational University Cup 2024</span><span class="lang-zh-TW">準決賽 第1名 & 決賽 第5名, 技職杯黑客松 2024</span></li>
+      <li><span class="lang-en">1st Place, Sustainability Hackathon 2024</span><span class="lang-zh-TW">第1名, 永續黑客松 2024</span></li>
+      <li><span class="lang-en">Top 10, Semi-final, Makerthon of National Technical and Vocational University Cup 2023</span><span class="lang-zh-TW">準決賽 前10強, 技職杯黑客松 2023</span></li>
+      <li><span class="lang-en">5th Place, Coding 101 Competition 2023</span><span class="lang-zh-TW">第5名, Coding 101 程式競賽 2023</span></li>
+      <li><span class="lang-en">Participant: Makerthon of NTU EE, Marine Debris Image Recognition Challenge, AI Expo, EPSON Innovation Contest</span><span class="lang-zh-TW">其他參賽經驗：台大電機 Makerthon、海廢影像辨識挑戰、AI Expo、EPSON 創新大賽</span></li>
     </ul>
-    <h3 class="lang-en">Robotic</h3>
-    <h3 class="lang-zh-TW">機器人</h3>
+    <h3 class="lang-en">Robotics Competitions</h3>
+    <h3 class="lang-zh-TW">機器人競賽</h3>
     <ul>
-      <li><span class="lang-en">1st in the Humanoid Challenge at the Taiwan International Robot Tournament (TIRT) 2019</span><span class="lang-zh-TW">台灣國際機器人錦標賽 (TIRT) 人形挑戰賽 第一名 2019</span></li>
-      <li><span class="lang-en">5th Place in the Taiwan Finals of the World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">世界機器人奧林匹亞 (WRO) 台灣決賽 第五名 2017</span></li>
-      <li><span class="lang-en">32nd in Japan ROBO-ONE 2020</span><span class="lang-zh-TW">日本 ROBO-ONE 第32名 2020</span></li>
+      <li><span class="lang-en">1st Place, Humanoid Challenge, Taiwan International Robot Tournament (TIRT) 2019</span><span class="lang-zh-TW">第1名, 台灣國際機器人大賽 TIRT 人形機器人挑戰賽 2019</span></li>
+      <li><span class="lang-en">5th Place, Taiwan Finals, World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">第5名, WRO 世界機器人大賽台灣決賽 2017</span></li>
+      <li><span class="lang-en">32nd Place, ROBO-ONE Japan 2020</span><span class="lang-zh-TW">第32名, 日本 ROBO-ONE 2020</span></li>
     </ul>
   </section>
 
    <section id="leadership">
-    <h2 class="lang-en">Leadership and Extracurricular Activities</h2>
-    <h2 class="lang-zh-TW">領導力與課外活動</h2>
+    <h2 class="lang-en">Leadership and Activities</h2>
+    <h2 class="lang-zh-TW">領導與活動經歷</h2>
     <ul>
-      <li><span class="lang-en">Vice President of the Electrical and Computer Engineering Student Association 2023</span><span class="lang-zh-TW">電機資訊學士班學生會 副會長 2023</span></li>
-      <li><span class="lang-en">Event coordinator of the Electrical and Computer Engineering Student Association 2024</span><span class="lang-zh-TW">電機資訊學士班學生會 活動股長 2024</span></li>
-      <li><span class="lang-en">Organized newcomer welcome event (around 100 attendees) Taipei Banner Church</span><span class="lang-zh-TW">於台北旌旗教會籌辦新生歡迎活動 (約100人參與)</span></li>
-      <li><span class="lang-en">Leader in 8 out of 11 competition teams</span><span class="lang-zh-TW">在11個競賽隊伍中擔任8次隊長</span></li>
+      <li><span class="lang-en">Vice President, Electrical and Computer Engineering Student Association 2023</span><span class="lang-zh-TW">電資學會副會長 2023</span></li>
+      <li><span class="lang-en">Event Coordinator, Electrical and Computer Engineering Student Association 2024</span><span class="lang-zh-TW">電資學會活動長 2024</span></li>
+      <li><span class="lang-en">Organizer, Newcomer Welcome Event (approx. 100 attendees), Taipei Banner Church</span><span class="lang-zh-TW">台北旌旗教會 新生歡迎會籌辦人 (參與者約100人), Taipei Banner Church</span></li>
+      <li><span class="lang-en">Led 8 out of 11 competition teams</span><span class="lang-zh-TW">領導過11個競賽團隊中的8隊</span></li>
     </ul>
   </section>
 
@@ -321,10 +414,10 @@
     <h2 class="lang-en">Volunteer Experience</h2>
     <h2 class="lang-zh-TW">志工經驗</h2>
     <ul>
-      <li><span class="lang-en">Indigenous Children's Group volunteer - NYCU Fellowship</span><span class="lang-zh-TW">原住民兒童小組志工 - 陽明交大團契</span></li>
-      <li><span class="lang-en">Children's Group Member for Summer Camp - Stream of Praise</span><span class="lang-zh-TW">兒童夏令營小組成員 - 讚美之泉</span></li>
-      <li><span class="lang-en">Engaged in several Community Free Appliance Repair sessions - School Club</span><span class="lang-zh-TW">參與多次社區免費家電維修活動 - 學校社團</span></li>
-      <li><span class="lang-en">Blood Donation Services Volunteer - School Club</span><span class="lang-zh-TW">捐血服務志工 - 學校社團</span></li>
+      <li><span class="lang-en">Indigenous Children's Group Volunteer, NYCU Fellowship</span><span class="lang-zh-TW">原民兒童團契志工, NYCU Fellowship</span></li>
+      <li><span class="lang-en">Children's Group Member for Summer Camp, Stream of Praise</span><span class="lang-zh-TW">暑期兒童營輔導, Stream of Praise</span></li>
+      <li><span class="lang-en">Organized Several Community Free Appliance Repair Sessions, School Club</span><span class="lang-zh-TW">舉辦多場社區免費家電維修服務, School Club</span></li>
+      <li><span class="lang-en">Blood Donation Services Volunteer, School Club</span><span class="lang-zh-TW">捐血服務志工, School Club</span></li>
     </ul>
   </section>
 
@@ -336,17 +429,17 @@
         <h3 class="lang-en">Technical Skills</h3>
         <h3 class="lang-zh-TW">技術技能</h3>
         <ul>
-          <li><strong class="lang-en">Hardware &amp; Embedded Systems:</strong><strong class="lang-zh-TW">硬體 &amp; 嵌入式系統:</strong> <span class="lang-en">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D Printing, Laser Cutting, EasyEDA</span><span class="lang-zh-TW">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D列印, 雷射切割, EasyEDA</span></li>
-          <li><strong class="lang-en">Programming Languages:</strong><strong class="lang-zh-TW">程式語言:</strong> <span class="lang-en">C++, Python, Flutter, Dart, PHP, Assembly (MIPS, x86, 8051)</span><span class="lang-zh-TW">C++, Python, Flutter, Dart, PHP, 組合語言 (MIPS, x86, 8051)</span></li>
-          <li><strong class="lang-en">Simulation &amp; Analysis:</strong><strong class="lang-zh-TW">模擬 &amp; 分析:</strong> <span class="lang-en">COMSOL, Virtuoso, SolidWorks Simulation</span><span class="lang-zh-TW">COMSOL, Virtuoso, SolidWorks Simulation</span></li>
-          <li><strong class="lang-en">Other:</strong><strong class="lang-zh-TW">其他:</strong> <span class="lang-en">Premiere Pro, Illustrator, Unreal Engine 5, Cura, Blender, Figma</span><span class="lang-zh-TW">Premiere Pro, Illustrator, Unreal Engine 5, Cura, Blender, Figma</span></li>
+          <li><strong class="lang-en">Hardware &amp; Embedded Systems:</strong><strong class="lang-zh-TW">硬體與嵌入式系統:</strong> <span class="lang-en">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D Printing, Laser Cutting, EasyEDA</span><span class="lang-zh-TW">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D Printing, Laser Cutting, easyEDA</span></li>
+          <li><strong class="lang-en">Programming Languages:</strong><strong class="lang-zh-TW">程式語言:</strong> <span class="lang-en">C++, Python, Flutter, Dart, PHP, Assembly (MIPS, x86, 8051)</span><span class="lang-zh-TW">C++, Python, Flutter, Dart, PHP, Assembly(MIPS, x86, 8051)</span></li>
+          <li><strong class="lang-en">Simulation &amp; Analysis:</strong><strong class="lang-zh-TW">模擬與分析:</strong> <span class="lang-en">COMSOL, Virtuoso, SolidWorks Simulation</span><span class="lang-zh-TW">COMSOL, virtuoso, solidworks simulation</span></li>
+          <li><strong class="lang-en">Other:</strong><strong class="lang-zh-TW">其他:</strong> <span class="lang-en">Premiere Pro, Illustrator, Unreal Engine 5, Cura, Blender, Figma</span><span class="lang-zh-TW">premiere, illustrator, UE5, CURA, blender, figma</span></li>
         </ul>
       </div>
       <div>
         <h3 class="lang-en">Language</h3>
         <h3 class="lang-zh-TW">語言</h3>
         <ul>
-          <li><span class="lang-en">English: TOEFL 95</span><span class="lang-zh-TW">英語：托福 95</span></li>
+          <li><span class="lang-en">English: TOEFL 95</span><span class="lang-zh-TW">英文：托福95</span></li>
           <li><span class="lang-en">Chinese: Native</span><span class="lang-zh-TW">中文：母語</span></li>
         </ul>
         <h3 class="lang-en">Interests</h3>
@@ -356,8 +449,8 @@
           <li><span class="lang-en">Skateboarding</span><span class="lang-zh-TW">滑板</span></li>
           <li><span class="lang-en">Basketball</span><span class="lang-zh-TW">籃球</span></li>
           <li><span class="lang-en">Coding</span><span class="lang-zh-TW">程式設計</span></li>
-          <li><span class="lang-en">DIY electronics</span><span class="lang-zh-TW">DIY 電子產品</span></li>
-          <li><span class="lang-en">Travel</span><span class="lang-zh-TW">旅遊</span></li>
+          <li><span class="lang-en">DIY electronics</span><span class="lang-zh-TW">電子 DIY</span></li>
+          <li><span class="lang-en">Travel</span><span class="lang-zh-TW">旅行</span></li>
         </ul>
       </div>
     </div>
@@ -372,33 +465,20 @@
     const langSwitchButton = document.getElementById('lang-switch');
     const bodyElement = document.body;
     const htmlElement = document.documentElement;
-    // Default to English, check localStorage
     let currentLang = localStorage.getItem('preferredLang') || 'en';
 
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('preferredLang', lang);
-
-      // Update body class to control CSS visibility rules
       bodyElement.classList.remove('lang-en', 'lang-zh-TW');
       bodyElement.classList.add(`lang-${lang}`);
-
-      // Update button text to show the *other* language
       langSwitchButton.textContent = lang === 'en' ? '中文' : 'English';
-
-      // Update html lang attribute for accessibility and correct font application
       htmlElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-TW');
-
-      // Update page title
-      document.querySelectorAll('title').forEach(title => {
-         title.style.display = title.classList.contains(`lang-${lang}`) ? '' : 'none';
-      });
-       // Hacky way to force title update in some browsers if the above doesn't work
-      document.title = document.querySelector(`title.lang-${lang}`).textContent;
-
+      // Update page title dynamically
+      const newTitle = document.querySelector(`title.lang-${lang}`).textContent;
+      document.title = newTitle;
     }
 
-    // Initial setup on page load
     setLanguage(currentLang);
 
     langSwitchButton.addEventListener('click', () => {
