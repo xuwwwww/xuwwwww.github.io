@@ -10,16 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Global Styles */
-    html { scroll-padding-top: 20px; } /* Adjust scroll position for fixed elements if needed */
+    html { scroll-padding-top: 20px; }
     body {
       margin: 0;
       padding-top: 0;
       font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif;
       color: #2d3748;
-      background-color: #f8fafc; /* Slightly adjusted background */
-      line-height: 1.55; /* Further reduced line height */
+      background-color: #f8fafc;
+      line-height: 1.55;
       transition: background-color 0.3s ease;
-      font-size: 15px; /* Slightly smaller base font */
+      font-size: 15px;
     }
     body.lang-zh-TW { font-family: 'Noto Sans TC', 'Roboto', 'Segoe UI', Tahoma, sans-serif; }
     body.lang-en { font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif; }
@@ -30,11 +30,11 @@
     a { color: #2b6cb0; text-decoration: none; }
     a:hover { text-decoration: underline; color: #2c5282; }
     section {
-      max-width: 850px; /* Reduced max-width slightly */
-      margin: 20px auto; /* Reduced vertical margin */
+      max-width: 850px;
+      margin: 20px auto;
       background: #fff;
-      padding: 25px 35px; /* Further reduced padding */
-      border-radius: 5px; /* Slightly smaller radius */
+      padding: 25px 35px;
+      border-radius: 5px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.05);
       border: 1px solid #e2e8f0;
       overflow-x: hidden;
@@ -44,38 +44,38 @@
          border-top-left-radius: 0;
          border-top-right-radius: 0;
          border-top: none;
-         padding-top: 0; /* Ensure hero has no top padding */
+         padding-top: 0;
          padding-bottom: 0;
          padding-left: 0;
          padding-right: 0;
-         max-width: none; /* Allow hero to be full width */
-         border-bottom: 1px solid #e2e8f0; /* Add bottom border to hero */
+         max-width: none;
+         border-bottom: 1px solid #e2e8f0;
      }
      section + section {
-         margin-top: 18px; /* Further reduced */
+         margin-top: 18px;
      }
 
     h2 {
       margin-top: 0;
-      font-size: 1.6rem; /* Slightly smaller */
+      font-size: 1.6rem;
       font-weight: 700;
       color: #1a202c;
       border-bottom: 2px solid #4a5568;
-      padding-bottom: 8px; /* Reduced padding */
-      margin-bottom: 18px; /* Reduced margin */
+      padding-bottom: 8px;
+      margin-bottom: 18px;
     }
     h3 {
-        font-size: 1.3rem; /* Slightly smaller */
+        font-size: 1.3rem;
         font-weight: 700;
         color: #2b6cb0;
-        margin-top: 18px; /* Reduced margin */
-        margin-bottom: 8px; /* Reduced margin */
+        margin-top: 18px;
+        margin-bottom: 8px;
     }
      h4 {
-        font-size: 1.1rem; /* Slightly smaller */
+        font-size: 1.1rem;
         font-weight: 500;
         color: #2d3748;
-        margin-top: 12px; /* Reduced margin */
+        margin-top: 12px;
         margin-bottom: 6px;
     }
     h4 a {
@@ -88,37 +88,37 @@
         text-decoration: none;
         border-bottom-color: #2b6cb0;
     }
-    ul { padding-left: 20px; list-style: square; margin-top: 4px; margin-bottom: 12px;} /* Reduced padding & margins */
-    li { margin-bottom: 6px; } /* Reduced margin */
+    ul { padding-left: 20px; list-style: square; margin-top: 4px; margin-bottom: 12px;}
+    li { margin-bottom: 6px; }
 
     /* Language Switch Button (Floating Bottom Right) */
     #lang-switch {
         position: fixed;
-        bottom: 15px; /* Position at bottom */
-        right: 15px; /* Position at right */
+        bottom: 20px; /* Slightly higher */
+        right: 20px; /* Slightly more inset */
         z-index: 1000;
-        padding: 8px 14px; /* Increased padding */
-        font-size: 0.9rem; /* Increased font size */
+        padding: 10px 18px; /* Increased padding */
+        font-size: 0.95rem; /* Increased font size */
         background-color: rgba(45, 55, 72, 0.85);
         color: white;
         border: none;
-        border-radius: 20px;
+        border-radius: 25px; /* More rounded */
         cursor: pointer;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3); /* Slightly stronger shadow */
     }
      #lang-switch:hover {
         background-color: rgba(26, 32, 44, 0.95);
-        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.35);
     }
 
     /* Hero Section */
     .hero {
       position: relative;
       width: 100%;
-      min-height: 55vh; /* Adjusted min-height */
+      min-height: 55vh;
       height: auto;
-      background: url('bg.jpg') center/cover no-repeat; /* Restore background image */
+      background: url('bg.jpg') center/cover no-repeat;
       background-attachment: fixed;
       display: flex;
       align-items: center;
@@ -128,31 +128,31 @@
       border-radius: 0;
       box-shadow: none;
       max-width: none;
-      padding: 40px 20px; /* Keep padding for content */
+      padding: 40px 20px;
       border: none;
-      box-sizing: border-box; /* Include padding in width calculation */
+      box-sizing: border-box;
     }
-    .overlay { /* Restore overlay */
+    .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         background: rgba(10, 20, 30, 0.75);
-        display: block; /* Make sure it's displayed */
+        display: block;
      }
     .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 10px; margin-top: 0; max-width: 880px; }
     .profile-img {
       width: 180px;
       height: 180px;
       border-radius: 50%;
-      border: 6px solid rgba(255, 255, 255, 0.8); /* White border for contrast */
+      border: 6px solid rgba(255, 255, 255, 0.8);
       object-fit: cover;
       margin-bottom: 15px;
     }
     .name { font-size: 2.5rem; margin: 0 0 8px 0; font-weight: 700; color: #fff;}
     .title { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 400; color: #a0aec0; }
-    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #a0aec0; } /* Adjusted color */
+    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #a0aec0; }
     .contact-links a {
         color: #a0aec0;
         margin: 0 8px;
@@ -174,17 +174,18 @@
         list-style: none;
         padding-left: 0;
     }
+    /* Base styling for main list items */
      #projects > ul > li,
      #education > ul > li,
      #organizations > ul > li,
-     #awards > ul > li, /* Apply styling to awards list items */
+     #awards > ul > li,
      #leadership > ul > li,
      #volunteer > ul > li {
         background-color: #fdfdfe;
         border: 1px solid #edf2f7;
         border-left: 3px solid #4a5568;
-        padding: 12px 18px; /* Reduced padding */
-        margin-bottom: 12px; /* Reduced space */
+        padding: 12px 18px;
+        margin-bottom: 12px;
         border-radius: 4px;
         transition: box-shadow 0.2s ease;
     }
@@ -201,7 +202,7 @@
        padding-left: 15px;
        margin-top: 5px;
        list-style: disc;
-       font-size: 0.88rem; /* Slightly smaller */
+       font-size: 0.88rem;
        color: #4a5568;
     }
      #projects ul ul li,
@@ -224,8 +225,42 @@
          margin-right: 5px;
      }
 
+    /* Minor Projects Grid */
+    .minor-projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust minmax as needed */
+        gap: 10px;
+        margin-top: 15px; /* Space above the grid */
+    }
+    .minor-projects-grid li {
+        background-color: #f9fafb;
+        border: 1px solid #f3f4f6;
+        padding: 10px 12px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        list-style: none; /* Remove list-style */
+        margin-bottom: 0; /* Remove default li margin */
+        border-left: none; /* Override main li border */
+    }
+    .minor-projects-grid li h4 {
+        font-size: 0.95rem;
+        margin-top: 0;
+        margin-bottom: 4px;
+        font-weight: 700; /* Make title slightly bolder */
+        color: #374151;
+    }
+     .minor-projects-grid li ul {
+        padding-left: 15px;
+        margin-top: 4px;
+        margin-bottom: 0;
+     }
+      .minor-projects-grid li ul li {
+         font-size: 0.8rem;
+         line-height: 1.4;
+      }
+
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; } /* Reduced gap, min width */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
     .skills-grid h3 {
         font-size: 1.15rem;
         margin-bottom: 8px;
@@ -238,28 +273,28 @@
     .skills-grid li { margin-bottom: 4px; line-height: 1.45;}
     .skills-grid > div {
         background-color: #fdfdfe;
-        padding: 12px; /* Reduced padding */
+        padding: 12px;
         border-radius: 4px;
         border: 1px solid #edf2f7;
     }
 
     /* Footer */
-    footer { text-align: center; padding: 18px 0; color: #4a5568; margin-top: 25px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.85rem;} /* Adjusted colors/size */
+    footer { text-align: center; padding: 18px 0; color: #4a5568; margin-top: 25px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.85rem;}
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
-        body { font-size: 14px; } /* Smaller base font on mobile */
+        body { font-size: 14px; }
         section {
-            padding-left: 15px; /* Reduced padding */
+            padding-left: 15px;
             padding-right: 15px;
-            margin-left: auto; /* Center sections */
+            margin-left: auto;
             margin-right: auto;
-            width: 95%; /* Allow shrinking but limit max width slightly */
+            width: 95%;
             max-width: 95%;
-            box-sizing: border-box; /* Include padding/border in width */
+            box-sizing: border-box;
         }
         .hero {
-             padding-top: 40px; /* Adjusted padding */
+             padding-top: 40px;
              padding-bottom: 25px;
              min-height: 45vh;
         }
@@ -270,7 +305,7 @@
         h3 { font-size: 1.2rem; margin-top: 15px; margin-bottom: 8px;}
         h4 { font-size: 1.05rem; margin-top: 10px; margin-bottom: 5px;}
         .profile-img {
-            width: 120px; /* Smaller on mobile */
+            width: 120px;
             height: 120px;
             border-width: 4px;
         }
@@ -279,10 +314,10 @@
         .university { font-size: 0.9rem; }
         .skills-grid { grid-template-columns: 1fr; gap: 10px; }
         #lang-switch {
-             padding: 6px 12px; /* Slightly smaller button on mobile */
-             font-size: 0.8rem;
-             bottom: 10px;
-             right: 10px;
+             padding: 8px 15px; /* Adjusted size for mobile */
+             font-size: 0.85rem;
+             bottom: 15px; /* Consistent positioning */
+             right: 15px;
         }
          #projects > ul > li,
          #education > ul > li,
@@ -296,6 +331,13 @@
          #projects ul ul,
          #education ul ul ul {
             font-size: 0.85rem;
+         }
+         .minor-projects-grid {
+             grid-template-columns: 1fr; /* Stack minor projects on mobile */
+             gap: 8px;
+         }
+         .minor-projects-grid li {
+             padding: 8px 10px;
          }
     }
 
@@ -357,8 +399,8 @@
                     <ul>
                         <li><span class="lang-en"><strong class="skills-label">Skills:</strong> PyTorch, few-shot NLP classification, RAG, Hugging Face Transformers, LoRA, LLM</span>
                             <span class="lang-zh-TW"><strong class="skills-label">技術:</strong> PyTorch, few-shot NLP classification, RAG, Hugging Face Transformers, LoRA, LLM</span></li>
-                        <li><span class="lang-en"><strong class="desc-label">Description:</strong> Combining SLM with different RAG method, with or without Deep Learning, providing possible rare disease by Medical records</span>
-                            <span class="lang-zh-TW"><strong class="desc-label">描述:</strong> 結合小型語言模型與不同 RAG 方法，無論是否使用深度學習，根據病歷提供可能的罕見疾病預測</span></li>
+                        <li><span class="lang-en"><strong class="desc-label">Description:</strong> Combining SLM with different RAG methods, further optimized with BioBERT, to provide possible rare disease predictions from medical records on limited training data, assisting LLMs and doctors.</span>
+                            <span class="lang-zh-TW"><strong class="desc-label">描述:</strong> 結合小型語言模型與不同 RAG 方法，bioBERT結核病進一步優化，在少量的訓練資料下，根據病歷提供可能的罕見疾病預測供LLM參考以提高罕見疾病猜測供醫生參考</span></li>
                     </ul>
                 </li>
             </ul>
@@ -383,16 +425,8 @@
             <h4 class="lang-en">EMG Signal Prediction (2025)</h4>
             <h4 class="lang-zh-TW">EMG 訊號預測 (2025)</h4>
              <ul>
-                <li><span class="lang-en">EMG signal processed to prosthetic output / signal processing, spectrogram CNN window + GRU combination</span>
-                    <span class="lang-zh-TW">EMG 訊號處理與義肢輸出 / 頻譜圖 CNN + GRU 結合</span></li>
-            </ul>
-        </li>
-         <li>
-            <h4 class="lang-en">Low-Data Language Model Classification Training and Prediction (2025)</h4>
-            <h4 class="lang-zh-TW">低資料語言模型分類訓練與預測 (2025)</h4>
-             <ul>
-                <li><span class="lang-en">NLP classification task for long text descriptions</span>
-                    <span class="lang-zh-TW">長文本描述之 NLP 分類任務</span></li>
+                <li><span class="lang-en">Low-latency EMG signal processing for grasp strength estimation using spectrograms, 2D CNN sliding window + GRU, and MediaPipe integration.</span>
+                    <span class="lang-zh-TW">EMG 訊號處理，透過轉換為頻譜圖做 2D CNN sliding window + GRU 結合，也結合mediapipe做運算，做到低延遲EMG訊號提取手臂抓握力道判斷</span></li>
             </ul>
         </li>
          <li>
@@ -403,28 +437,33 @@
                     <span class="lang-zh-TW">自訂資料集與 data loader 應用於 Unet 腦瘤分割</span></li>
             </ul>
         </li>
-          <li>
-            <h4 class="lang-en">Participating in Brain-Computer Interface Research Group (2024)</h4>
-            <h4 class="lang-zh-TW">參與腦機介面研究小組 (2024)</h4>
+    </ul>
+
+    <!-- Minor Projects Section -->
+    <h3 class="lang-en">Additional Projects</h3>
+    <h3 class="lang-zh-TW">其他專案</h3>
+    <div class="minor-projects-grid">
+         <li>
+            <h4 class="lang-en">Brain-Computer Interface Research Group (2024)</h4>
+            <h4 class="lang-zh-TW">腦機介面研究小組 (2024)</h4>
              <ul>
                 <li><span class="lang-en">EEG Reading Group and Literature Sharing</span>
                     <span class="lang-zh-TW">EEG 讀書會與文獻分享</span></li>
             </ul>
         </li>
         <li>
-            <h4 class="lang-en">Produced Several SolidWorks Educational Videos (2023)</h4>
-            <h4 class="lang-zh-TW">製作多部 SolidWorks 教學影片 (2023)</h4>
+            <h4 class="lang-en">SolidWorks Educational Videos (2023)</h4>
+            <h4 class="lang-zh-TW">SolidWorks 教學影片 (2023)</h4>
              <ul>
-                <li><span class="lang-en">Teaching stress simulation & topology optimization to NTU Racing Team structure members</span>
+                <li><span class="lang-en">Teaching stress simulation & topology optimization to NTU Racing Team members</span>
                     <span class="lang-zh-TW">教授應力模擬與拓撲優化給 NTU 賽車隊結構組員</span></li>
             </ul>
         </li>
-        <!-- Including projects from the original list -->
         <li>
             <h4 class="lang-en">AI-Powered Blind Cane (2022)</h4>
             <h4 class="lang-zh-TW">智慧導盲杖 (2022)</h4>
              <ul>
-                <li><span class="lang-en">Developed using Raspberry Pi with image recognition capabilities.</span>
+                <li><span class="lang-en">Developed using Raspberry Pi with image recognition.</span>
                     <span class="lang-zh-TW">使用 Raspberry Pi 為核心，搭載影像辨識功能。</span></li>
             </ul>
         </li>
@@ -432,7 +471,7 @@
             <h4 class="lang-en">IoT Refrigerator (2022)</h4>
             <h4 class="lang-zh-TW">IoT 冰箱 (2022)</h4>
              <ul>
-                <li><span class="lang-en">Features remote monitoring and thermoelectric cooling system.</span>
+                <li><span class="lang-en">Remote monitoring & thermoelectric cooling.</span>
                     <span class="lang-zh-TW">具遠端監控與熱電致冷功能。</span></li>
             </ul>
         </li>
@@ -453,25 +492,17 @@
             </ul>
         </li>
          <li>
-            <h4 class="lang-en">10-Digit Calculator in Minecraft (2022)</h4>
-            <h4 class="lang-zh-TW">Minecraft 十位數計算機 (2022)</h4>
-             <ul>
-                <li><span class="lang-en">Constructed using purely logic gates within Minecraft.</span>
-                    <span class="lang-zh-TW">使用 Minecraft 純邏輯門建構。</span></li>
-            </ul>
-        </li>
-         <li>
-            <h4 class="lang-en">MediaTek Fully-Funded Science Fair Project (2019)</h4>
-            <h4 class="lang-zh-TW">獲聯發科全額補助科展專案 (2019)</h4>
+            <h4 class="lang-en">MediaTek Funded Science Fair Project (2019)</h4>
+            <h4 class="lang-zh-TW">聯發科補助科展專案 (2019)</h4>
             <ul>
-                 <li><span class="lang-en">Participated in science fair with full funding from MediaTek.</span>
+                 <li><span class="lang-en">Participated with full funding from MediaTek.</span>
                     <span class="lang-zh-TW">獲聯發科全額補助參與科學展覽。</span></li>
             </ul>
         </li>
-    </ul>
+    </div>
+
   </section>
 
-   <!-- Adding Student Organizations section -->
   <section id="organizations">
       <h2 class="lang-en">Student Organizations & Clubs</h2>
       <h2 class="lang-zh-TW">學生組織與社團</h2>
@@ -488,7 +519,7 @@
     <h3 class="lang-en">Competitions</h3>
     <h3 class="lang-zh-TW">競賽</h3>
     <ul>
-       <li><span class="lang-en">1st Place, Semi-final, Makerthon of National Technical and Vocational University Cup 2025</span><span class="lang-zh-TW">準決賽 第1名, 技職杯黑客松 2025</span></li> <!-- Added 2025 entry -->
+       <li><span class="lang-en">1st Place, Semi-final, Makerthon of National Technical and Vocational University Cup 2025</span><span class="lang-zh-TW">準決賽 第1名, 技職杯黑客松 2025</span></li>
       <li><span class="lang-en">1st Place, Semi-final & 5th Place, Final, Makerthon of National Technical and Vocational University Cup 2024</span><span class="lang-zh-TW">準決賽 第1名 & 決賽 第5名, 技職杯黑客松 2024</span></li>
       <li><span class="lang-en">1st Place, Sustainability Hackathon 2024</span><span class="lang-zh-TW">第1名, 永續黑客松 2024</span></li>
       <li><span class="lang-en">Top 10, Semi-final, Makerthon of National Technical and Vocational University Cup 2023</span><span class="lang-zh-TW">準決賽 前10強, 技職杯黑客松 2023</span></li>
@@ -504,7 +535,7 @@
     </ul>
   </section>
 
-   <section id="leadership">
+  <section id="leadership">
     <h2 class="lang-en">Leadership and Activities</h2>
     <h2 class="lang-zh-TW">領導與活動經歷</h2>
     <ul>
