@@ -6,33 +6,48 @@
   <title>吳定栩的個人介紹</title>
   <style>
     /* Global Styles */
-    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; color: #333; }
-    a { color: inherit; text-decoration: none; }
-    
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; color: #333; background-color: #f4f4f4; }
+    a { color: #007bff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    section { max-width: 800px; margin: 30px auto; background: #fff; padding: 30px 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { margin-top: 0; font-size: 1.8rem; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px; }
+    ul { padding-left: 20px; list-style: disc; }
+    li { margin-bottom: 10px; line-height: 1.6; }
+
     /* Hero Section */
-    .hero { 
-      position: relative; 
-      width: 100%; 
-      height: 100vh; 
-      background: url('bg.jpg') center/cover no-repeat; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 60vh; /* Adjusted height */
+      background: url('bg.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      margin: 0 auto; /* Remove default section margin */
+      border-radius: 0; /* Remove border-radius for full width */
+      box-shadow: none; /* Remove shadow */
+      max-width: none; /* Allow full width */
+      padding: 0; /* Remove padding */
     }
-    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; }
+    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 50px; /* Add some top margin */}
     .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; margin-bottom: 20px; }
     .name { font-size: 2.5rem; margin: 0; }
     .title { font-size: 1.2rem; margin: 10px 0; }
 
-    /* About Section */
-    .about { max-width: 800px; margin: -100px auto 50px; background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .about h2 { margin-top: 0; font-size: 2rem; }
-    .about p { line-height: 1.6; }
+    /* About Section - Combined with Hero */
+    /* .about removed as a separate section */
+
+    /* Skills Section */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .skills-grid h3 { font-size: 1.2rem; margin-bottom: 8px; color: #007bff; }
+    .skills-grid ul { padding-left: 0; list-style: none; }
+    .skills-grid li { margin-bottom: 5px; }
+
 
     /* Footer */
-    footer { text-align: center; padding: 20px 0; color: #777; }
+    footer { text-align: center; padding: 20px 0; color: #777; margin-top: 40px; }
   </style>
 </head>
 <body>
@@ -43,17 +58,98 @@
       <img src="head.jpg" alt="頭貼" class="profile-img">
       <h1 class="name">吳定栩 (DingXu Wu)</h1>
       <p class="title">電機工程 & 資訊工程 雙主修 | 醫學工程 輔系</p>
+      <!-- Add contact links if available -->
+      <!--
+      <div class="contact-links">
+        <a href="mailto:your.email@example.com">Email</a> |
+        <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a> |
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      </div>
+      -->
     </div>
   </section>
 
-  <section class="about">
-    <h2>關於我</h2>
-    <p>這裡簡要介紹你的背景、專長與興趣。你可以描述你的學術背景、研究方向與社團經歷，例如：</p>
+  <!-- Removed separate about section, info can be integrated elsewhere or kept minimal in Hero -->
+
+  <section id="awards">
+    <h2>獎項與成就 (Award and Achievements)</h2>
+    <h3>競賽 (Competition)</h3>
     <ul>
-      <li>專長：EMG 信號處理、深度學習模型訓練、醫學影像分析</li>
-      <li>研究：結合 RAG 與 BioBERT 的罕見疾病預測</li>
-      <li>經歷：NTUST 機器人社、競賽獲獎、志工服務</li>
+      <li>全國技專校院盃創客松競賽 複賽第一、決賽第五 (1st in semi-final and 5th in the final of Makerthon of National Technical and Vocational University Cup) 2024</li>
+      <li>永續黑客松 第一名 (1st in Sustainability Hackathon) 2024</li>
+      <li>全國技專校院盃創客松競賽 複賽第十 (10th in semi-final of Makerthon of National Technical and Vocational University Cup) 2023</li>
+      <li>Coding 101 competition 第五名 (5th in Coding 101 competition) 2023</li>
+      <li>參與：台大電機創客松、海洋廢棄物影像辨識挑戰賽、AI博覽會、EPSON創新競賽 (Participant of: Makerthon of NTU EE & Marine Debris Image Recognition Challenge & AI expo & EPSON innovation contest)</li>
     </ul>
+    <h3>機器人 (Robotic)</h3>
+    <ul>
+      <li>台灣國際機器人錦標賽 (TIRT) 人形挑戰賽 第一名 (1st in the Humanoid Challenge at the Taiwan International Robot Tournament) 2019</li>
+      <li>世界機器人奧林匹亞 (WRO) 台灣決賽 第五名 (5th Place in the Taiwan Finals of the World Robot Olympiad) 2017</li>
+      <li>日本 ROBO-ONE 第32名 (32nd in Japan ROBO-ONE) 2020</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>專案經驗 (Projects)</h2>
+    <ul>
+      <li>使用 Raspberry Pi 設計 AI 視覺輔助導盲杖 (Designed an AI-powered blind cane with Raspberry Pi) 2022</li>
+      <li>開發具備遠端監控與熱電冷卻系統的物聯網冰箱 (Developed an IoT-enabled refrigerator with remote monitoring and thermoelectric cooling system) 2022</li>
+      <li>使用 Arduino 和 SolidWorks 建立遙控飛機 (Built a remote-controlled airplane using Arduino and SolidWorks) 2022</li>
+      <li>設計並製造電動自行車 (Designed and built an electric bicycle) 2024</li>
+      <li>在 Minecraft 中以基本邏輯閘建構十位數計算機 (Constructed a 10-digit calculator in Minecraft with basic logic) 2022</li>
+      <li>獲聯發科全額贊助科學展覽專案 (Fully-funded science fair by MediaTek) 2019</li>
+    </ul>
+  </section>
+
+   <section id="leadership">
+    <h2>領導力與課外活動 (Leadership and Extracurricular Activities)</h2>
+    <ul>
+      <li>電機資訊學士班學生會 副會長 (Vice President of the Electrical and Computer Engineering Student Association) 2023</li>
+      <li>電機資訊學士班學生會 活動股長 (Event coordinator of the Electrical and Computer Engineering Student Association) 2024</li>
+      <li>於台北旌旗教會籌辦新生歡迎活動 (約100人參與) (Organized newcomer welcome event (around 100 attendees) Taipei Banner Church)</li>
+      <li>在11個競賽隊伍中擔任8次隊長 (Leader in 8 out of 11 competition teams)</li>
+    </ul>
+  </section>
+
+  <section id="volunteer">
+    <h2>志工經驗 (Volunteer Experience)</h2>
+    <ul>
+      <li>原住民兒童小組志工 - 陽明交大團契 (Indigenous Children's Group volunteer - NYCU Fellowship)</li>
+      <li>兒童夏令營小組成員 - 讚美之泉 (Children's Group Member for Summer Camp - Stream of Praise)</li>
+      <li>參與多次社區免費家電維修活動 - 學校社團 (Engaged in several Community Free Appliance Repair sessions - School Club)</li>
+      <li>捐血服務志工 - 學校社團 (Blood Donation Services Volunteer - School Club)</li>
+    </ul>
+  </section>
+
+  <section id="skills">
+    <h2>技能與興趣 (Skills & Interests)</h2>
+    <div class="skills-grid">
+      <div>
+        <h3>技術技能 (Technical Skills)</h3>
+        <ul>
+          <li><strong>硬體 & 嵌入式系統:</strong> Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D列印, 雷射切割, EasyEDA</li>
+          <li><strong>程式語言:</strong> C++, Python, Flutter, Dart, PHP, Assembly (MIPS, x86, 8051)</li>
+          <li><strong>模擬 & 分析:</strong> COMSOL, Virtuoso, SolidWorks Simulation</li>
+          <li><strong>其他:</strong> Premiere Pro, Illustrator, Unreal Engine 5, Cura, Blender, Figma</li>
+        </ul>
+      </div>
+      <div>
+        <h3>語言 (Language)</h3>
+        <ul>
+          <li>英語 (English): TOEFL 95</li>
+          <li>中文 (Chinese): Native</li>
+        </ul>
+        <h3>興趣 (Interests)</h3>
+        <ul>
+          <li>極限運動 (Extreme sports)</li>
+          <li>滑板 (Skateboarding)</li>
+          <li>籃球 (Basketball)</li>
+          <li>程式設計 (Coding)</li>
+          <li>DIY 電子產品 (DIY electronics)</li>
+          <li>旅遊 (Travel)</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <footer>
