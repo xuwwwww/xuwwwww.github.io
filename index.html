@@ -4,57 +4,127 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>吳定栩的個人介紹</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Global Styles */
-    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; color: #333; background-color: #f4f4f4; }
-    a { color: #007bff; text-decoration: none; }
+    body { 
+      margin: 0; 
+      font-family: 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif; /* More formal font */
+      color: #333; 
+      background-color: #eef1f5; /* Slightly different background */
+      line-height: 1.7; /* Increase line height for readability */
+    }
+    a { color: #0056b3; text-decoration: none; } /* Darker blue for links */
     a:hover { text-decoration: underline; }
-    section { max-width: 800px; margin: 30px auto; background: #fff; padding: 30px 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    h2 { margin-top: 0; font-size: 1.8rem; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px; }
-    ul { padding-left: 20px; list-style: disc; }
-    li { margin-bottom: 10px; line-height: 1.6; }
+    section { 
+      max-width: 850px; /* Slightly wider */
+      margin: 40px auto; /* Increased margin */
+      background: #fff; 
+      padding: 40px 50px; /* Increased padding */
+      border-radius: 8px; /* Slightly smaller radius */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Adjusted shadow */
+      border: 1px solid #ddd; /* Add subtle border */
+    }
+    h2 { 
+      margin-top: 0; 
+      font-size: 2rem; /* Larger heading */
+      font-weight: 700; /* Bolder heading */
+      color: #1a2533; /* Darker heading color */
+      border-bottom: 3px solid #0056b3; /* Thicker border */
+      padding-bottom: 15px; /* Increased padding */
+      margin-bottom: 30px; /* Increased margin */
+    }
+    h3 {
+        font-size: 1.4rem; 
+        font-weight: 500;
+        color: #0056b3;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+    ul { padding-left: 25px; list-style: square; } /* Different list style */
+    li { margin-bottom: 12px; }
 
     /* Hero Section */
     .hero {
       position: relative;
       width: 100%;
-      height: 60vh; /* Adjusted height */
-      background: url('bg.jpg') center/cover no-repeat;
+      height: 65vh; /* Slightly increased height */
+      background: url('bg.jpg') center/cover no-repeat; 
+      background-attachment: fixed; /* Fixed background for parallax effect */
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      margin: 0 auto; /* Remove default section margin */
-      border-radius: 0; /* Remove border-radius for full width */
-      box-shadow: none; /* Remove shadow */
-      max-width: none; /* Allow full width */
-      padding: 0; /* Remove padding */
+      margin: 0 auto;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      padding: 0;
+      border: none; /* Remove section border for Hero */
     }
-    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 50px; /* Add some top margin */}
-    .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; margin-bottom: 20px; }
-    .name { font-size: 2.5rem; margin: 0; }
-    .title { font-size: 1.2rem; margin: 10px 0; }
+    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 20, 30, 0.7); } /* Darker overlay */
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 40px; }
+    .profile-img { 
+      width: 180px; /* Increased size */
+      height: 180px; /* Increased size */
+      border-radius: 50%; 
+      border: 6px solid rgba(255, 255, 255, 0.8); /* Thicker, slightly transparent border */
+      object-fit: cover; 
+      margin-bottom: 25px; 
+    }
+    .name { font-size: 3rem; margin: 0; font-weight: 700; } /* Larger name */
+    .title { font-size: 1.4rem; margin: 15px 0 25px; font-weight: 400; } /* Adjusted title */
+    .contact-links a {
+        color: #fff; 
+        margin: 0 10px;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    .contact-links a:hover {
+        color: #aaa;
+        text-decoration: none;
+    }
 
-    /* About Section - Combined with Hero */
-    /* .about removed as a separate section */
+    /* Projects Section */
+    #projects ul {
+        list-style: none; /* Remove default list style */
+        padding-left: 0;
+    }
+    #projects li {
+        background-color: #f8f9fa; /* Light background for each project */
+        border: 1px solid #dee2e6;
+        border-left: 5px solid #0056b3; /* Accent border */
+        padding: 20px;
+        margin-bottom: 20px; /* Increased space between projects */
+        border-radius: 5px;
+        transition: box-shadow 0.3s ease;
+    }
+     #projects li:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-    .skills-grid h3 { font-size: 1.2rem; margin-bottom: 8px; color: #007bff; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; } /* Wider columns, more gap */
+    .skills-grid h3 { font-size: 1.3rem; margin-bottom: 10px; color: #0056b3; border-bottom: 1px solid #eee; padding-bottom: 8px; }
     .skills-grid ul { padding-left: 0; list-style: none; }
-    .skills-grid li { margin-bottom: 5px; }
-
+    .skills-grid li { margin-bottom: 8px; }
+    .skills-grid > div { /* Add subtle background to skill categories */
+        background-color: #fdfdfd;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #eee;
+    }
 
     /* Footer */
-    footer { text-align: center; padding: 20px 0; color: #777; margin-top: 40px; }
+    footer { text-align: center; padding: 30px 0; color: #666; margin-top: 50px; background-color: #dce3ec; border-top: 1px solid #ccc; } /* Styled footer */
   </style>
 </head>
 <body>
   <section class="hero">
     <div class="overlay"></div>
     <div class="hero-content">
-      <!-- 將 avatar.jpg 換成你的頭貼檔案名稱 -->
       <img src="head.jpg" alt="頭貼" class="profile-img">
       <h1 class="name">吳定栩 (DingXu Wu)</h1>
       <p class="title">電機工程 & 資訊工程 雙主修 | 醫學工程 輔系</p>
@@ -69,7 +139,17 @@
     </div>
   </section>
 
-  <!-- Removed separate about section, info can be integrated elsewhere or kept minimal in Hero -->
+  <section id="projects">
+    <h2>專案經驗 (Projects)</h2>
+    <ul>
+      <li>使用 Raspberry Pi 設計 AI 視覺輔助導盲杖 (Designed an AI-powered blind cane with Raspberry Pi) 2022</li>
+      <li>開發具備遠端監控與熱電冷卻系統的物聯網冰箱 (Developed an IoT-enabled refrigerator with remote monitoring and thermoelectric cooling system) 2022</li>
+      <li>使用 Arduino 和 SolidWorks 建立遙控飛機 (Built a remote-controlled airplane using Arduino and SolidWorks) 2022</li>
+      <li>設計並製造電動自行車 (Designed and built an electric bicycle) 2024</li>
+      <li>在 Minecraft 中以基本邏輯閘建構十位數計算機 (Constructed a 10-digit calculator in Minecraft with basic logic) 2022</li>
+      <li>獲聯發科全額贊助科學展覽專案 (Fully-funded science fair by MediaTek) 2019</li>
+    </ul>
+  </section>
 
   <section id="awards">
     <h2>獎項與成就 (Award and Achievements)</h2>
@@ -86,18 +166,6 @@
       <li>台灣國際機器人錦標賽 (TIRT) 人形挑戰賽 第一名 (1st in the Humanoid Challenge at the Taiwan International Robot Tournament) 2019</li>
       <li>世界機器人奧林匹亞 (WRO) 台灣決賽 第五名 (5th Place in the Taiwan Finals of the World Robot Olympiad) 2017</li>
       <li>日本 ROBO-ONE 第32名 (32nd in Japan ROBO-ONE) 2020</li>
-    </ul>
-  </section>
-
-  <section id="projects">
-    <h2>專案經驗 (Projects)</h2>
-    <ul>
-      <li>使用 Raspberry Pi 設計 AI 視覺輔助導盲杖 (Designed an AI-powered blind cane with Raspberry Pi) 2022</li>
-      <li>開發具備遠端監控與熱電冷卻系統的物聯網冰箱 (Developed an IoT-enabled refrigerator with remote monitoring and thermoelectric cooling system) 2022</li>
-      <li>使用 Arduino 和 SolidWorks 建立遙控飛機 (Built a remote-controlled airplane using Arduino and SolidWorks) 2022</li>
-      <li>設計並製造電動自行車 (Designed and built an electric bicycle) 2024</li>
-      <li>在 Minecraft 中以基本邏輯閘建構十位數計算機 (Constructed a 10-digit calculator in Minecraft with basic logic) 2022</li>
-      <li>獲聯發科全額贊助科學展覽專案 (Fully-funded science fair by MediaTek) 2019</li>
     </ul>
   </section>
 
