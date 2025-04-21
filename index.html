@@ -10,14 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Global Styles */
+    html { scroll-padding-top: 20px; } /* Adjust scroll position for fixed elements if needed */
     body {
       margin: 0;
       padding-top: 0;
       font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif;
-      color: #2d3748; /* Darker text */
-      background-color: #f7fafc; /* Even lighter background */
-      line-height: 1.6; /* Slightly more compact line height */
+      color: #2d3748;
+      background-color: #f8fafc; /* Slightly adjusted background */
+      line-height: 1.55; /* Further reduced line height */
       transition: background-color 0.3s ease;
+      font-size: 15px; /* Slightly smaller base font */
     }
     body.lang-zh-TW { font-family: 'Noto Sans TC', 'Roboto', 'Segoe UI', Tahoma, sans-serif; }
     body.lang-en { font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif; }
@@ -25,94 +27,99 @@
     body.lang-en .lang-zh-TW { display: none; }
     body.lang-zh-TW .lang-en { display: none; }
 
-    a { color: #2b6cb0; text-decoration: none; } /* Adjusted link color */
+    a { color: #2b6cb0; text-decoration: none; }
     a:hover { text-decoration: underline; color: #2c5282; }
     section {
-      max-width: 880px;
-      margin: 25px auto; /* Reduced vertical margin */
+      max-width: 850px; /* Reduced max-width slightly */
+      margin: 20px auto; /* Reduced vertical margin */
       background: #fff;
-      padding: 30px 40px; /* Further reduced padding */
-      border-radius: 6px; /* Slightly smaller radius */
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 25px 35px; /* Further reduced padding */
+      border-radius: 5px; /* Slightly smaller radius */
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
       border: 1px solid #e2e8f0;
-      overflow-x: hidden; /* Prevent horizontal overflow within sections */
+      overflow-x: hidden;
     }
      section:first-of-type {
          margin-top: 0;
-         border-top-left-radius: 0; /* Remove top radius for hero */
+         border-top-left-radius: 0;
          border-top-right-radius: 0;
          border-top: none;
+         padding-top: 0; /* Ensure hero has no top padding */
+         padding-bottom: 0;
+         padding-left: 0;
+         padding-right: 0;
+         max-width: none; /* Allow hero to be full width */
+         border-bottom: 1px solid #e2e8f0; /* Add bottom border to hero */
      }
      section + section {
-         margin-top: 20px; /* Further reduced */
+         margin-top: 18px; /* Further reduced */
      }
 
     h2 {
       margin-top: 0;
-      font-size: 1.75rem; /* Slightly smaller */
+      font-size: 1.6rem; /* Slightly smaller */
       font-weight: 700;
-      color: #1a202c; /* Darker heading */
-      border-bottom: 2px solid #4a5568; /* Grey border */
-      padding-bottom: 10px; /* Reduced padding */
-      margin-bottom: 20px; /* Reduced margin */
+      color: #1a202c;
+      border-bottom: 2px solid #4a5568;
+      padding-bottom: 8px; /* Reduced padding */
+      margin-bottom: 18px; /* Reduced margin */
     }
     h3 {
-        font-size: 1.4rem; /* Slightly smaller */
+        font-size: 1.3rem; /* Slightly smaller */
         font-weight: 700;
-        color: #2b6cb0; /* Use link color */
-        margin-top: 20px; /* Reduced margin */
-        margin-bottom: 10px; /* Reduced margin */
+        color: #2b6cb0;
+        margin-top: 18px; /* Reduced margin */
+        margin-bottom: 8px; /* Reduced margin */
     }
      h4 {
-        font-size: 1.15rem; /* Slightly smaller */
+        font-size: 1.1rem; /* Slightly smaller */
         font-weight: 500;
         color: #2d3748;
-        margin-top: 15px; /* Reduced margin */
-        margin-bottom: 8px;
+        margin-top: 12px; /* Reduced margin */
+        margin-bottom: 6px;
     }
-    h4 a { /* Style links within h4 (Professor names) */
-        color: inherit; /* Inherit h4 color */
+    h4 a {
+        color: inherit;
         text-decoration: none;
-        border-bottom: 1px dotted #718096; /* Subtle underline */
+        border-bottom: 1px dotted #718096;
     }
     h4 a:hover {
         color: #2b6cb0;
         text-decoration: none;
         border-bottom-color: #2b6cb0;
     }
-    ul { padding-left: 20px; list-style: square; margin-top: 5px; margin-bottom: 15px;} /* Reduced padding & margins */
-    li { margin-bottom: 8px; } /* Reduced margin */
+    ul { padding-left: 20px; list-style: square; margin-top: 4px; margin-bottom: 12px;} /* Reduced padding & margins */
+    li { margin-bottom: 6px; } /* Reduced margin */
 
-    /* Language Switch Button (Floating) */
+    /* Language Switch Button (Floating Bottom Right) */
     #lang-switch {
         position: fixed;
-        top: 12px;
-        right: 12px;
+        bottom: 15px; /* Position at bottom */
+        right: 15px; /* Position at right */
         z-index: 1000;
-        padding: 5px 10px;
-        font-size: 0.8rem;
-        background-color: rgba(45, 55, 72, 0.8); /* Darker grey, semi-transparent */
+        padding: 8px 14px; /* Increased padding */
+        font-size: 0.9rem; /* Increased font size */
+        background-color: rgba(45, 55, 72, 0.85);
         color: white;
         border: none;
-        border-radius: 15px;
+        border-radius: 20px;
         cursor: pointer;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
      #lang-switch:hover {
-        background-color: rgba(26, 32, 44, 0.95); /* Darker on hover */
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        background-color: rgba(26, 32, 44, 0.95);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
     }
 
     /* Hero Section */
     .hero {
       position: relative;
       width: 100%;
-      min-height: auto; /* Let content define height */
+      min-height: 55vh; /* Adjusted min-height */
       height: auto;
-      background: #1a202c; /* Dark solid background for formality */
-      /* background: url('bg.jpg') center/cover no-repeat; */
-      /* background-attachment: fixed; */
+      background: url('bg.jpg') center/cover no-repeat; /* Restore background image */
+      background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -121,22 +128,31 @@
       border-radius: 0;
       box-shadow: none;
       max-width: none;
-      padding: 40px 20px; /* Reduced padding */
+      padding: 40px 20px; /* Keep padding for content */
       border: none;
+      box-sizing: border-box; /* Include padding in width calculation */
     }
-    .overlay { display: none; } /* Remove overlay if using solid background */
-    .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 10px; margin-top: 0; max-width: 880px; /* Limit width */ }
+    .overlay { /* Restore overlay */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 20, 30, 0.75);
+        display: block; /* Make sure it's displayed */
+     }
+    .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 10px; margin-top: 0; max-width: 880px; }
     .profile-img {
-      width: 180px; /* Slightly smaller than last increase, balance */
+      width: 180px;
       height: 180px;
       border-radius: 50%;
-      border: 6px solid #4a5568; /* Grey border */
+      border: 6px solid rgba(255, 255, 255, 0.8); /* White border for contrast */
       object-fit: cover;
-      margin-bottom: 15px; /* Reduced margin */
+      margin-bottom: 15px;
     }
-    .name { font-size: 2.5rem; margin: 0 0 8px 0; font-weight: 700; color: #fff;} /* White name */
-    .title { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 400; color: #a0aec0; } /* Lighter grey */
-    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #718096; } /* Darker grey */
+    .name { font-size: 2.5rem; margin: 0 0 8px 0; font-weight: 700; color: #fff;}
+    .title { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 400; color: #a0aec0; }
+    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #a0aec0; } /* Adjusted color */
     .contact-links a {
         color: #a0aec0;
         margin: 0 8px;
@@ -148,108 +164,139 @@
         text-decoration: none;
     }
 
-    /* Projects Section */
+    /* Projects Section etc List styling */
     #projects ul,
     #education ul ul,
-    #organizations ul {
+    #organizations ul,
+    #awards ul,
+    #leadership ul,
+    #volunteer ul {
         list-style: none;
         padding-left: 0;
     }
      #projects > ul > li,
      #education > ul > li,
-     #organizations > ul > li {
-        background-color: #fdfdfe; /* Slightly different background */
+     #organizations > ul > li,
+     #awards > ul > li, /* Apply styling to awards list items */
+     #leadership > ul > li,
+     #volunteer > ul > li {
+        background-color: #fdfdfe;
         border: 1px solid #edf2f7;
-        border-left: 3px solid #4a5568; /* Grey accent */
-        padding: 15px 20px; /* Reduced padding */
-        margin-bottom: 15px; /* Reduced space */
+        border-left: 3px solid #4a5568;
+        padding: 12px 18px; /* Reduced padding */
+        margin-bottom: 12px; /* Reduced space */
         border-radius: 4px;
         transition: box-shadow 0.2s ease;
     }
      #projects > ul > li:hover,
      #education > ul > li:hover,
-     #organizations > ul > li:hover {
+     #organizations > ul > li:hover,
+     #awards > ul > li:hover,
+     #leadership > ul > li:hover,
+     #volunteer > ul > li:hover {
         box-shadow: 0 2px 6px rgba(0,0,0,0.07);
     }
     #projects ul ul,
     #education ul ul ul {
        padding-left: 15px;
-       margin-top: 6px;
+       margin-top: 5px;
        list-style: disc;
-       font-size: 0.9rem;
-       color: #4a5568; /* Grey for details */
+       font-size: 0.88rem; /* Slightly smaller */
+       color: #4a5568;
     }
      #projects ul ul li,
      #education ul ul li,
      #education ul ul ul li {
-        margin-bottom: 5px;
-        line-height: 1.5;
+        margin-bottom: 4px;
+        line-height: 1.45;
      }
      #projects strong,
      #education strong {
-        font-weight: 500; /* Less emphasis */
+        font-weight: 500;
         color: #2d3748;
      }
      #projects .skills-label,
      #projects .desc-label {
-         display: inline; /* Inline labels */
+         display: inline;
          margin-bottom: 0;
-         font-weight: 700; /* Bolder labels */
+         font-weight: 700;
          color: #4a5568;
          margin-right: 5px;
      }
 
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; } /* Reduced gap */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; } /* Reduced gap, min width */
     .skills-grid h3 {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
+        font-size: 1.15rem;
+        margin-bottom: 8px;
         color: #2b6cb0;
         border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 6px;
+        padding-bottom: 5px;
         font-weight: 700;
     }
-    .skills-grid ul { padding-left: 0; list-style: none; }
-    .skills-grid li { margin-bottom: 5px; line-height: 1.5;}
+    .skills-grid ul { padding-left: 0; list-style: none; margin-top: 5px; }
+    .skills-grid li { margin-bottom: 4px; line-height: 1.45;}
     .skills-grid > div {
         background-color: #fdfdfe;
-        padding: 15px; /* Reduced padding */
+        padding: 12px; /* Reduced padding */
         border-radius: 4px;
         border: 1px solid #edf2f7;
     }
 
     /* Footer */
-    footer { text-align: center; padding: 20px 0; color: #4a5568; margin-top: 30px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.9rem;} /* Adjusted colors */
+    footer { text-align: center; padding: 18px 0; color: #4a5568; margin-top: 25px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.85rem;} /* Adjusted colors/size */
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
+        body { font-size: 14px; } /* Smaller base font on mobile */
         section {
-            padding-left: 20px;
-            padding-right: 20px;
-            margin-left: 10px; /* Add small margin to prevent touching edge */
-            margin-right: 10px;
-            width: auto; /* Allow shrinking */
-            max-width: none; /* Remove max-width on small screens */
+            padding-left: 15px; /* Reduced padding */
+            padding-right: 15px;
+            margin-left: auto; /* Center sections */
+            margin-right: auto;
+            width: 95%; /* Allow shrinking but limit max width slightly */
+            max-width: 95%;
+            box-sizing: border-box; /* Include padding/border in width */
         }
         .hero {
-             padding-top: 60px; /* Add padding to account for floating button */
-             padding-bottom: 30px;
+             padding-top: 40px; /* Adjusted padding */
+             padding-bottom: 25px;
+             min-height: 45vh;
         }
         .hero-content {
             padding: 5px;
         }
-        h2 { font-size: 1.6rem; margin-bottom: 15px; padding-bottom: 8px;}
-        h3 { font-size: 1.3rem; margin-top: 15px; margin-bottom: 8px;}
-        h4 { font-size: 1.1rem; margin-top: 12px; margin-bottom: 6px;}
+        h2 { font-size: 1.45rem; margin-bottom: 15px; padding-bottom: 8px;}
+        h3 { font-size: 1.2rem; margin-top: 15px; margin-bottom: 8px;}
+        h4 { font-size: 1.05rem; margin-top: 10px; margin-bottom: 5px;}
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 120px; /* Smaller on mobile */
+            height: 120px;
             border-width: 4px;
         }
-        .name { font-size: 2rem; }
-        .title { font-size: 1.1rem; }
-        .university { font-size: 0.95rem; }
-        .skills-grid { grid-template-columns: 1fr; } /* Stack skills on mobile */
+        .name { font-size: 1.8rem; }
+        .title { font-size: 1.05rem; }
+        .university { font-size: 0.9rem; }
+        .skills-grid { grid-template-columns: 1fr; gap: 10px; }
+        #lang-switch {
+             padding: 6px 12px; /* Slightly smaller button on mobile */
+             font-size: 0.8rem;
+             bottom: 10px;
+             right: 10px;
+        }
+         #projects > ul > li,
+         #education > ul > li,
+         #organizations > ul > li,
+         #awards > ul > li,
+         #leadership > ul > li,
+         #volunteer > ul > li {
+             padding: 10px 15px;
+             margin-bottom: 10px;
+        }
+         #projects ul ul,
+         #education ul ul ul {
+            font-size: 0.85rem;
+         }
     }
 
   </style>
@@ -317,8 +364,8 @@
             </ul>
         </li>
         <li>
-            <h4 class="lang-en">Lab of Brain Signal Processing (Advisor: <a href="https://www.csie.ntust.edu.tw/p/16-1038-23641.php?Lang=zh-tw" target="_blank">Prof. Hsing-Kuo Pao</a>)</h4>
-            <h4 class="lang-zh-TW">腦波訊號處理實驗室 (指導教授：<a href="https://www.csie.ntust.edu.tw/p/16-1038-23641.php?Lang=zh-tw" target="_blank">鮑興國 教授</a>)</h4>
+            <h4 class="lang-en">Lab of Brain Signal Processing (Advisor: <a href="https://www.csie.ntust.edu.tw/p/405-1038-23641,c1815.php?Lang=zh-tw" target="_blank">Prof. Hsing-Kuo Pao</a>)</h4>
+            <h4 class="lang-zh-TW">腦波訊號處理實驗室 (指導教授：<a href="https://www.csie.ntust.edu.tw/p/405-1038-23641,c1815.php?Lang=zh-tw" target="_blank">鮑興國 教授</a>)</h4>
              <ul>
                 <li>
                     <strong class="lang-en">Integrating NDCT and physical models for realistic LDCT prediction</strong>
@@ -533,8 +580,12 @@
       langSwitchButton.textContent = lang === 'en' ? '中文' : 'English';
       htmlElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-TW');
       // Update page title dynamically
-      const newTitle = document.querySelector(`title.lang-${lang}`).textContent;
-      document.title = newTitle;
+      try { // Add try-catch for robustness
+        const newTitle = document.querySelector(`title.lang-${lang}`).textContent;
+        document.title = newTitle;
+      } catch (e) {
+        console.error("Error updating title:", e);
+      }
     }
 
     setLanguage(currentLang);
