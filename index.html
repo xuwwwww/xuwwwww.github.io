@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吳定栩的個人介紹</title>
+  <style>
+    /* Global Styles */
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; color: #333; }
+    a { color: inherit; text-decoration: none; }
+    
+    /* Hero Section */
+    .hero { 
+      position: relative; 
+      width: 100%; 
+      height: 100vh; 
+      background: url('background.jpg') center/cover no-repeat; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      text-align: center;
+    }
+    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; }
+    .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; object-fit: cover; margin-bottom: 20px; }
+    .name { font-size: 2.5rem; margin: 0; }
+    .title { font-size: 1.2rem; margin: 10px 0; }
+
+    /* About Section */
+    .about { max-width: 800px; margin: -100px auto 50px; background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .about h2 { margin-top: 0; font-size: 2rem; }
+    .about p { line-height: 1.6; }
+
+    /* Footer */
+    footer { text-align: center; padding: 20px 0; color: #777; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <!-- 將 avatar.jpg 換成你的頭貼檔案名稱 -->
+      <img src="avatar.jpg" alt="頭貼" class="profile-img">
+      <h1 class="name">吳定栩 (DingXu Wu)</h1>
+      <p class="title">電機工程 & 資訊工程 雙主修 | 醫學工程 輔系</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>關於我</h2>
+    <p>這裡簡要介紹你的背景、專長與興趣。你可以描述你的學術背景、研究方向與社團經歷，例如：</p>
+    <ul>
+      <li>專長：EMG 信號處理、深度學習模型訓練、醫學影像分析</li>
+      <li>研究：結合 RAG 與 BioBERT 的罕見疾病預測</li>
+      <li>經歷：NTUST 機器人社、競賽獲獎、志工服務</li>
+    </ul>
+  </section>
+
+  <footer>
+    © 2025 吳定栩
+  </footer>
+</body>
+</html>
