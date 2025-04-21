@@ -12,11 +12,11 @@
     /* Global Styles */
     body {
       margin: 0;
-      padding-top: 0; /* Remove potential top padding if lang switch was there */
+      padding-top: 0;
       font-family: 'Roboto', 'Noto Sans TC', 'Segoe UI', Tahoma, sans-serif;
-      color: #333;
-      background-color: #f0f2f5; /* Slightly lighter background */
-      line-height: 1.65; /* Slightly reduced line height */
+      color: #2d3748; /* Darker text */
+      background-color: #f7fafc; /* Even lighter background */
+      line-height: 1.6; /* Slightly more compact line height */
       transition: background-color 0.3s ease;
     }
     body.lang-zh-TW { font-family: 'Noto Sans TC', 'Roboto', 'Segoe UI', Tahoma, sans-serif; }
@@ -25,175 +25,233 @@
     body.lang-en .lang-zh-TW { display: none; }
     body.lang-zh-TW .lang-en { display: none; }
 
-    a { color: #0056b3; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: #2b6cb0; text-decoration: none; } /* Adjusted link color */
+    a:hover { text-decoration: underline; color: #2c5282; }
     section {
-      max-width: 880px; /* Slightly wider */
-      margin: 30px auto; /* Reduced vertical margin */
+      max-width: 880px;
+      margin: 25px auto; /* Reduced vertical margin */
       background: #fff;
-      padding: 35px 45px; /* Reduced padding */
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-      border: 1px solid #dde1e6;
+      padding: 30px 40px; /* Further reduced padding */
+      border-radius: 6px; /* Slightly smaller radius */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+      overflow-x: hidden; /* Prevent horizontal overflow within sections */
     }
-     /* First section (hero) has no top margin */
      section:first-of-type {
          margin-top: 0;
+         border-top-left-radius: 0; /* Remove top radius for hero */
+         border-top-right-radius: 0;
+         border-top: none;
      }
-     /* Reduce margin for subsequent sections */
      section + section {
-         margin-top: 25px;
+         margin-top: 20px; /* Further reduced */
      }
 
     h2 {
       margin-top: 0;
-      font-size: 1.9rem; /* Slightly smaller */
+      font-size: 1.75rem; /* Slightly smaller */
       font-weight: 700;
-      color: #1a2533;
-      border-bottom: 2px solid #0056b3; /* Slightly thinner border */
-      padding-bottom: 12px; /* Reduced padding */
-      margin-bottom: 25px; /* Reduced margin */
+      color: #1a202c; /* Darker heading */
+      border-bottom: 2px solid #4a5568; /* Grey border */
+      padding-bottom: 10px; /* Reduced padding */
+      margin-bottom: 20px; /* Reduced margin */
     }
     h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem; /* Slightly smaller */
         font-weight: 700;
-        color: #0056b3;
-        margin-top: 25px; /* Reduced margin */
-        margin-bottom: 12px; /* Reduced margin */
+        color: #2b6cb0; /* Use link color */
+        margin-top: 20px; /* Reduced margin */
+        margin-bottom: 10px; /* Reduced margin */
     }
      h4 {
-        font-size: 1.2rem; /* Slightly smaller */
+        font-size: 1.15rem; /* Slightly smaller */
         font-weight: 500;
-        color: #333;
-        margin-top: 18px; /* Reduced margin */
-        margin-bottom: 8px; /* Reduced margin */
+        color: #2d3748;
+        margin-top: 15px; /* Reduced margin */
+        margin-bottom: 8px;
     }
-    ul { padding-left: 22px; list-style: square; } /* Slightly less padding */
-    li { margin-bottom: 10px; } /* Reduced margin */
+    h4 a { /* Style links within h4 (Professor names) */
+        color: inherit; /* Inherit h4 color */
+        text-decoration: none;
+        border-bottom: 1px dotted #718096; /* Subtle underline */
+    }
+    h4 a:hover {
+        color: #2b6cb0;
+        text-decoration: none;
+        border-bottom-color: #2b6cb0;
+    }
+    ul { padding-left: 20px; list-style: square; margin-top: 5px; margin-bottom: 15px;} /* Reduced padding & margins */
+    li { margin-bottom: 8px; } /* Reduced margin */
 
     /* Language Switch Button (Floating) */
     #lang-switch {
         position: fixed;
-        top: 15px;
-        right: 15px;
+        top: 12px;
+        right: 12px;
         z-index: 1000;
-        padding: 6px 12px;
-        font-size: 0.85rem;
-        background-color: rgba(0, 86, 179, 0.85); /* Semi-transparent */
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        background-color: rgba(45, 55, 72, 0.8); /* Darker grey, semi-transparent */
         color: white;
         border: none;
-        border-radius: 20px; /* Pill shape */
+        border-radius: 15px;
         cursor: pointer;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     }
      #lang-switch:hover {
-        background-color: rgba(0, 61, 128, 0.95);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        background-color: rgba(26, 32, 44, 0.95); /* Darker on hover */
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
     /* Hero Section */
     .hero {
       position: relative;
       width: 100%;
-      min-height: 60vh; /* Use min-height for flexibility */
+      min-height: auto; /* Let content define height */
       height: auto;
-      background: url('bg.jpg') center/cover no-repeat;
-      background-attachment: fixed;
+      background: #1a202c; /* Dark solid background for formality */
+      /* background: url('bg.jpg') center/cover no-repeat; */
+      /* background-attachment: fixed; */
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      margin: 0 auto; /* Keep margin 0 */
+      margin: 0 auto;
       border-radius: 0;
       box-shadow: none;
       max-width: none;
-      padding: 50px 20px; /* Add some padding */
+      padding: 40px 20px; /* Reduced padding */
       border: none;
     }
-    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 20, 30, 0.75); } /* Slightly darker overlay */
-    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; margin-top: 0; /* Remove fixed top margin */ }
+    .overlay { display: none; } /* Remove overlay if using solid background */
+    .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 10px; margin-top: 0; max-width: 880px; /* Limit width */ }
     .profile-img {
-      width: 210px; /* Larger */
-      height: 210px; /* Larger */
+      width: 180px; /* Slightly smaller than last increase, balance */
+      height: 180px;
       border-radius: 50%;
-      border: 7px solid rgba(255, 255, 255, 0.85); /* Thicker border */
+      border: 6px solid #4a5568; /* Grey border */
       object-fit: cover;
-      margin-bottom: 20px; /* Reduced margin */
+      margin-bottom: 15px; /* Reduced margin */
     }
-    .name { font-size: 3rem; margin: 0 0 10px 0; font-weight: 700; }
-    .title { font-size: 1.3rem; margin: 0 0 10px 0; font-weight: 400; } /* Reduced margins */
-    .university { font-size: 1.1rem; margin: 0 0 20px 0; font-weight: 400; color: #eee; } /* School name style */
+    .name { font-size: 2.5rem; margin: 0 0 8px 0; font-weight: 700; color: #fff;} /* White name */
+    .title { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 400; color: #a0aec0; } /* Lighter grey */
+    .university { font-size: 1.05rem; margin: 0 0 15px 0; font-weight: 400; color: #718096; } /* Darker grey */
     .contact-links a {
-        color: #fff;
+        color: #a0aec0;
         margin: 0 8px;
-        font-size: 1rem;
+        font-size: 0.95rem;
         transition: color 0.3s ease;
     }
     .contact-links a:hover {
-        color: #ccc;
+        color: #fff;
         text-decoration: none;
     }
 
     /* Projects Section */
-    #projects ul {
+    #projects ul,
+    #education ul ul,
+    #organizations ul {
         list-style: none;
         padding-left: 0;
     }
-    #projects > ul > li {
-        background-color: #f9fafb; /* Lighter background */
-        border: 1px solid #e5e7eb;
-        border-left: 4px solid #0056b3;
-        padding: 20px 25px; /* Reduced padding */
-        margin-bottom: 20px; /* Reduced space */
-        border-radius: 5px;
-        transition: box-shadow 0.3s ease;
+     #projects > ul > li,
+     #education > ul > li,
+     #organizations > ul > li {
+        background-color: #fdfdfe; /* Slightly different background */
+        border: 1px solid #edf2f7;
+        border-left: 3px solid #4a5568; /* Grey accent */
+        padding: 15px 20px; /* Reduced padding */
+        margin-bottom: 15px; /* Reduced space */
+        border-radius: 4px;
+        transition: box-shadow 0.2s ease;
     }
-     #projects > ul > li:hover {
-        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+     #projects > ul > li:hover,
+     #education > ul > li:hover,
+     #organizations > ul > li:hover {
+        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
     }
-    #projects ul ul {
-       padding-left: 18px;
-       margin-top: 8px;
+    #projects ul ul,
+    #education ul ul ul {
+       padding-left: 15px;
+       margin-top: 6px;
        list-style: disc;
-       font-size: 0.92rem; /* Slightly smaller */
+       font-size: 0.9rem;
+       color: #4a5568; /* Grey for details */
     }
-     #projects ul ul li {
-        margin-bottom: 6px;
+     #projects ul ul li,
+     #education ul ul li,
+     #education ul ul ul li {
+        margin-bottom: 5px;
+        line-height: 1.5;
      }
-     #projects strong {
-        font-weight: 700;
-        color: #111827; /* Darker text for strong */
+     #projects strong,
+     #education strong {
+        font-weight: 500; /* Less emphasis */
+        color: #2d3748;
      }
      #projects .skills-label,
      #projects .desc-label {
-         display: block; /* Make labels block */
-         margin-bottom: 4px;
-         font-weight: 500;
-         color: #374151;
+         display: inline; /* Inline labels */
+         margin-bottom: 0;
+         font-weight: 700; /* Bolder labels */
+         color: #4a5568;
+         margin-right: 5px;
      }
 
     /* Skills Section */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; } /* Reduced gap */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; } /* Reduced gap */
     .skills-grid h3 {
-        font-size: 1.25rem;
-        margin-bottom: 12px;
-        color: #0056b3;
-        border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 8px;
-        font-weight: 500;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #2b6cb0;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 6px;
+        font-weight: 700;
     }
     .skills-grid ul { padding-left: 0; list-style: none; }
-    .skills-grid li { margin-bottom: 6px; }
+    .skills-grid li { margin-bottom: 5px; line-height: 1.5;}
     .skills-grid > div {
-        background-color: #f9fafb;
-        padding: 18px; /* Reduced padding */
-        border-radius: 5px;
-        border: 1px solid #e5e7eb;
+        background-color: #fdfdfe;
+        padding: 15px; /* Reduced padding */
+        border-radius: 4px;
+        border: 1px solid #edf2f7;
     }
 
     /* Footer */
-    footer { text-align: center; padding: 25px 0; color: #555; margin-top: 40px; background-color: #e4e8f0; border-top: 1px solid #c8cdd5; } /* Adjusted colors */
+    footer { text-align: center; padding: 20px 0; color: #4a5568; margin-top: 30px; background-color: #e2e8f0; border-top: 1px solid #cbd5e0; font-size: 0.9rem;} /* Adjusted colors */
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        section {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: 10px; /* Add small margin to prevent touching edge */
+            margin-right: 10px;
+            width: auto; /* Allow shrinking */
+            max-width: none; /* Remove max-width on small screens */
+        }
+        .hero {
+             padding-top: 60px; /* Add padding to account for floating button */
+             padding-bottom: 30px;
+        }
+        .hero-content {
+            padding: 5px;
+        }
+        h2 { font-size: 1.6rem; margin-bottom: 15px; padding-bottom: 8px;}
+        h3 { font-size: 1.3rem; margin-top: 15px; margin-bottom: 8px;}
+        h4 { font-size: 1.1rem; margin-top: 12px; margin-bottom: 6px;}
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-width: 4px;
+        }
+        .name { font-size: 2rem; }
+        .title { font-size: 1.1rem; }
+        .university { font-size: 0.95rem; }
+        .skills-grid { grid-template-columns: 1fr; } /* Stack skills on mobile */
+    }
+
   </style>
 </head>
 <body class="lang-en">
@@ -243,8 +301,8 @@
     <h2 class="lang-zh-TW">研究與實務經驗</h2>
     <ul>
         <li>
-            <h4 class="lang-en">Lab of Medical Imaging (Advisor: Prof. Teng-Yi Huang)</h4>
-            <h4 class="lang-zh-TW">醫學影像實驗室 (指導教授：黃騰毅 教授)</h4>
+            <h4 class="lang-en">Lab of Medical Imaging (Advisor: <a href="https://ai.mrilab.org/" target="_blank">Prof. Teng-Yi Huang</a>)</h4>
+            <h4 class="lang-zh-TW">醫學影像實驗室 (指導教授：<a href="https://ai.mrilab.org/" target="_blank">黃騰毅 教授</a>)</h4>
             <ul>
                 <li>
                     <strong class="lang-en">Predicting potential rare diseases using medical imaging and clinical records</strong>
@@ -259,8 +317,8 @@
             </ul>
         </li>
         <li>
-            <h4 class="lang-en">Lab of Brain Signal Processing (Advisor: Prof. Hsing-Kuo Pao)</h4>
-            <h4 class="lang-zh-TW">腦波訊號處理實驗室 (指導教授：鮑興國 教授)</h4>
+            <h4 class="lang-en">Lab of Brain Signal Processing (Advisor: <a href="https://www.csie.ntust.edu.tw/p/16-1038-23641.php?Lang=zh-tw" target="_blank">Prof. Hsing-Kuo Pao</a>)</h4>
+            <h4 class="lang-zh-TW">腦波訊號處理實驗室 (指導教授：<a href="https://www.csie.ntust.edu.tw/p/16-1038-23641.php?Lang=zh-tw" target="_blank">鮑興國 教授</a>)</h4>
              <ul>
                 <li>
                     <strong class="lang-en">Integrating NDCT and physical models for realistic LDCT prediction</strong>
