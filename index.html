@@ -415,6 +415,40 @@
          }
     }
 
+    /* Coursework Section */
+    .coursework-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px; /* Adjust gap as needed */
+        margin-top: 5px;
+    }
+    .course-column h3 {
+        font-size: 1.05rem;
+        margin-bottom: 5px;
+        color: #2b6cb0;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 3px;
+        font-weight: 700;
+        margin-top: 0;
+    }
+    .course-column ul {
+        padding-left: 0;
+        list-style: none;
+        margin-top: 3px;
+    }
+    .course-column li {
+        margin-bottom: 2px;
+        font-size: 0.88rem; /* Adjust font size */
+        line-height: 1.4;
+    }
+    /* Remove the rule that forced both lang spans to display */
+    /*
+    .course-column li .lang-en,
+    .course-column li .lang-zh-TW {
+        display: inline;
+    }
+    */
+
   </style>
 </head>
 <body class="lang-en">
@@ -461,7 +495,7 @@
                 <li><span class="lang-en">B.S. Electrical Engineering (Major)</span><span class="lang-zh-TW">電機工程學士 (主修)</span> <span class="lang-en">2022 – Present</span><span class="lang-zh-TW">2022 – 至今</span></li>
                 <li><span class="lang-en">Computer Science (Double Major)</span><span class="lang-zh-TW">資訊工程 (雙主修)</span> <span class="lang-en">2023 – Present</span><span class="lang-zh-TW">2023 – 至今</span></li>
                 <li><span class="lang-en">Biomedical Engineering (Minor)</span><span class="lang-zh-TW">醫學工程 (輔系)</span> <span class="lang-en">2024 – Present</span><span class="lang-zh-TW">2024 – 至今</span></li>
-                <li><span class="lang-en">International Program in Advanced Information Systems (Studying)</span><span class="lang-zh-TW">國際資通系統學 (修習)</span> <span class="lang-en">2024 – Present</span><span class="lang-zh-TW">2024 – 至今</span></li>
+                <li><span class="lang-en">International Program in Advanced Information Systems (Studying)</span><span class="lang-zh-TW">國際資通學程 (修習)</span> <span class="lang-en">2024 – Present</span><span class="lang-zh-TW">2024 – 至今</span></li>
                 <li><span class="lang-en">Overall GPA: 3.73 / 4.3</span><span class="lang-zh-TW">GPA 總成績：3.73 / 4.3</span></li>
             </ul>
         </li>
@@ -680,6 +714,62 @@
           <li><span class="lang-en">Coding</span><span class="lang-zh-TW">程式設計</span></li>
           <li><span class="lang-en">DIY electronics</span><span class="lang-zh-TW">電子 DIY</span></li>
           <li><span class="lang-en">Travel</span><span class="lang-zh-TW">旅行</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="coursework">
+    <h2 class="lang-en">Relevant Coursework</h2>
+    <h2 class="lang-zh-TW">相關課程</h2>
+    <div class="coursework-grid">
+      <div class="course-column ee-courses">
+        <h3 class="lang-en">Electrical Engineering & Common</h3>
+        <h3 class="lang-zh-TW">電機工程 & 共通</h3>
+        <ul>
+            <li><span class="lang-en">Calculus (I) & (II)</span><span class="lang-zh-TW">微積分 (一) & (二)</span></li>
+            <li><span class="lang-en">Linear Algebra</span><span class="lang-zh-TW">線性代數</span></li>
+            <li><span class="lang-en">Introduction to Computers and Computing</span><span class="lang-zh-TW">計算機概論</span></li>
+            <li><span class="lang-en">Physics (I) & (II)</span><span class="lang-zh-TW">物理 (一) & (二)</span></li>
+            <li><span class="lang-en">Differential Equations</span><span class="lang-zh-TW">微分方程</span></li>
+            <li><span class="lang-en">Probability</span><span class="lang-zh-TW">機率</span></li>
+            <li><span class="lang-en">Signals and Systems</span><span class="lang-zh-TW">信號與系統</span></li>
+            <li><span class="lang-en">Circuit Theory (I) & (II)</span><span class="lang-zh-TW">電路學 (一) & (二)</span></li>
+            <li><span class="lang-en">Electronics</span><span class="lang-zh-TW">電子學</span></li>
+            <li><span class="lang-en">Electronic Circuits</span><span class="lang-zh-TW">電子電路</span></li>
+            <li><span class="lang-en">Electronics Laboratory</span><span class="lang-zh-TW">電子學實習</span></li>
+            <li><span class="lang-en">Electronics Lab.</span><span class="lang-zh-TW">電子電路實習</span></li>
+            <li><span class="lang-en">Electromagnetics</span><span class="lang-zh-TW">電磁學</span></li>
+            <li><span class="lang-en">Digital Logic Design</span><span class="lang-zh-TW">數位邏輯設計</span></li>
+            <li><span class="lang-en">Introduction to Microcomputer</span><span class="lang-zh-TW">微算機概論</span></li>
+            <li><span class="lang-en">Microcomputer Lab.</span><span class="lang-zh-TW">微算機概論實習</span></li>
+            <li><span class="lang-en">Microcomputer Applications</span><span class="lang-zh-TW">微算機應用</span></li>
+            <li><span class="lang-en">Introduction to VLSI Designs</span><span class="lang-zh-TW">超大型積體電路設計導論</span></li>
+            <li><span class="lang-en">Practice Sessions for VLSI Circuit Design</span><span class="lang-zh-TW">超大型積體電路設計實習</span></li>
+            <li><span class="lang-en">Software Development for Electronic Design Automation</span><span class="lang-zh-TW">電子設計自動化軟體開發與實作</span></li>
+            <li><span class="lang-en">Electric Machinery Lab.</span><span class="lang-zh-TW">電機機械實習</span></li>
+            <li><span class="lang-en">Electrical Engineering Special Projects (I)</span><span class="lang-zh-TW">電機實務專題(上)</span></li>
+            <li><span class="lang-en">Introduction to Electrical Engineering and Computer Science and Engineering Ethics</span><span class="lang-zh-TW">電資概論與工程倫理</span></li>
+        </ul>
+      </div>
+      <div class="course-column cs-courses">
+        <h3 class="lang-en">Computer Science</h3>
+        <h3 class="lang-zh-TW">資訊工程</h3>
+        <ul>
+            <li><span class="lang-en">Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用</span></li>
+            <li><span class="lang-en">Practices of Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用實習</span></li>
+            <li><span class="lang-en">Discrete Mathematics</span><span class="lang-zh-TW">離散數學</span></li>
+            <li><span class="lang-en">Data Structures</span><span class="lang-zh-TW">資料結構</span></li>
+            <li><span class="lang-en">Object-oriented Programming</span><span class="lang-zh-TW">物件導向程式設計</span></li>
+            <li><span class="lang-en">Lab for Object Oriented Programming</span><span class="lang-zh-TW">物件導向程式設計實習</span></li>
+            <li><span class="lang-en">Digital System Design</span><span class="lang-zh-TW">數位系統設計</span></li>
+            <li><span class="lang-en">Computer Organization</span><span class="lang-zh-TW">計算機組織</span></li>
+            <li><span class="lang-en">Operating Systems</span><span class="lang-zh-TW">作業系統</span></li>
+            <li><span class="lang-en">Introduction to Computer Networks</span><span class="lang-zh-TW">計算機網路概論</span></li>
+            <li><span class="lang-en">Algorithms</span><span class="lang-zh-TW">演算法</span></li>
+            <li><span class="lang-en">Database Systems</span><span class="lang-zh-TW">資料庫系統</span></li>
+            <li><span class="lang-en">.NET Programming</span><span class="lang-zh-TW">.NET 程式設計</span></li>
+            <li><span class="lang-en">Special Projects in Computer Science and Information Engineering (I)</span><span class="lang-zh-TW">資工實務專題(上)</span></li>
         </ul>
       </div>
     </div>
