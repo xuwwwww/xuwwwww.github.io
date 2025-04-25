@@ -98,19 +98,20 @@
         bottom: 20px;
         right: 20px;
         z-index: 1000;
-        padding: 12px 20px; /* Increased vertical padding */
-        font-size: 0.95rem;
-        background-color: rgba(45, 55, 72, 0.85);
+        padding: 14px 22px; /* Increased padding further */
+        font-size: 1rem; /* Increased font size */
+        background-color: rgba(45, 55, 72, 0.9); /* Slightly less transparent */
         color: white;
         border: none;
-        border-radius: 25px;
+        border-radius: 30px; /* Adjusted for new padding */
         cursor: pointer;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Added transform transition */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.35); /* Enhanced shadow */
     }
      #lang-switch:hover {
-        background-color: rgba(26, 32, 44, 0.95);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+        background-color: rgba(26, 32, 44, 1); /* Opaque on hover */
+        box-shadow: 0 6px 15px rgba(0,0,0,0.4); /* Stronger hover shadow */
+        transform: scale(1.03); /* Slight scale up on hover */
     }
 
     /* Hero Section */
