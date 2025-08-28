@@ -163,12 +163,14 @@ body.page-lang-switching {
 }
 .hero-content { position: relative; z-index: 1; color: #e2e8f0; padding: 8px; margin-top: 0; max-width: 880px; }
 .profile-img {
-  width: 350px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 4px solid rgba(255, 255, 255, 0.8);
   object-fit: cover;
+  margin-top: 60px;
   margin-bottom: 10px;
+  object-position: center top;
 }
 .name { font-size: 2rem; margin: 0 0 5px 0; font-weight: 700; color: #fff;}
 .title { font-size: 1.05rem; margin: 0 0 5px 0; font-weight: 400; color: #a0aec0; }
