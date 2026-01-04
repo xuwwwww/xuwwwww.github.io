@@ -87,6 +87,74 @@ h4 a:hover {
 ul { padding-left: 18px; list-style: square; margin-top: 2px; margin-bottom: 6px;}
 li { margin-bottom: 3px; }
 
+/* Right-aligned time ranges (Experience / Research) */
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.item-row h4 { margin: 0; }
+.item-row .item-left { flex: 1 1 auto; }
+.item-row .item-right {
+  flex: 0 0 auto;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+.time-range {
+  color: #4a5568;
+  font-weight: 500;
+}
+
+/* Copy tooltip (Email) */
+.copy-trigger {
+  position: relative;
+}
+.copy-trigger::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%) translateY(2px);
+  background: rgba(26, 32, 44, 0.95);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  z-index: 1001;
+}
+.copy-trigger::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(26, 32, 44, 0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 1001;
+}
+.copy-trigger:hover::after,
+.copy-trigger:hover::before,
+.copy-trigger.show-tooltip::after,
+.copy-trigger.show-tooltip::before {
+  opacity: 1;
+}
+.copy-trigger:hover::after,
+.copy-trigger.show-tooltip::after {
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Language Switch Button */
 #lang-switch {
   position: fixed;
