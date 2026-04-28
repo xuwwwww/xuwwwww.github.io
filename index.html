@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title class="lang-en">DingXu Wu's Personal Profile</title>
-  <title class="lang-zh-TW">吳定栩的個人介紹</title>
+  <meta name="description" content="Louis Wu — CSIE & EE Double Major at NTUST. Research in AI/ML, AutoML, NLP, Generative Models, and Systems Performance.">
+  <title class="lang-en">Louis Wu — Portfolio</title>
+  <title class="lang-zh-TW">Louis 吳定栩 — 個人作品集</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Z41G18VKJ"></script>
   <script>
@@ -18,473 +20,883 @@
     gtag('js', new Date());
     gtag('config', 'G-3Z41G18VKJ');
   </script>
-  
 </head>
 <body class="lang-en">
 
-  <!-- Language Switch Button -->
-  <button id="lang-switch">中文</button>
+  <!-- Top Navigation -->
+  <header class="topbar" id="topbar">
+    <a href="#top" class="brand" aria-label="Home">
+      <span class="brand-name lang-en">Louis Wu</span>
+      <span class="brand-name lang-zh-TW">Louis 吳定栩</span>
+    </a>
 
-  <section class="hero">
-    <div class="overlay"></div>
-    <div class="hero-content">
-      <img src="head.jpg" alt="Profile Picture" class="profile-img lang-en">
-      <img src="head.jpg" alt="頭貼" class="profile-img lang-zh-TW">
-      <h1 class="name lang-en">DingXu Wu</h1>
-      <h1 class="name lang-zh-TW">吳定栩</h1>
-      <p class="title lang-en">Double Major: Computer Science (CSIE) &amp; Electrical Engineering (EE) | Minor: Biomedical Engineering (BE)</p>
-      <p class="title lang-zh-TW">雙主修：資訊工程 (CSIE) &amp; 電機工程 (EE)｜輔系：醫學工程 (BE)</p>
-      <p class="university lang-en">National Taiwan University of Science and Technology (NTUST)</p>
-      <p class="university lang-zh-TW">國立臺灣科技大學 (NTUST)</p>
-      <!-- Add contact links if available -->
-      <div class="contact-links">
-         <!-- Example: <a href="mailto:your.email@example.com">Email</a> | <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a> -->
-         <a
-           href="mailto:louis20030920@gmail.com"
-           class="copy-trigger"
-           data-copy="louis20030920@gmail.com"
-           data-tooltip=""
-           data-tooltip-en="Click to copy"
-           data-tooltip-zh="點擊複製"
-           data-copied-en="Copied!"
-           data-copied-zh="已複製"
-         >Email</a>
-         <a href="https://github.com/xuwwwww" target="_blank">GitHub</a>
-         <a href="https://www.linkedin.com/in/louis-wu-65ba6b270/" target="_blank">LinkedIn</a>
-         <span class="lang-en"> | <a href="https://docs.google.com/document/d/1MU_EbtH3T133A3q9CaFVi6bjxQ0kKRjqTmIGflqHGhM/edit?usp=sharing" target="_blank">View Full Resume</a></span>
-         <span class="lang-zh-TW"> | <a href="https://docs.google.com/document/d/1CYCANvcSnsITBPxU5arizEzWAqh5agCYAlxcmhWZfHo/edit?usp=sharing" target="_blank">檢視完整履歷</a></span>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#about"><span class="lang-en">About</span><span class="lang-zh-TW">關於</span></a>
+      <a href="#experience"><span class="lang-en">Experience</span><span class="lang-zh-TW">經歷</span></a>
+      <a href="#projects"><span class="lang-en">Projects</span><span class="lang-zh-TW">專案</span></a>
+      <a href="#awards"><span class="lang-en">Awards</span><span class="lang-zh-TW">獲獎</span></a>
+      <a href="#skills"><span class="lang-en">Skills</span><span class="lang-zh-TW">技能</span></a>
+      <a href="#coursework"><span class="lang-en">Courses</span><span class="lang-zh-TW">課程</span></a>
+    </nav>
+
+    <div class="topbar-actions">
+      <button id="lang-switch" type="button" aria-label="Switch language">
+        <span id="lang-switch-label">中文</span>
+      </button>
+      <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero reveal">
+      <div class="hero-grid">
+        <div class="hero-photo-wrap" id="hero-photo-trigger" tabindex="0" aria-label="Profile photo easter egg trigger">
+          <img src="head.jpg" alt="Louis Wu" class="hero-photo">
+          <div class="hero-photo-glow" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero-content">
+          <h1 class="hero-name">
+            <span class="lang-en">Louis Wu</span>
+            <span class="lang-zh-TW">Louis 吳定栩</span>
+          </h1>
+          <p class="hero-tagline">
+            <span class="lang-en">Double Major in CSIE and EE · Biomedical Engineering Minor</span>
+            <span class="lang-zh-TW">雙主修資工與電機 · 輔系醫工</span>
+          </p>
+          <p class="hero-school">
+            <span class="school-line lang-en"><span class="school-logo-frame"><img class="school-logo" src="logo-ntust-official.png" alt="NTUST logo" loading="lazy"></span>National Taiwan University of Science and Technology</span>
+            <span class="school-line lang-zh-TW"><span class="school-logo-frame"><img class="school-logo" src="logo-ntust-official.png" alt="國立臺灣科技大學校徽" loading="lazy"></span>國立臺灣科技大學 (NTUST)</span>
+          </p>
+          <p class="hero-bio">
+            <span class="lang-en">I work across AI research, AutoML, quantitative signal exploration, and systems performance. Recent work spans WorldQuant research, radiomics transfer learning, server performance engineering at AMD, and medical AI research at NTUST.</span>
+            <span class="lang-zh-TW">我橫跨 AI 研究、AutoML、量化訊號探索與系統效能。近期經驗包含 WorldQuant 研究、放射組學遷移學習、AMD 伺服器效能優化，以及 NTUST 醫療 AI 研究。</span>
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary lang-en" href="resume_DingXu_2026_May.pdf" target="_blank" rel="noopener">Resume</a>
+            <a class="btn btn-primary lang-zh-TW" href="resume_DingXu_2026_May.pdf" target="_blank" rel="noopener">履歷</a>
+
+            <a class="btn btn-ghost copy-trigger"
+               href="mailto:louis20030920@gmail.com"
+               data-copy="louis20030920@gmail.com"
+               data-tooltip=""
+               data-tooltip-en="Click to copy"
+               data-tooltip-zh="點擊複製"
+               data-copied-en="Copied!"
+               data-copied-zh="已複製">
+              Email
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/xuwwwww" target="_blank" rel="noopener">
+              GitHub
+            </a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/louis-wu-65ba6b270/" target="_blank" rel="noopener">
+              LinkedIn
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="about">
-      <h2 class="lang-en">About Me</h2>
-      <h2 class="lang-zh-TW">自我簡介</h2>
-      <p class="lang-en">I am a student at National Taiwan University of Science and Technology (NTUST), double majoring in Computer Science (CSIE) and Electrical Engineering (EE), with a minor in Biomedical Engineering (BE). My recent work spans server system performance optimization and research in AI/ML (NLP, generative models).</p>
-      <p class="lang-zh-TW">目前就讀於國立臺灣科技大學 (NTUST)，雙主修資訊工程 (CSIE) 與電機工程 (EE)，輔系醫學工程 (BE)。近期經驗包含伺服器系統效能優化，以及 AI/ML（NLP、生成式模型）相關研究。</p>
-  </section>
+    <!-- About -->
+    <section id="about" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <h2 class="section-title">
+          <span class="lang-en">About Me</span>
+          <span class="lang-zh-TW">自我簡介</span>
+        </h2>
+      </div>
+      <p class="lang-en">I am a student at National Taiwan University of Science and Technology (NTUST), double majoring in Computer Science (CSIE) and Electrical Engineering (EE), with a minor in Biomedical Engineering (BE). My recent work spans quantitative alpha research, AutoML for radiomics transfer, server performance optimization, and medical AI research.</p>
+      <p class="lang-zh-TW">目前就讀於國立臺灣科技大學 (NTUST)，雙主修資訊工程 (CSIE) 與電機工程 (EE)，輔系醫學工程 (BE)。近期經驗包含量化 alpha 研究、放射組學 AutoML 遷移、伺服器系統效能優化，以及醫療 AI 研究。</p>
 
-  <section id="education">
-    <h2 class="lang-en">Education</h2>
-    <h2 class="lang-zh-TW">學歷</h2>
-    <ul>
-        <li>
-            <strong class="lang-en">National Taiwan University of Science and Technology (NTUST), Taipei, Taiwan</strong>
-            <strong class="lang-zh-TW">國立臺灣科技大學 (NTUST)，台北，臺灣</strong>
-            <ul>
-                <li><span class="lang-en">Double Major: Computer Science (CSIE) &amp; Electrical Engineering (EE)</span><span class="lang-zh-TW">雙主修：資訊工程 (CSIE) &amp; 電機工程 (EE)</span></li>
-                <li><span class="lang-en">Minor: Biomedical Engineering (BE)</span><span class="lang-zh-TW">輔系：醫學工程 (BE)</span></li>
-                <li><span class="lang-en">Expected Graduation: Jul 2027</span><span class="lang-zh-TW">預計畢業：2027 年 7 月</span></li>
-            </ul>
-        </li>
-    </ul>
-  </section>
+      <div class="quick-facts">
+        <div class="fact">
+          <span class="fact-label lang-en">Education</span>
+          <span class="fact-label lang-zh-TW">學歷</span>
+          <span class="fact-value lang-en">NTUST · CSIE + EE · BE Minor</span>
+          <span class="fact-value lang-zh-TW">NTUST · 資工 + 電機 · 輔系醫工</span>
+          <span class="fact-sub lang-en">Expected Jul 2027</span>
+          <span class="fact-sub lang-zh-TW">預計 2027 年 7 月畢業</span>
+        </div>
+        <div class="fact">
+          <span class="fact-label lang-en">Current Work</span>
+          <span class="fact-label lang-zh-TW">目前工作</span>
+          <span class="fact-value lang-en">WorldQuant · Feng Chia RA</span>
+          <span class="fact-value lang-zh-TW">WorldQuant · 逢甲研究助理</span>
+          <span class="fact-sub lang-en">Quant signals & AutoML pipeline</span>
+          <span class="fact-sub lang-zh-TW">量化訊號與 AutoML Pipeline</span>
+        </div>
+        <div class="fact">
+          <span class="fact-label lang-en">Research</span>
+          <span class="fact-label lang-zh-TW">研究</span>
+          <span class="fact-value lang-en">Generative AI · Clinical NLP</span>
+          <span class="fact-value lang-zh-TW">生成式 AI · 臨床 NLP</span>
+          <span class="fact-sub lang-en">Medical imaging and retrieval</span>
+          <span class="fact-sub lang-zh-TW">醫學影像與臨床檢索</span>
+        </div>
+      </div>
+    </section>
 
-  <section id="experience">
-    <h2 class="lang-en">Work Experience</h2>
-    <h2 class="lang-zh-TW">工作經驗</h2>
-    <ul>
-        <li>
-            <h4 class="lang-en">Server System Performance Optimization Intern</h4>
-            <h4 class="lang-zh-TW">Server System Performance Optimization Intern</h4>
-            <div class="item-row">
-              <div class="item-left">
-                <strong class="lang-en">AMD (Advanced Micro Devices, Inc.), Taipei, Taiwan</strong>
-                <strong class="lang-zh-TW">AMD (超微半導體股份有限公司)，台北，臺灣</strong>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">Jul 2025 – Dec 2025</span>
-                <span class="time-range lang-zh-TW">2025年7月 – 2025年12月</span>
-              </div>
-            </div>
-            <ul>
-                <li><span class="lang-en">Analyzed and resolved server performance issues for enterprise customers.</span>
-                    <span class="lang-zh-TW">分析並解決企業客戶的伺服器效能問題。</span></li>
-                <li><span class="lang-en">Conducted performance benchmarking and system profiling to evaluate CPU, memory, and I/O efficiency.</span>
-                    <span class="lang-zh-TW">進行效能基準測試與系統剖析，評估 CPU、記憶體與 I/O 效率。</span></li>
-                <li><span class="lang-en">Developed automation tools to streamline testing and analysis workflows.</span>
-                    <span class="lang-zh-TW">開發自動化工具，簡化測試與分析流程。</span></li>
-            </ul>
-        </li>
-    </ul>
-  </section>
+    <!-- Experience -->
+    <section id="experience" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <h2 class="section-title">
+          <span class="lang-en">Work Experience</span>
+          <span class="lang-zh-TW">工作經驗</span>
+        </h2>
+      </div>
 
-  <section id="projects">
-    <h2 class="lang-en">Research & Field Experience</h2>
-    <h2 class="lang-zh-TW">研究與實務經驗</h2>
-    <ul>
-        <li>
-            <h4 class="lang-en">Lab of AI &amp; Computer Vision, NTUST</h4>
-            <h4 class="lang-zh-TW">AI 與電腦視覺實驗室（NTUST）</h4>
-            <ul>
-                <li>
-                    <div class="item-row">
-                      <div class="item-left">
-                        <strong class="lang-en">Undergraduate Researcher (Topic: Generative AI &amp; Denoising)</strong>
-                        <strong class="lang-zh-TW">大學部研究（主題：生成式 AI &amp; 去雜訊）</strong>
-                      </div>
-                      <div class="item-right">
-                        <span class="time-range lang-en">2024 – Present</span>
-                        <span class="time-range lang-zh-TW">2024年 – 至今</span>
-                      </div>
-                    </div>
-                    <ul>
-                        <li><span class="lang-en">Designed the MoE-DUGAN framework extending Dual-Discriminator GANs for Low-Dose CT (LDCT) denoising.</span>
-                            <span class="lang-zh-TW">設計 MoE-DUGAN 架構，延伸 Dual-Discriminator GANs，用於低劑量電腦斷層（LDCT）去雜訊。</span></li>
-                        <li><span class="lang-en">Implemented a “Noise Expert” module (Mixture of Experts) to adjust adversarial loss weights across multi-modal data (CT/MRI/Ultrasound).</span>
-                            <span class="lang-zh-TW">實作「Noise Expert」模組（Mixture of Experts），在多模態資料（CT/MRI/超音波）中調整對抗式 loss 權重以改善去雜訊效果。</span></li>
-                        <li><span class="lang-en"><strong class="skills-label">Tech Stack:</strong> PyTorch, Residual Denoising, DDPM (Diffusion Models), Probability Simulation, Machine Learning</span>
-                            <span class="lang-zh-TW"><strong class="skills-label">技術:</strong> PyTorch、Residual Denoising、DDPM（擴散模型）、機率模擬、機器學習</span></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <h4 class="lang-en">Lab of Medical Imaging, NTUST</h4>
-            <h4 class="lang-zh-TW">醫學影像實驗室（NTUST）</h4>
-             <ul>
-                <li>
-                    <div class="item-row">
-                      <div class="item-left">
-                        <strong class="lang-en">Undergraduate Researcher (Topic: NLP &amp; LLM)</strong>
-                        <strong class="lang-zh-TW">大學部研究（主題：NLP &amp; LLM）</strong>
-                      </div>
-                      <div class="item-right">
-                        <span class="time-range lang-en">2023 – Present</span>
-                        <span class="time-range lang-zh-TW">2023年 – 至今</span>
-                      </div>
-                    </div>
-                     <ul>
-                        <li><span class="lang-en">Built a hybrid LLM-guided retrieval system for clinical narratives using a chunked BioBERT retriever with sparse cross-chunk aggregation.</span>
-                            <span class="lang-zh-TW">建置長篇臨床敘述的混合式 LLM 導引檢索系統：以分段 BioBERT 檢索器搭配稀疏跨片段聚合。</span></li>
-                        <li><span class="lang-en">Improved the RAG pipeline by applying LLM-based equivalence judging for diagnosis re-ranking, enhancing search precision.</span>
-                            <span class="lang-zh-TW">以 LLM 等價判定器進行診斷重排序，改善 RAG 檢索精度。</span></li>
-                        <li><span class="lang-en"><strong>Conference Presentation:</strong> Oral &amp; Poster at the 2025 IPAS Conference (NTUST &amp; Yonsei University).</span>
-                            <span class="lang-zh-TW"><strong>會議發表：</strong>2025 IPAS Conference（國立臺灣科技大學 &amp; 延世大學）口頭與海報發表。</span></li>
-                        <li><span class="lang-en"><strong class="skills-label">Tech Stack:</strong> PyTorch, Hugging Face Transformers, RAG, LoRA, NLP, Machine Learning</span>
-                            <span class="lang-zh-TW"><strong class="skills-label">技術:</strong> PyTorch、Hugging Face Transformers、RAG、LoRA、NLP、機器學習</span></li>
-                     </ul>
-                </li>
-            </ul>
-        </li>
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">EMG Signal Prediction</h4>
-                <h4 class="lang-zh-TW">EMG 訊號預測</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2025</span>
-                <span class="time-range lang-zh-TW">2025</span>
-              </div>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-head">
+              <h3>
+                <span class="lang-en">Consultant</span>
+                <span class="lang-zh-TW">顧問</span>
+              </h3>
+              <span class="time-range">Apr 2026 – Now</span>
             </div>
-             <ul>
-                <li><span class="lang-en">Low-latency EMG signal processing for grasp strength estimation using spectrograms, 2D CNN sliding window + GRU, and MediaPipe integration.</span>
-                    <span class="lang-zh-TW">EMG 訊號處理，透過轉換為頻譜圖做 2D CNN sliding window + GRU 結合，也結合mediapipe做運算，做到低延遲EMG訊號提取手臂抓握力道判斷</span></li>
+            <p class="org">
+              <span class="company-line lang-en"><span class="company-logo-frame company-logo-frame-worldquant-square"><img class="company-logo" src="logo-worldquant.png" alt="WorldQuant logo" loading="lazy"></span>WorldQuant · Remote</span>
+              <span class="company-line lang-zh-TW"><span class="company-logo-frame company-logo-frame-worldquant-square"><img class="company-logo" src="logo-worldquant.png" alt="WorldQuant logo" loading="lazy"></span>WorldQuant · 遠端</span>
+            </p>
+            <ul class="bullets">
+              <li><span class="lang-en">Explored alpha signals on WorldQuant's platform, focusing on factor-based ideas for systematic trading.</span><span class="lang-zh-TW">於 WorldQuant 平台探索 alpha 訊號，聚焦系統化交易中的因子式想法。</span></li>
             </ul>
+          </div>
         </li>
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">Optimized Model for Brain Tumor Segmentation</h4>
-                <h4 class="lang-zh-TW">腦瘤分割最佳化模型</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2024</span>
-                <span class="time-range lang-zh-TW">2024</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Customized dataset & data loader applied to Unet brain tumor segmentation</span>
-                    <span class="lang-zh-TW">自訂資料集與 data loader 應用於 Unet 腦瘤分割</span></li>
-            </ul>
-        </li>
-    </ul>
 
-    <!-- Minor Projects Section -->
-    <h3 class="lang-en">Additional Projects</h3>
-    <h3 class="lang-zh-TW">其他專案</h3>
-    <div class="minor-projects-grid">
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">Brain-Computer Interface Research Group</h4>
-                <h4 class="lang-zh-TW">腦機介面研究小組</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2024</span>
-                <span class="time-range lang-zh-TW">2024</span>
-              </div>
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-head">
+              <h3>
+                <span class="lang-en">Research Assistant (AutoML Pipeline)</span>
+                <span class="lang-zh-TW">研究助理（AutoML Pipeline）</span>
+              </h3>
+              <span class="time-range">Feb 2026 – Now</span>
             </div>
-             <ul>
-                <li><span class="lang-en">EEG Reading Group and Literature Sharing</span>
-                    <span class="lang-zh-TW">EEG 讀書會與文獻分享</span></li>
+            <p class="org">
+              <span class="company-line lang-en"><span class="company-logo-frame company-logo-frame-crest"><img class="company-logo" src="logo-fcu.png" alt="Feng Chia University logo" loading="lazy"></span>Feng Chia University · Remote</span>
+              <span class="company-line lang-zh-TW"><span class="company-logo-frame company-logo-frame-crest"><img class="company-logo" src="logo-fcu.png" alt="Feng Chia University logo" loading="lazy"></span>逢甲大學 · 遠端</span>
+            </p>
+            <ul class="bullets">
+              <li><span class="lang-en">Built a cross-dataset radiomics transfer framework that aligned heterogeneous features and improved target-dataset performance beyond standalone training using semantic donor-guided hybrid modeling.</span><span class="lang-zh-TW">建立跨資料集放射組學遷移框架，對齊異質特徵，並以語意 donor-guided hybrid modeling 改善目標資料集表現。</span></li>
             </ul>
+          </div>
         </li>
-        <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">SolidWorks Educational Videos</h4>
-                <h4 class="lang-zh-TW">SolidWorks 教學影片</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2023</span>
-                <span class="time-range lang-zh-TW">2023</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Teaching stress simulation & topology optimization to NTU Racing Team members</span>
-                    <span class="lang-zh-TW">教授應力模擬與拓撲優化給 NTU 賽車隊結構組員</span></li>
-            </ul>
-        </li>
-        <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">AI-Powered Blind Cane</h4>
-                <h4 class="lang-zh-TW">智慧導盲杖</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2022</span>
-                <span class="time-range lang-zh-TW">2022</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Developed using Raspberry Pi with image recognition.</span>
-                    <span class="lang-zh-TW">使用 Raspberry Pi 為核心，搭載影像辨識功能。</span></li>
-            </ul>
-        </li>
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">IoT Refrigerator</h4>
-                <h4 class="lang-zh-TW">IoT 冰箱</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2022</span>
-                <span class="time-range lang-zh-TW">2022</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Remote monitoring & thermoelectric cooling.</span>
-                    <span class="lang-zh-TW">具遠端監控與熱電致冷功能。</span></li>
-            </ul>
-        </li>
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">Remote-Controlled Airplane</h4>
-                <h4 class="lang-zh-TW">遙控飛機</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2022</span>
-                <span class="time-range lang-zh-TW">2022</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Built using Arduino and SolidWorks.</span>
-                    <span class="lang-zh-TW">使用 Arduino 與 SolidWorks 製作。</span></li>
-            </ul>
-        </li>
-        <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">Electric Bicycle</h4>
-                <h4 class="lang-zh-TW">電動自行車</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2024</span>
-                <span class="time-range lang-zh-TW">2024</span>
-              </div>
-            </div>
-             <ul>
-                <li><span class="lang-en">Designed and built independently.</span>
-                    <span class="lang-zh-TW">自行設計與製作。</span></li>
-            </ul>
-        </li>
-         <li>
-            <div class="item-row">
-              <div class="item-left">
-                <h4 class="lang-en">MediaTek Funded Science Fair Project</h4>
-                <h4 class="lang-zh-TW">聯發科補助科展專案</h4>
-              </div>
-              <div class="item-right">
-                <span class="time-range lang-en">2019</span>
-                <span class="time-range lang-zh-TW">2019</span>
-              </div>
-            </div>
-            <ul>
-                 <li><span class="lang-en">Participated with full funding from MediaTek.</span>
-                    <span class="lang-zh-TW">獲聯發科全額補助參與科學展覽。</span></li>
-            </ul>
-        </li>
-    </div>
 
-  </section>
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-head">
+              <h3>
+                <span class="lang-en">Server System Performance Optimization Intern</span>
+                <span class="lang-zh-TW">伺服器系統效能優化實習生</span>
+              </h3>
+              <span class="time-range">Jul 2025 – Dec 2025</span>
+            </div>
+            <p class="org">
+              <span class="company-line lang-en"><span class="company-logo-frame company-logo-frame-amd-square"><img class="company-logo company-logo-amd-square" src="logo-amd.svg" alt="AMD logo" loading="lazy"></span>AMD (Advanced Micro Devices, Inc.) · Taipei, Taiwan</span>
+              <span class="company-line lang-zh-TW"><span class="company-logo-frame company-logo-frame-amd-square"><img class="company-logo company-logo-amd-square" src="logo-amd.svg" alt="AMD logo" loading="lazy"></span>AMD (超微半導體股份有限公司) · 台北，臺灣</span>
+            </p>
+            <ul class="bullets">
+              <li><span class="lang-en">Analyzed and resolved server performance issues for enterprise customers.</span><span class="lang-zh-TW">分析並解決企業客戶的伺服器效能問題。</span></li>
+              <li><span class="lang-en">Conducted performance benchmarking and system profiling to evaluate CPU, memory, and I/O efficiency.</span><span class="lang-zh-TW">進行效能基準測試與系統剖析，評估 CPU、記憶體與 I/O 效率。</span></li>
+              <li><span class="lang-en">Proactively identified team needs and developed automation tools to streamline testing and analysis workflows.</span><span class="lang-zh-TW">主動辨識團隊需求，開發自動化工具以簡化測試與分析流程。</span></li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
 
-  <section id="awards">
-    <h2 class="lang-en">Awards and Achievements</h2>
-    <h2 class="lang-zh-TW">獲獎與競賽經歷</h2>
-    <div class="awards-grid">
+    <!-- Projects -->
+    <section id="projects" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <h2 class="section-title">
+          <span class="lang-en">Research &amp; Projects</span>
+          <span class="lang-zh-TW">研究與專案</span>
+        </h2>
+      </div>
+
+      <h3 class="subsection-title">
+        <span class="lang-en">Featured Research</span>
+        <span class="lang-zh-TW">主要研究</span>
+      </h3>
+
+      <div class="project-grid">
+
+        <article class="project-card" data-project="moe-dugan" tabindex="0" role="button">
+          <div class="project-card-top">
+            <span class="project-period">2024 – Now</span>
+            <span class="project-badge">
+              <span class="lang-en">Research</span>
+              <span class="lang-zh-TW">研究</span>
+            </span>
+          </div>
+          <h4 class="project-title">
+            <span class="lang-en">MoE-DUGAN: Generative Denoising for LDCT</span>
+            <span class="lang-zh-TW">MoE-DUGAN：低劑量CT生成式去雜訊</span>
+          </h4>
+          <p class="project-org">
+            <span class="lang-en">Lab of AI &amp; Computer Vision · NTUST</span>
+            <span class="lang-zh-TW">AI 與電腦視覺實驗室 · NTUST</span>
+          </p>
+          <p class="project-summary">
+            <span class="lang-en">A Mixture-of-Experts extension of Dual-Discriminator GANs for multi-modal medical image denoising (CT / MRI / Ultrasound).</span>
+            <span class="lang-zh-TW">以 MoE 延伸 Dual-Discriminator GAN，處理多模態醫學影像（CT / MRI / 超音波）去雜訊。</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">PyTorch</span>
+            <span class="tag">GAN</span>
+            <span class="tag">DDPM</span>
+            <span class="tag">MoE</span>
+          </div>
+          <span class="project-cta">
+            <span class="lang-en">View details</span>
+            <span class="lang-zh-TW">查看詳細</span>
+          </span>
+        </article>
+
+        <article class="project-card" data-project="clinical-nlp" tabindex="0" role="button">
+          <div class="project-card-top">
+            <span class="project-period">2023 – Now</span>
+            <span class="project-badge">
+              <span class="lang-en">Research</span>
+              <span class="lang-zh-TW">研究</span>
+            </span>
+          </div>
+          <h4 class="project-title">
+            <span class="lang-en">LLM-Guided Clinical Retrieval (RAG)</span>
+            <span class="lang-zh-TW">LLM 導引臨床檢索（RAG）</span>
+          </h4>
+          <p class="project-org">
+            <span class="lang-en">Lab of Medical Imaging · NTUST</span>
+            <span class="lang-zh-TW">醫學影像實驗室 · NTUST</span>
+          </p>
+          <p class="project-summary">
+            <span class="lang-en">Hybrid retrieval system for clinical narratives — chunked BioBERT retriever with sparse cross-chunk aggregation and LLM-based re-ranking.</span>
+            <span class="lang-zh-TW">混合式臨床敘述檢索系統：分段 BioBERT 檢索器、稀疏跨片段聚合與 LLM 等價判定重排序。</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">PyTorch</span>
+            <span class="tag">RAG</span>
+            <span class="tag">LoRA</span>
+            <span class="tag">NLP</span>
+          </div>
+          <span class="project-cta">
+            <span class="lang-en">View details</span>
+            <span class="lang-zh-TW">查看詳細</span>
+          </span>
+        </article>
+
+        <article class="project-card" data-project="emg" tabindex="0" role="button">
+          <div class="project-card-top">
+            <span class="project-period">2025</span>
+            <span class="project-badge">
+              <span class="lang-en">ML · Bio-signal</span>
+              <span class="lang-zh-TW">機器學習 · 生醫訊號</span>
+            </span>
+          </div>
+          <h4 class="project-title">
+            <span class="lang-en">EMG Signal Prediction</span>
+            <span class="lang-zh-TW">EMG 訊號預測</span>
+          </h4>
+          <p class="project-org">
+            <span class="lang-en">Independent Project</span>
+            <span class="lang-zh-TW">個人專案</span>
+          </p>
+          <p class="project-summary">
+            <span class="lang-en">Low-latency grasp-strength estimation using spectrograms, 2D-CNN sliding window + GRU, fused with MediaPipe.</span>
+            <span class="lang-zh-TW">透過頻譜圖 + 2D CNN 滑動窗 + GRU，並結合 MediaPipe，達成低延遲手部抓握力道判斷。</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">CNN+GRU</span>
+            <span class="tag">MediaPipe</span>
+            <span class="tag">Real-time</span>
+          </div>
+          <span class="project-cta">
+            <span class="lang-en">View details</span>
+            <span class="lang-zh-TW">查看詳細</span>
+          </span>
+        </article>
+
+        <article class="project-card" data-project="brain-tumor" tabindex="0" role="button">
+          <div class="project-card-top">
+            <span class="project-period">2024</span>
+            <span class="project-badge">
+              <span class="lang-en">Computer Vision</span>
+              <span class="lang-zh-TW">電腦視覺</span>
+            </span>
+          </div>
+          <h4 class="project-title">
+            <span class="lang-en">Optimized Brain Tumor Segmentation</span>
+            <span class="lang-zh-TW">腦瘤分割最佳化模型</span>
+          </h4>
+          <p class="project-org">
+            <span class="lang-en">Independent Project</span>
+            <span class="lang-zh-TW">個人專案</span>
+          </p>
+          <p class="project-summary">
+            <span class="lang-en">Customized dataset and data loader applied to a U-Net pipeline for brain tumor segmentation.</span>
+            <span class="lang-zh-TW">自訂資料集與 data loader，應用於 U-Net 腦瘤分割。</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">U-Net</span>
+            <span class="tag">Segmentation</span>
+            <span class="tag">PyTorch</span>
+          </div>
+          <span class="project-cta">
+            <span class="lang-en">View details</span>
+            <span class="lang-zh-TW">查看詳細</span>
+          </span>
+        </article>
+      </div>
+
+      <h3 class="subsection-title">
+        <span class="lang-en">Other Projects</span>
+        <span class="lang-zh-TW">其他專案</span>
+      </h3>
+
+      <div class="mini-grid">
+        <article class="mini-card" data-project="bci" tabindex="0" role="button">
+          <span class="mini-period">2024</span>
+          <h4>
+            <span class="lang-en">Brain-Computer Interface Group</span>
+            <span class="lang-zh-TW">腦機介面研究小組</span>
+          </h4>
+          <p>
+            <span class="lang-en">EEG Reading Group and Literature Sharing.</span>
+            <span class="lang-zh-TW">EEG 讀書會與文獻分享。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="solidworks" tabindex="0" role="button">
+          <span class="mini-period">2023</span>
+          <h4>
+            <span class="lang-en">SolidWorks Educational Videos</span>
+            <span class="lang-zh-TW">SolidWorks 教學影片</span>
+          </h4>
+          <p>
+            <span class="lang-en">Stress simulation &amp; topology optimization for NTU Racing Team.</span>
+            <span class="lang-zh-TW">教授應力模擬與拓撲優化給 NTU 賽車隊結構組員。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="blind-cane" tabindex="0" role="button">
+          <span class="mini-period">2022</span>
+          <h4>
+            <span class="lang-en">AI-Powered Blind Cane</span>
+            <span class="lang-zh-TW">智慧導盲杖</span>
+          </h4>
+          <p>
+            <span class="lang-en">Raspberry Pi + image recognition.</span>
+            <span class="lang-zh-TW">Raspberry Pi 為核心搭載影像辨識。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="iot-fridge" tabindex="0" role="button">
+          <span class="mini-period">2022</span>
+          <h4>
+            <span class="lang-en">IoT Refrigerator</span>
+            <span class="lang-zh-TW">IoT 冰箱</span>
+          </h4>
+          <p>
+            <span class="lang-en">Remote monitoring &amp; thermoelectric cooling.</span>
+            <span class="lang-zh-TW">遠端監控與熱電致冷功能。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="rc-plane" tabindex="0" role="button">
+          <span class="mini-period">2022</span>
+          <h4>
+            <span class="lang-en">Remote-Controlled Airplane</span>
+            <span class="lang-zh-TW">遙控飛機</span>
+          </h4>
+          <p>
+            <span class="lang-en">Built using Arduino and SolidWorks.</span>
+            <span class="lang-zh-TW">使用 Arduino 與 SolidWorks 製作。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="ev-bike" tabindex="0" role="button">
+          <span class="mini-period">2024</span>
+          <h4>
+            <span class="lang-en">Electric Bicycle</span>
+            <span class="lang-zh-TW">電動自行車</span>
+          </h4>
+          <p>
+            <span class="lang-en">Designed and built independently.</span>
+            <span class="lang-zh-TW">自行設計與製作。</span>
+          </p>
+        </article>
+        <article class="mini-card" data-project="mediatek" tabindex="0" role="button">
+          <span class="mini-period">2019</span>
+          <h4>
+            <span class="lang-en">MediaTek Funded Science Fair</span>
+            <span class="lang-zh-TW">聯發科補助科展專案</span>
+          </h4>
+          <p>
+            <span class="lang-en">Participated with full funding from MediaTek.</span>
+            <span class="lang-zh-TW">獲聯發科全額補助參與科學展覽。</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Awards -->
+    <section id="awards" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <h2 class="section-title">
+          <span class="lang-en">Awards &amp; Achievements</span>
+          <span class="lang-zh-TW">獲獎與競賽經歷</span>
+        </h2>
+      </div>
+
+      <div class="awards-grid">
         <div class="awards-column">
-            <h3 class="lang-en">Competitions</h3>
-            <h3 class="lang-zh-TW">競賽</h3>
-            <ul>
-              <li><span class="lang-en">3rd Place, Taipei-Metro Hackathon (AI &amp; UI/UX) 2025</span><span class="lang-zh-TW">第 3 名，台北捷運黑客松（AI &amp; UI/UX）2025</span></li>
-              <li><span class="lang-en">1st Place, Sustainability Hackathon</span><span class="lang-zh-TW">第 1 名，永續黑客松</span></li>
-              <li><span class="lang-en">5th Place, Coding 101</span><span class="lang-zh-TW">第 5 名，Coding 101</span></li>
-              <li><span class="lang-en">Participant: Makerthon of NTU EE, Marine Debris Image Recognition Challenge, AI Expo, EPSON Innovation Contest</span><span class="lang-zh-TW">其他參賽經驗：台大電機 Makerthon、海廢影像辨識挑戰、AI Expo、EPSON 創新大賽</span></li>
-            </ul>
+          <h3>
+            <span class="lang-en">Programming Competitions</span>
+            <span class="lang-zh-TW">程式競賽</span>
+          </h3>
+          <ul class="award-list">
+            <li class="award-entry" data-award="coding-101" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Top 5</span>
+                <span class="lang-zh-TW">第五名</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Coding 101</span><span class="lang-zh-TW">Coding 101</span></span>
+                <span class="award-note"><span class="lang-en">Collaborative software creation competition focused on programming literacy and practical implementation.</span><span class="lang-zh-TW">以程式素養、協作開發與實作能力為核心的程式競賽。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="metro-2025" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Third Place</span>
+                <span class="lang-zh-TW">第三名</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Taipei Metro Hackathon (AI &amp; UI/UX)</span><span class="lang-zh-TW">台北捷運黑客松（AI &amp; UI/UX）</span></span>
+                <span class="award-note"><span class="lang-en">2025 · Led a cross-functional team and delivered a working AI MVP before the deadline.</span><span class="lang-zh-TW">2025 · 帶領跨職能團隊，在截止前完成可運作的 AI MVP。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+          </ul>
         </div>
+
         <div class="awards-column">
-            <h3 class="lang-en">Robotics Competitions</h3>
-            <h3 class="lang-zh-TW">機器人競賽</h3>
-            <ul>
-              <li><span class="lang-en">1st Place, Humanoid Challenge, Taiwan International Robot Tournament (TIRT) 2019</span><span class="lang-zh-TW">第1名, 台灣國際機器人大賽 TIRT 人形機器人挑戰賽 2019</span></li>
-              <li><span class="lang-en">5th Place, Taiwan Finals, World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">第5名, WRO 世界機器人大賽台灣決賽 2017</span></li>
-              <li><span class="lang-en">32nd Place, ROBO-ONE Japan 2020</span><span class="lang-zh-TW">第32名, 日本 ROBO-ONE 2020</span></li>
-            </ul>
+          <h3>
+            <span class="lang-en">Hackathon Competitions</span>
+            <span class="lang-zh-TW">黑客松競賽</span>
+          </h3>
+          <ul class="award-list">
+            <li class="award-entry" data-award="sustainability-2024" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Champion</span>
+                <span class="lang-zh-TW">冠軍</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Sustainability Hackathon</span><span class="lang-zh-TW">永續智慧創新黑客松</span></span>
+                <span class="award-note"><span class="lang-en">SDG-oriented challenge with enterprise problem statements and student-built solutions.</span><span class="lang-zh-TW">以 SDGs 為主軸，透過企業命題與學生解題進行永續創新提案。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="voc-2023" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Merit Award</span>
+                <span class="lang-zh-TW">佳作</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Vocational Cup Hackathon · 2023 Northern Preliminary</span><span class="lang-zh-TW">技職盃黑客松 · 2023 北區初賽</span></span>
+                <span class="award-note"><span class="lang-en">Merit Award.</span><span class="lang-zh-TW">佳作。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="voc-2024-north" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Champion</span>
+                <span class="lang-zh-TW">冠軍</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Vocational Cup Hackathon · 2024 Northern Regional</span><span class="lang-zh-TW">技職盃黑客松 · 2024 北區賽</span></span>
+                <span class="award-note"><span class="lang-en">Champion of the northern regional round.</span><span class="lang-zh-TW">北區賽冠軍。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="voc-2024-final" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Best Value Creation</span>
+                <span class="lang-zh-TW">最佳創造價值</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Vocational Cup Hackathon · 2024 National Final</span><span class="lang-zh-TW">技職盃黑客松 · 2024 全國決賽</span></span>
+                <span class="award-note"><span class="lang-en">Best Value Creation Award · 2nd overall.</span><span class="lang-zh-TW">最佳創造價值獎 · 總排名第二。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="voc-2025-north" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Champion</span>
+                <span class="lang-zh-TW">冠軍</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Vocational Cup Hackathon · 2025 Northern Regional</span><span class="lang-zh-TW">技職盃黑客松 · 2025 北區賽</span></span>
+                <span class="award-note"><span class="lang-en">Champion of the northern regional round.</span><span class="lang-zh-TW">北區賽冠軍。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="voc-2025-final" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">National Merit</span>
+                <span class="lang-zh-TW">決賽佳作</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Vocational Cup Hackathon · 2025 National Final</span><span class="lang-zh-TW">技職盃黑客松 · 2025 全國決賽</span></span>
+                <span class="award-note"><span class="lang-en">National Final Merit Award.</span><span class="lang-zh-TW">全國決賽佳作。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="make-ntu" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Selected</span>
+                <span class="lang-zh-TW">入選</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">MakeNTU / NTU EE Makerthon</span><span class="lang-zh-TW">MakeNTU / 台大電機創客松</span></span>
+                <span class="award-note"><span class="lang-en">Hardware-software integration maker competition with rapid prototyping under time pressure.</span><span class="lang-zh-TW">強調軟硬整合、快速原型與現場實作的創客松競賽。</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+          </ul>
         </div>
-    </div>
-  </section>
 
-  <section id="activities">
-    <h2 class="lang-en">Activities & Leadership</h2>
-    <h2 class="lang-zh-TW">組織、領導與志工經驗</h2>
-    <div class="activities-grid">
+        <div class="awards-column">
+          <h3>
+            <span class="lang-en">Robotics Competitions</span>
+            <span class="lang-zh-TW">機器人競賽</span>
+          </h3>
+          <ul class="award-list">
+            <li class="award-entry" data-award="tirt-2019" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Champion</span>
+                <span class="lang-zh-TW">冠軍</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Humanoid Challenge, TIRT 2019</span><span class="lang-zh-TW">台灣國際機器人大賽 TIRT 人形機器人挑戰賽 2019</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="wro-2017" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Top 5</span>
+                <span class="lang-zh-TW">前五名</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">Taiwan Finals, World Robot Olympiad (WRO) 2017</span><span class="lang-zh-TW">WRO 世界機器人大賽台灣決賽 2017</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+            <li class="award-entry" data-award="roboone-2020" tabindex="0" role="button">
+              <div class="award-place">
+                <span class="lang-en">Top 32</span>
+                <span class="lang-zh-TW">三十二強</span>
+              </div>
+              <div class="award-copy">
+                <span class="award-title"><span class="lang-en">ROBO-ONE Japan 2020</span><span class="lang-zh-TW">日本 ROBO-ONE 2020</span></span>
+                <span class="award-hint"><span class="lang-en">Click for competition context</span><span class="lang-zh-TW">點擊看比賽說明</span></span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activities -->
+    <section id="activities" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <h2 class="section-title">
+          <span class="lang-en">Activities &amp; Leadership</span>
+          <span class="lang-zh-TW">組織、領導與志工經驗</span>
+        </h2>
+      </div>
+
+      <div class="activities-grid">
         <div class="activity-column">
-            <h3 class="lang-en">Student Organizations</h3>
-            <h3 class="lang-zh-TW">學生組織與社團</h3>
-             <ul>
-                 <li><span class="lang-en">Member, NTUST Robotics Research Club</span><span class="lang-zh-TW">台科大機器人研究社 社員</span> <span class="lang-en">2024</span><span class="lang-zh-TW">2024</span></li>
-                 <li><span class="lang-en">Public Relations, NTUST Racing Team</span><span class="lang-zh-TW">台科大賽車社 公關組</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
-                 <li><span class="lang-en">Structure Team Member, NTU Racing Team (Designed, built, and participated in Formula Student competitions)</span><span class="lang-zh-TW">台大賽車社 結構組（設計、製作並參與方程式賽車比賽）</span> <span class="lang-en">2022</span><span class="lang-zh-TW">2022</span></li>
-             </ul>
+          <h3>
+            <span class="lang-en">Student Organizations</span>
+            <span class="lang-zh-TW">學生組織與社團</span>
+          </h3>
+          <ul>
+            <li><span class="lang-en">Member, NTUST Robotics Research Club <em>(2024)</em></span><span class="lang-zh-TW">台科大機器人研究社 社員 <em>(2024)</em></span></li>
+            <li><span class="lang-en">Public Relations, NTUST Racing Team <em>(2022)</em></span><span class="lang-zh-TW">台科大賽車社 公關組 <em>(2022)</em></span></li>
+            <li><span class="lang-en">Structure Team Member, NTU Racing Team — Formula Student <em>(2022)</em></span><span class="lang-zh-TW">台大賽車社 結構組（Formula Student）<em>(2022)</em></span></li>
+          </ul>
         </div>
         <div class="activity-column">
-            <h3 class="lang-en">Leadership</h3>
-            <h3 class="lang-zh-TW">領導經歷</h3>
-             <ul>
-                 <li><span class="lang-en">Excellence Youth Award, NTUST (Top 0.1% — 12 out of 12,000 students)</span><span class="lang-zh-TW">台科大傑出青年（全校前 0.1%：12 / 12,000）</span></li>
-                 <li><span class="lang-en">Vice President, Electrical and Computer Engineering Student Association 2023</span><span class="lang-zh-TW">電資學會副會長 2023</span></li>
-                 <li><span class="lang-en">Event Coordinator, Electrical and Computer Engineering Student Association 2024</span><span class="lang-zh-TW">電資學會活動長 2024</span></li>
-                 <li><span class="lang-en">Organizer, Newcomer Welcome Event (approx. 100 attendees), Taipei Banner Church</span><span class="lang-zh-TW">台北旌旗教會 新生歡迎會籌辦人 (參與者約100人), Taipei Banner Church</span></li>
-                 <li><span class="lang-en">Led 8 out of 11 competition teams</span><span class="lang-zh-TW">領導過11個競賽團隊中的8隊</span></li>
-             </ul>
+          <h3>
+            <span class="lang-en">Leadership</span>
+            <span class="lang-zh-TW">領導經歷</span>
+          </h3>
+          <ul>
+            <li><strong><span class="lang-en">Excellence Youth Award, NTUST</span><span class="lang-zh-TW">台科大傑出青年</span></strong> <span class="lang-en">(Top 0.1% — 12/12,000)</span><span class="lang-zh-TW">（全校前 0.1%：12 / 12,000）</span></li>
+            <li><span class="lang-en">Vice President, ECE Student Association <em>(2023)</em></span><span class="lang-zh-TW">電資學會副會長 <em>(2023)</em></span></li>
+            <li><span class="lang-en">Event Coordinator, ECE Student Association <em>(2024)</em></span><span class="lang-zh-TW">電資學會活動長 <em>(2024)</em></span></li>
+            <li><span class="lang-en">Organizer, Newcomer Welcome Event (~100 attendees), Taipei Banner Church</span><span class="lang-zh-TW">台北旌旗教會新生歡迎會籌辦人（約 100 人）</span></li>
+            <li><span class="lang-en">Led 8 of 11 competition teams</span><span class="lang-zh-TW">領導過 11 個競賽團隊中的 8 隊</span></li>
+          </ul>
         </div>
-         <div class="activity-column">
-            <h3 class="lang-en">Volunteer Experience</h3>
-            <h3 class="lang-zh-TW">志工經驗</h3>
+        <div class="activity-column">
+          <h3>
+            <span class="lang-en">Volunteer</span>
+            <span class="lang-zh-TW">志工經驗</span>
+          </h3>
+          <ul>
+            <li><span class="lang-en">Indigenous Children's Group Volunteer, NYCU Fellowship</span><span class="lang-zh-TW">原民兒童團契志工，NYCU Fellowship</span></li>
+            <li><span class="lang-en">Children's Group Counselor for Summer Camp, Stream of Praise</span><span class="lang-zh-TW">暑期兒童營輔導，Stream of Praise</span></li>
+            <li><span class="lang-en">Organized community free appliance repair sessions</span><span class="lang-zh-TW">舉辦多場社區免費家電維修服務</span></li>
+            <li><span class="lang-en">Blood Donation Services Volunteer</span><span class="lang-zh-TW">捐血服務志工</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <h2 class="section-title">
+          <span class="lang-en">Skills &amp; Interests</span>
+          <span class="lang-zh-TW">技能與興趣</span>
+        </h2>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">Programming</span>
+            <span class="lang-zh-TW">程式語言</span>
+          </h3>
+          <div class="chip-row">
+            <span class="chip">Python</span><span class="chip">C++</span><span class="chip">C</span><span class="chip">Dart</span><span class="chip">SQL</span><span class="chip">Assembly</span><span class="chip">.NET (C#)</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">AI / ML</span>
+            <span class="lang-zh-TW">AI / 機器學習</span>
+          </h3>
+          <div class="chip-row">
+            <span class="chip">PyTorch</span><span class="chip">Transformers</span><span class="chip">RAG</span><span class="chip">GANs</span><span class="chip">CV</span><span class="chip">NLP</span><span class="chip">Optuna</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">Systems &amp; Cloud</span>
+            <span class="lang-zh-TW">系統與雲端</span>
+          </h3>
+          <div class="chip-row">
+            <span class="chip">Performance Benchmarking</span><span class="chip">System Profiling</span><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">Docker</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">Hardware &amp; Design</span>
+            <span class="lang-zh-TW">硬體與設計</span>
+          </h3>
+          <div class="chip-row">
+            <span class="chip">Virtuoso</span><span class="chip">Arduino</span><span class="chip">SolidWorks</span><span class="chip">Raspberry Pi</span><span class="chip">Figma</span><span class="chip">Blender</span><span class="chip">3D Printing</span>
+          </div>
+        </div>
+
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">Languages</span>
+            <span class="lang-zh-TW">語言</span>
+          </h3>
+          <ul class="plain-list">
+            <li><span class="lang-en">English — TOEFL 95</span><span class="lang-zh-TW">英文：托福 95</span></li>
+            <li><span class="lang-en">Chinese — Native</span><span class="lang-zh-TW">中文：母語</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-block">
+          <h3>
+            <span class="lang-en">Interests</span>
+            <span class="lang-zh-TW">興趣</span>
+          </h3>
+          <div class="chip-row">
+            <span class="chip"><span class="lang-en">Extreme sports</span><span class="lang-zh-TW">極限運動</span></span>
+            <span class="chip"><span class="lang-en">Basketball</span><span class="lang-zh-TW">籃球</span></span>
+            <span class="chip"><span class="lang-en">Coding</span><span class="lang-zh-TW">程式設計</span></span>
+            <span class="chip"><span class="lang-en">DIY electronics</span><span class="lang-zh-TW">電子 DIY</span></span>
+            <span class="chip"><span class="lang-en">Travel</span><span class="lang-zh-TW">旅行</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coursework (collapsible) -->
+    <section id="coursework" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <h2 class="section-title">
+          <span class="lang-en">Relevant Coursework</span>
+          <span class="lang-zh-TW">相關課程</span>
+        </h2>
+      </div>
+
+      <details class="coursework-details">
+        <summary>
+          <span class="lang-en">Show all courses</span>
+          <span class="lang-zh-TW">展開全部課程</span>
+        </summary>
+
+        <div class="coursework-grid">
+          <div class="course-column">
+            <h3>
+              <span class="lang-en">Mathematics &amp; Foundations</span>
+              <span class="lang-zh-TW">數學與基礎課程</span>
+            </h3>
             <ul>
-                <li><span class="lang-en">Indigenous Children's Group Volunteer, NYCU Fellowship</span><span class="lang-zh-TW">原民兒童團契志工, NYCU Fellowship</span></li>
-                <li><span class="lang-en">Children's Group Member for Summer Camp, Stream of Praise</span><span class="lang-zh-TW">暑期兒童營輔導, Stream of Praise</span></li>
-                <li><span class="lang-en">Organized Several Community Free Appliance Repair Sessions, School Club</span><span class="lang-zh-TW">舉辦多場社區免費家電維修服務, School Club</span></li>
-                <li><span class="lang-en">Blood Donation Services Volunteer, School Club</span><span class="lang-zh-TW">捐血服務志工, School Club</span></li>
+              <li><span class="lang-en">Calculus (I) &amp; (II)</span><span class="lang-zh-TW">微積分 (一) &amp; (二)</span></li>
+              <li><span class="lang-en">Linear Algebra</span><span class="lang-zh-TW">線性代數</span></li>
+              <li><span class="lang-en">Physics (I) &amp; (II)</span><span class="lang-zh-TW">物理 (一) &amp; (二)</span></li>
+              <li><span class="lang-en">Differential Equations</span><span class="lang-zh-TW">微分方程</span></li>
+              <li><span class="lang-en">Probability</span><span class="lang-zh-TW">機率</span></li>
+              <li><span class="lang-en">Discrete Mathematics</span><span class="lang-zh-TW">離散數學</span></li>
+              <li><span class="lang-en">Introduction to Computers and Computing</span><span class="lang-zh-TW">計算機概論</span></li>
+              <li><span class="lang-en">Introduction to EECS &amp; Engineering Ethics</span><span class="lang-zh-TW">電資概論與工程倫理</span></li>
             </ul>
+          </div>
+          <div class="course-column">
+            <h3>
+              <span class="lang-en">Electrical Engineering</span>
+              <span class="lang-zh-TW">電機工程</span>
+            </h3>
+            <ul>
+              <li><span class="lang-en">Signals and Systems</span><span class="lang-zh-TW">信號與系統</span></li>
+              <li><span class="lang-en">Signal and System Lab</span><span class="lang-zh-TW">信號與系統實習</span></li>
+              <li><span class="lang-en">Circuit Theory (I) &amp; (II)</span><span class="lang-zh-TW">電路學 (一) &amp; (二)</span></li>
+              <li><span class="lang-en">Electronics</span><span class="lang-zh-TW">電子學</span></li>
+              <li><span class="lang-en">Electronic Circuits</span><span class="lang-zh-TW">電子電路</span></li>
+              <li><span class="lang-en">Electronics Laboratory</span><span class="lang-zh-TW">電子學實習</span></li>
+              <li><span class="lang-en">Electronics Lab.</span><span class="lang-zh-TW">電子電路實習</span></li>
+              <li><span class="lang-en">Electromagnetics</span><span class="lang-zh-TW">電磁學</span></li>
+              <li><span class="lang-en">Electric Machinery</span><span class="lang-zh-TW">電機機械</span></li>
+              <li><span class="lang-en">Electric Machinery Lab.</span><span class="lang-zh-TW">電機機械實習</span></li>
+              <li><span class="lang-en">Analog and Mixed Signal Integrated Circuits and Systems</span><span class="lang-zh-TW">類比及混合訊號積體電路與系統</span></li>
+            </ul>
+          </div>
+          <div class="course-column">
+            <h3>
+              <span class="lang-en">Computer Science &amp; Systems</span>
+              <span class="lang-zh-TW">資訊工程與系統</span>
+            </h3>
+            <ul>
+              <li><span class="lang-en">Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用</span></li>
+              <li><span class="lang-en">Practices of Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用實習</span></li>
+              <li><span class="lang-en">Data Structures</span><span class="lang-zh-TW">資料結構</span></li>
+              <li><span class="lang-en">Object-oriented Programming</span><span class="lang-zh-TW">物件導向程式設計</span></li>
+              <li><span class="lang-en">Lab for Object Oriented Programming</span><span class="lang-zh-TW">物件導向程式設計實習</span></li>
+              <li><span class="lang-en">Computer Organization</span><span class="lang-zh-TW">計算機組織</span></li>
+              <li><span class="lang-en">Operating Systems</span><span class="lang-zh-TW">作業系統</span></li>
+              <li><span class="lang-en">Introduction to Computer Networks</span><span class="lang-zh-TW">計算機網路概論</span></li>
+              <li><span class="lang-en">Algorithms</span><span class="lang-zh-TW">演算法</span></li>
+              <li><span class="lang-en">Database Systems</span><span class="lang-zh-TW">資料庫系統</span></li>
+              <li><span class="lang-en">Introduction to Data Science</span><span class="lang-zh-TW">資料科學導論</span></li>
+              <li><span class="lang-en">.NET Programming</span><span class="lang-zh-TW">.NET 程式設計</span></li>
+            </ul>
+          </div>
+          <div class="course-column">
+            <h3>
+              <span class="lang-en">Hardware, IC &amp; Project Labs</span>
+              <span class="lang-zh-TW">硬體、晶片與專題實作</span>
+            </h3>
+            <ul>
+              <li><span class="lang-en">Digital Logic Design</span><span class="lang-zh-TW">數位邏輯設計</span></li>
+              <li><span class="lang-en">Digital System Design</span><span class="lang-zh-TW">數位系統設計</span></li>
+              <li><span class="lang-en">Introduction to Microcomputer</span><span class="lang-zh-TW">微算機概論</span></li>
+              <li><span class="lang-en">Microcomputer Lab.</span><span class="lang-zh-TW">微算機概論實習</span></li>
+              <li><span class="lang-en">Microcomputer Applications</span><span class="lang-zh-TW">微算機應用</span></li>
+              <li><span class="lang-en">Introduction to VLSI Designs</span><span class="lang-zh-TW">超大型積體電路設計導論</span></li>
+              <li><span class="lang-en">Practice Sessions for VLSI Circuit Design</span><span class="lang-zh-TW">超大型積體電路設計實習</span></li>
+              <li><span class="lang-en">Software Development for Electronic Design Automation</span><span class="lang-zh-TW">電子設計自動化軟體開發與實作</span></li>
+              <li><span class="lang-en">Electrical Engineering Special Projects (I)</span><span class="lang-zh-TW">電機實務專題 (上)</span></li>
+              <li><span class="lang-en">Electrical Engineering Special Projects (II)</span><span class="lang-zh-TW">電機實務專題 (下)</span></li>
+              <li><span class="lang-en">Special Projects in CSIE (I)</span><span class="lang-zh-TW">資工實務專題 (上)</span></li>
+              <li><span class="lang-en">Special Projects in CSIE (II)</span><span class="lang-zh-TW">資工實務專題 (下)</span></li>
+            </ul>
+          </div>
         </div>
-    </div>
-  </section>
+      </details>
+    </section>
 
-  <section id="skills">
-    <h2 class="lang-en">Skills & Interests</h2>
-    <h2 class="lang-zh-TW">技能與興趣</h2>
-    <div class="skills-grid">
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
       <div>
-        <h3 class="lang-en">Technical Skills</h3>
-        <h3 class="lang-zh-TW">技術技能</h3>
-        <ul>
-          <li><strong class="lang-en">Programming Languages:</strong><strong class="lang-zh-TW">程式語言:</strong> <span class="lang-en">C++, Python, .NET (C#), SQL, Flutter, Dart, Assembly (MIPS, x86, 8051)</span><span class="lang-zh-TW">C++, Python, .NET (C#), SQL, Flutter, Dart, Assembly(MIPS, x86, 8051)</span></li>
-          <li><strong class="lang-en">Hardware:</strong><strong class="lang-zh-TW">硬體:</strong> <span class="lang-en">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D Printing, Laser Cutting, EasyEDA</span><span class="lang-zh-TW">Virtuoso, Arduino, SolidWorks, Raspberry Pi, 3D Printing, Laser Cutting, easyEDA</span></li>
-          <li><strong class="lang-en">Simulation &amp; Analysis:</strong><strong class="lang-zh-TW">模擬與分析:</strong> <span class="lang-en">COMSOL, Virtuoso, SolidWorks Simulation</span><span class="lang-zh-TW">COMSOL, virtuoso, solidworks simulation</span></li>
-          <li><strong class="lang-en">Other:</strong><strong class="lang-zh-TW">其他:</strong> <span class="lang-en">Premiere Pro, Illustrator, Unreal Engine 5, Cura, Blender, Figma</span><span class="lang-zh-TW">premiere, illustrator, UE5, CURA, blender, figma</span></li>
-        </ul>
+        <span class="lang-en">© 2026 Louis Wu</span>
+        <span class="lang-zh-TW">© 2026 Louis 吳定栩</span>
       </div>
-      <div>
-        <h3 class="lang-en">Language</h3>
-        <h3 class="lang-zh-TW">語言</h3>
-        <ul>
-          <li><span class="lang-en">English: TOEFL 95</span><span class="lang-zh-TW">英文：托福95</span></li>
-          <li><span class="lang-en">Chinese: Native</span><span class="lang-zh-TW">中文：母語</span></li>
-        </ul>
-        <h3 class="lang-en">Interests</h3>
-        <h3 class="lang-zh-TW">興趣</h3>
-        <ul>
-          <li><span class="lang-en">Extreme sports</span><span class="lang-zh-TW">極限運動</span></li>
-          <li><span class="lang-en">Basketball</span><span class="lang-zh-TW">籃球</span></li>
-          <li><span class="lang-en">Coding</span><span class="lang-zh-TW">程式設計</span></li>
-          <li><span class="lang-en">DIY electronics</span><span class="lang-zh-TW">電子 DIY</span></li>
-          <li><span class="lang-en">Travel</span><span class="lang-zh-TW">旅行</span></li>
-        </ul>
+      <div class="footer-links">
+        <a href="mailto:louis20030920@gmail.com">Email</a>
+        <a href="https://github.com/xuwwwww" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/louis-wu-65ba6b270/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
-  </section>
-
-  <section id="coursework">
-    <h2 class="lang-en">Relevant Coursework</h2>
-    <h2 class="lang-zh-TW">相關課程</h2>
-    <div class="coursework-grid">
-      <div class="course-column ee-courses">
-        <h3 class="lang-en">Electrical Engineering & Common</h3>
-        <h3 class="lang-zh-TW">電機工程 & 共通</h3>
-        <ul>
-            <li><span class="lang-en">Calculus (I) & (II)</span><span class="lang-zh-TW">微積分 (一) & (二)</span></li>
-            <li><span class="lang-en">Linear Algebra</span><span class="lang-zh-TW">線性代數</span></li>
-            <li><span class="lang-en">Introduction to Computers and Computing</span><span class="lang-zh-TW">計算機概論</span></li>
-            <li><span class="lang-en">Physics (I) & (II)</span><span class="lang-zh-TW">物理 (一) & (二)</span></li>
-            <li><span class="lang-en">Differential Equations</span><span class="lang-zh-TW">微分方程</span></li>
-            <li><span class="lang-en">Probability</span><span class="lang-zh-TW">機率</span></li>
-            <li><span class="lang-en">Signals and Systems</span><span class="lang-zh-TW">信號與系統</span></li>
-            <li><span class="lang-en">Signal and System Lab</span><span class="lang-zh-TW">信號與系統實習</span></li>
-            <li><span class="lang-en">Circuit Theory (I) & (II)</span><span class="lang-zh-TW">電路學 (一) & (二)</span></li>
-            <li><span class="lang-en">Electronics</span><span class="lang-zh-TW">電子學</span></li>
-            <li><span class="lang-en">Electronic Circuits</span><span class="lang-zh-TW">電子電路</span></li>
-            <li><span class="lang-en">Electronics Laboratory</span><span class="lang-zh-TW">電子學實習</span></li>
-            <li><span class="lang-en">Electronics Lab.</span><span class="lang-zh-TW">電子電路實習</span></li>
-            <li><span class="lang-en">Electromagnetics</span><span class="lang-zh-TW">電磁學</span></li>
-            <li><span class="lang-en">Digital Logic Design</span><span class="lang-zh-TW">數位邏輯設計</span></li>
-            <li><span class="lang-en">Introduction to Microcomputer</span><span class="lang-zh-TW">微算機概論</span></li>
-            <li><span class="lang-en">Microcomputer Lab.</span><span class="lang-zh-TW">微算機概論實習</span></li>
-            <li><span class="lang-en">Microcomputer Applications</span><span class="lang-zh-TW">微算機應用</span></li>
-            <li><span class="lang-en">Introduction to VLSI Designs</span><span class="lang-zh-TW">超大型積體電路設計導論</span></li>
-            <li><span class="lang-en">Practice Sessions for VLSI Circuit Design</span><span class="lang-zh-TW">超大型積體電路設計實習</span></li>
-            <li><span class="lang-en">Software Development for Electronic Design Automation</span><span class="lang-zh-TW">電子設計自動化軟體開發與實作</span></li>
-            <li><span class="lang-en">Electric Machinery</span><span class="lang-zh-TW">電機機械</span></li>
-            <li><span class="lang-en">Electric Machinery Lab.</span><span class="lang-zh-TW">電機機械實習</span></li>
-            <li><span class="lang-en">Analog and Mixed Signal Integrated Circuits and Systems</span><span class="lang-zh-TW">類比及混合訊號積體電路與系統</span></li>
-            <li><span class="lang-en">Electrical Engineering Special Projects (I)</span><span class="lang-zh-TW">電機實務專題(上)</span></li>
-            <li><span class="lang-en">Electrical Engineering Special Projects (II)</span><span class="lang-zh-TW">電機實務專題(下)</span></li>
-            <li><span class="lang-en">Introduction to Electrical Engineering and Computer Science and Engineering Ethics</span><span class="lang-zh-TW">電資概論與工程倫理</span></li>
-        </ul>
-      </div>
-      <div class="course-column cs-courses">
-        <h3 class="lang-en">Computer Science</h3>
-        <h3 class="lang-zh-TW">資訊工程</h3>
-        <ul>
-            <li><span class="lang-en">Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用</span></li>
-            <li><span class="lang-en">Practices of Computer Programming and Applications</span><span class="lang-zh-TW">計算機程式與應用實習</span></li>
-            <li><span class="lang-en">Discrete Mathematics</span><span class="lang-zh-TW">離散數學</span></li>
-            <li><span class="lang-en">Data Structures</span><span class="lang-zh-TW">資料結構</span></li>
-            <li><span class="lang-en">Object-oriented Programming</span><span class="lang-zh-TW">物件導向程式設計</span></li>
-            <li><span class="lang-en">Lab for Object Oriented Programming</span><span class="lang-zh-TW">物件導向程式設計實習</span></li>
-            <li><span class="lang-en">Digital System Design</span><span class="lang-zh-TW">數位系統設計</span></li>
-            <li><span class="lang-en">Computer Organization</span><span class="lang-zh-TW">計算機組織</span></li>
-            <li><span class="lang-en">Operating Systems</span><span class="lang-zh-TW">作業系統</span></li>
-            <li><span class="lang-en">Introduction to Computer Networks</span><span class="lang-zh-TW">計算機網路概論</span></li>
-            <li><span class="lang-en">Algorithms</span><span class="lang-zh-TW">演算法</span></li>
-            <li><span class="lang-en">Database Systems</span><span class="lang-zh-TW">資料庫系統</span></li>
-            <li><span class="lang-en">Introduction to Data Science</span><span class="lang-zh-TW">資料科學導論</span></li>
-            <li><span class="lang-en">.NET Programming</span><span class="lang-zh-TW">.NET 程式設計</span></li>
-            <li><span class="lang-en">Special Projects in Computer Science and Information Engineering (I)</span><span class="lang-zh-TW">資工實務專題(上)</span></li>
-            <li><span class="lang-en">Special Projects in Computer Science and Information Engineering (II)</span><span class="lang-zh-TW">資工實務專題(下)</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <span class="lang-en">© 2026 DingXu Wu</span>
-    <span class="lang-zh-TW">© 2026 吳定栩</span>
   </footer>
 
+  <!-- Project Detail Modal -->
+  <div class="modal-backdrop" id="project-modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="modal-scroll">
+        <div class="modal-header">
+          <span class="modal-period" id="modal-period"></span>
+          <h2 id="modal-title"></h2>
+          <p class="modal-org" id="modal-org"></p>
+          <div class="tag-row" id="modal-tags"></div>
+        </div>
+        <div class="modal-body">
+          <p id="modal-summary"></p>
+          <div id="modal-sections"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="easter-backdrop" id="easter-egg" aria-hidden="true">
+    <div class="easter-panel" role="dialog" aria-modal="true" aria-labelledby="easter-title">
+      <div class="easter-head">
+        <div>
+          <h2 id="easter-title"><span class="lang-en">Tic-Tac-Toe</span><span class="lang-zh-TW">圈圈叉叉</span></h2>
+        </div>
+        <button class="easter-reset" id="easter-reset" type="button">Reset</button>
+      </div>
+      <p class="easter-status" id="easter-status">X to move</p>
+      <div class="easter-board" id="easter-board" role="grid" aria-label="Tic-tac-toe board">
+        <button class="easter-cell" type="button" data-cell="0" aria-label="Cell 1"></button>
+        <button class="easter-cell" type="button" data-cell="1" aria-label="Cell 2"></button>
+        <button class="easter-cell" type="button" data-cell="2" aria-label="Cell 3"></button>
+        <button class="easter-cell" type="button" data-cell="3" aria-label="Cell 4"></button>
+        <button class="easter-cell" type="button" data-cell="4" aria-label="Cell 5"></button>
+        <button class="easter-cell" type="button" data-cell="5" aria-label="Cell 6"></button>
+        <button class="easter-cell" type="button" data-cell="6" aria-label="Cell 7"></button>
+        <button class="easter-cell" type="button" data-cell="7" aria-label="Cell 8"></button>
+        <button class="easter-cell" type="button" data-cell="8" aria-label="Cell 9"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
 </body>
-<script src="scripts.js"></script>
 </html>
