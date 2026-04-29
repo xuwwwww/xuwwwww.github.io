@@ -878,21 +878,33 @@
     <div class="easter-panel" role="dialog" aria-modal="true" aria-labelledby="easter-title">
       <div class="easter-head">
         <div>
-          <h2 id="easter-title"><span class="lang-en">Tic-Tac-Toe</span><span class="lang-zh-TW">圈圈叉叉</span></h2>
+          <h2 id="easter-title"><span class="lang-en">Snake</span><span class="lang-zh-TW">貪吃蛇</span></h2>
         </div>
-        <button class="easter-reset" id="easter-reset" type="button">Reset</button>
+        <div class="easter-actions">
+          <button class="easter-auto" id="easter-auto" type="button">Auto Solve: Off</button>
+          <button class="easter-reset" id="easter-reset" type="button">Reset</button>
+        </div>
       </div>
-      <p class="easter-status" id="easter-status">X to move</p>
-      <div class="easter-board" id="easter-board" role="grid" aria-label="Tic-tac-toe board">
-        <button class="easter-cell" type="button" data-cell="0" aria-label="Cell 1"></button>
-        <button class="easter-cell" type="button" data-cell="1" aria-label="Cell 2"></button>
-        <button class="easter-cell" type="button" data-cell="2" aria-label="Cell 3"></button>
-        <button class="easter-cell" type="button" data-cell="3" aria-label="Cell 4"></button>
-        <button class="easter-cell" type="button" data-cell="4" aria-label="Cell 5"></button>
-        <button class="easter-cell" type="button" data-cell="5" aria-label="Cell 6"></button>
-        <button class="easter-cell" type="button" data-cell="6" aria-label="Cell 7"></button>
-        <button class="easter-cell" type="button" data-cell="7" aria-label="Cell 8"></button>
-        <button class="easter-cell" type="button" data-cell="8" aria-label="Cell 9"></button>
+      <p class="easter-status" id="easter-status">Score: 0</p>
+      <div class="easter-meta">
+        <span id="easter-score">Length 3 / 144</span>
+        <span id="easter-mode">Manual</span>
+      </div>
+      <div class="easter-board" id="easter-board" role="grid" aria-label="Snake board"></div>
+      <div class="easter-controls" aria-label="Snake controls">
+        <button class="easter-control easter-control-up" type="button" data-direction="up" aria-label="Move up">↑</button>
+        <button class="easter-control easter-control-left" type="button" data-direction="left" aria-label="Move left">←</button>
+        <button class="easter-control easter-control-down" type="button" data-direction="down" aria-label="Move down">↓</button>
+        <button class="easter-control easter-control-right" type="button" data-direction="right" aria-label="Move right">→</button>
+      </div>
+      <p class="easter-hint">
+        <span class="lang-en">Use arrow keys or WASD. Auto solve will plan each step.</span>
+        <span class="lang-zh-TW">用方向鍵或 WASD 操作。Auto solve 會每一步重新規劃。</span>
+      </p>
+      <div class="sr-only" id="easter-live" aria-live="polite"></div>
+      <div class="easter-legend" aria-hidden="true">
+        <span><i class="legend-snake"></i>Snake</span>
+        <span><i class="legend-food"></i>Apple</span>
       </div>
     </div>
   </div>

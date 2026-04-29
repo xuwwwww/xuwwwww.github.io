@@ -1237,7 +1237,7 @@ body.page-lang-switching { opacity: 0; }
   pointer-events: auto;
 }
 .easter-panel {
-  width: min(100%, 360px);
+  width: min(100%, 440px);
   padding: 22px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.98);
@@ -1256,6 +1256,12 @@ body.page-lang-switching { opacity: 0; }
   font-size: 1.45rem;
   letter-spacing: -0.02em;
 }
+.easter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.easter-auto,
 .easter-reset {
   border: 1px solid rgba(37, 99, 95, 0.16);
   background: rgba(37, 99, 95, 0.06);
@@ -1267,40 +1273,192 @@ body.page-lang-switching { opacity: 0; }
   font-weight: 700;
   cursor: pointer;
 }
+.easter-auto.active {
+  background: rgba(21, 128, 61, 0.12);
+  border-color: rgba(21, 128, 61, 0.24);
+  color: #166534;
+}
 .easter-status {
-  margin: 0 0 14px;
+  margin: 0 0 6px;
   color: var(--text-3);
   font-size: 0.92rem;
 }
+.easter-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--text-3);
+  font-size: 0.8rem;
+}
 .easter-board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(var(--snake-size, 12), minmax(0, 1fr));
+  gap: 0;
+  padding: 10px;
+  border-radius: 18px;
+  background: #b9dd5a;
+  border: 1px solid rgba(32, 74, 43, 0.14);
 }
 .easter-cell {
+  --snake-body-size: 70%;
+  --snake-gap: calc((100% - var(--snake-body-size)) / 2);
+  --snake-core-fill: transparent;
   aspect-ratio: 1 / 1;
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(180deg, #ffffff, #f7faf9);
-  color: var(--accent);
+  position: relative;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  transition: background-color 0.1s linear, transform 0.1s linear;
+  overflow: visible;
+  box-shadow: inset 0 0 0 0.5px rgba(125, 170, 52, 0.28);
+}
+.easter-cell.cell-snake {
+  --snake-core-fill: #2f7d32;
+}
+.easter-cell.cell-head {
+  --snake-core-fill: #8fd18f;
+}
+.easter-cell .snake-core,
+.easter-cell .snake-trail,
+.easter-cell .snake-food-dot {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+.easter-cell .snake-core {
+  left: var(--snake-gap);
+  top: var(--snake-gap);
+  width: var(--snake-body-size);
+  height: var(--snake-body-size);
+  background: var(--snake-core-fill);
+  border-radius: 999px;
+  z-index: 2;
+}
+.easter-cell.cell-head .snake-core {
+  background: #8fd18f;
+}
+.easter-cell.cell-snake .snake-core,
+.easter-cell.cell-snake .snake-trail,
+.easter-cell.cell-food .snake-food-dot {
+  opacity: 1;
+}
+.easter-cell.cell-head .snake-trail {
+  opacity: 0;
+}
+.easter-cell .snake-trail {
+  background: #2f7d32;
+  border-radius: 0;
+  z-index: 1;
+}
+.easter-cell.trail-up .snake-trail {
+  left: var(--snake-gap);
+  top: -50%;
+  width: var(--snake-body-size);
+  height: 100%;
+}
+.easter-cell.trail-right .snake-trail {
+  left: 50%;
+  top: var(--snake-gap);
+  width: 100%;
+  height: var(--snake-body-size);
+}
+.easter-cell.trail-down .snake-trail {
+  left: var(--snake-gap);
+  top: 50%;
+  width: var(--snake-body-size);
+  height: 100%;
+}
+.easter-cell.trail-left .snake-trail {
+  left: -50%;
+  top: var(--snake-gap);
+  width: 100%;
+  height: var(--snake-body-size);
+}
+.easter-cell .snake-food-dot {
+  width: 58%;
+  height: 58%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #d92d20;
+  border-radius: 999px;
+  z-index: 3;
+}
+.easter-controls {
+  display: none;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-areas:
+    ". up ."
+    "left down right";
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.easter-control {
+  height: 56px;
+  width: 56px;
+  border: 0;
+  border-radius: 16px;
+  background: #e8efe8;
+  color: #204a2b;
   font: inherit;
-  font-size: clamp(2rem, 7vw, 2.8rem);
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(32, 74, 43, 0.12);
+  touch-action: manipulation;
 }
-.easter-cell:hover,
-.easter-cell:focus-visible {
-  transform: translateY(-1px);
-  border-color: rgba(37, 99, 95, 0.24);
-  box-shadow: 0 16px 26px -24px rgba(37, 99, 95, 0.58);
+.easter-control:active {
+  transform: translateY(1px);
+  background: #d9e7d9;
 }
-.easter-cell[disabled] {
-  cursor: default;
-  opacity: 0.88;
+.easter-control-up { grid-area: up; }
+.easter-control-left { grid-area: left; }
+.easter-control-down { grid-area: down; }
+.easter-control-right { grid-area: right; }
+.easter-hint {
+  margin: 12px 0 0;
+  color: var(--text-3);
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
-.easter-cell.cell-o { color: #25635f; }
-.easter-cell.cell-x { color: #b45309; }
+.easter-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  color: var(--text-3);
+  font-size: 0.75rem;
+}
+.easter-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.easter-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.legend-snake {
+  background: #8fd18f;
+}
+.legend-food {
+  background: #d92d20;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 body.modal-open { overflow: hidden; }
 
@@ -1482,6 +1640,8 @@ body.modal-open { overflow: hidden; }
   .modal-header { padding-right: 48px; }
   .modal-header h2 { font-size: 1.35rem; }
   .easter-panel { width: 100%; padding: 20px; border-radius: 22px; }
+  .easter-head { align-items: stretch; flex-direction: column; }
+  .easter-actions { justify-content: flex-start; flex-wrap: wrap; }
 }
 
 /* =========================================================
@@ -1521,6 +1681,9 @@ body.modal-open { overflow: hidden; }
   .modal-scroll { padding: 24px 18px 28px; }
   .modal-header h2 { font-size: 1.22rem; }
   .easter-panel { padding: 18px; }
+  .easter-board { padding: 8px; }
+  .easter-cell { --snake-body-size: 70%; }
+  .easter-controls { display: grid; }
 }
 
 /* =========================================================

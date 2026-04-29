@@ -1057,46 +1057,544 @@ langSwitchButton.addEventListener('click', () => {
   }, 240);
 });
 
-/* ---------------- Easter Egg: 5-Click Tic-Tac-Toe ---------------- */
+/* ---------------- Easter Egg: 3-Click Snake ---------------- */
 const easterEggBackdrop = document.getElementById('easter-egg');
 const easterEggBoard = document.getElementById('easter-board');
 const easterEggStatus = document.getElementById('easter-status');
 const easterEggReset = document.getElementById('easter-reset');
+const easterEggAuto = document.getElementById('easter-auto');
+const easterEggScore = document.getElementById('easter-score');
+const easterEggMode = document.getElementById('easter-mode');
+const easterEggLive = document.getElementById('easter-live');
+const easterEggControls = Array.from(document.querySelectorAll('.easter-control'));
 const heroPhotoTrigger = document.getElementById('hero-photo-trigger');
-const easterEggCells = Array.from(document.querySelectorAll('.easter-cell'));
-const EASTER_WIN_LINES = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8],
-  [0, 3, 6], [1, 4, 7], [2, 5, 8],
-  [0, 4, 8], [2, 4, 6],
+
+const SNAKE_SIZE = 12;
+const SNAKE_TARGET_LENGTH = SNAKE_SIZE * SNAKE_SIZE;
+const SNAKE_FILL_THRESHOLD = Math.floor(SNAKE_TARGET_LENGTH * 0.7);
+const SNAKE_TICK_MS = 110;
+const SNAKE_AUTO_SPEED_MULTIPLIER = 1.2;
+const SNAKE_START = [
+  { x: 4, y: 6 },
+  { x: 3, y: 6 },
+  { x: 2, y: 6 },
 ];
+const SNAKE_DIRECTIONS = [
+  { key: 'up', dx: 0, dy: -1 },
+  { key: 'right', dx: 1, dy: 0 },
+  { key: 'down', dx: 0, dy: 1 },
+  { key: 'left', dx: -1, dy: 0 },
+];
+const SNAKE_DIRECTION_MAP = {
+  ArrowUp: 'up',
+  KeyW: 'up',
+  ArrowRight: 'right',
+  KeyD: 'right',
+  ArrowDown: 'down',
+  KeyS: 'down',
+  ArrowLeft: 'left',
+  KeyA: 'left',
+};
+const SNAKE_OPPOSITE = {
+  up: 'down',
+  right: 'left',
+  down: 'up',
+  left: 'right',
+};
+const SNAKE_HAMILTONIAN_CYCLE = buildSnakeHamiltonianCycle();
+const SNAKE_HAMILTONIAN_INDEX = new Map(
+  SNAKE_HAMILTONIAN_CYCLE.map((point, index) => [toCycleKey(point.x, point.y), index]),
+);
+
 let easterClickCount = 0;
 let easterClickTimer = null;
-let easterBoardState = Array(9).fill('');
-let easterTurn = 'x';
-let easterGameEnded = false;
+let easterBoardCells = [];
+let snakeBody = [];
+let snakeFood = null;
+let snakeDirection = 'right';
+let snakeNextDirection = 'right';
+let snakeAutoSolve = false;
+let snakeGameOver = false;
+let snakeWon = false;
+let snakeLoopTimer = null;
 
-function getEasterStatusText() {
-  if (easterGameEnded) return easterEggStatus.textContent;
-  return easterTurn === 'x' ? 'X to move' : 'O to move';
+function easterText(en, zh) {
+  return currentLang === 'zh-TW' ? zh : en;
 }
 
-function syncEasterBoard() {
-  easterEggCells.forEach((cell, index) => {
-    const value = easterBoardState[index];
-    cell.textContent = value === 'x' ? '✕' : value === 'o' ? '◯' : '';
-    cell.classList.toggle('cell-x', value === 'x');
-    cell.classList.toggle('cell-o', value === 'o');
-    cell.disabled = easterGameEnded || Boolean(value);
+function toCycleKey(x, y) {
+  return `${x},${y}`;
+}
+
+function getCycleIndex(point) {
+  return SNAKE_HAMILTONIAN_INDEX.get(toCycleKey(point.x, point.y));
+}
+
+function getCycleDistance(fromIndex, toIndex) {
+  return (toIndex - fromIndex + SNAKE_TARGET_LENGTH) % SNAKE_TARGET_LENGTH;
+}
+
+function buildSnakeHamiltonianCycle() {
+  const cycle = [];
+
+  for (let x = 0; x < SNAKE_SIZE; x += 1) {
+    cycle.push({ x, y: 0 });
+  }
+
+  for (let y = 1; y < SNAKE_SIZE; y += 1) {
+    if (y % 2 === 1) {
+      for (let x = SNAKE_SIZE - 1; x >= 1; x -= 1) {
+        cycle.push({ x, y });
+      }
+    } else {
+      for (let x = 1; x < SNAKE_SIZE; x += 1) {
+        cycle.push({ x, y });
+      }
+    }
+  }
+
+  for (let y = SNAKE_SIZE - 1; y >= 1; y -= 1) {
+    cycle.push({ x: 0, y });
+  }
+
+  return cycle;
+}
+
+function cloneSegment(segment) {
+  return { x: segment.x, y: segment.y };
+}
+
+function toSnakeKey(point) {
+  return `${point.x},${point.y}`;
+}
+
+function isSamePoint(a, b) {
+  return a.x === b.x && a.y === b.y;
+}
+
+function getDirectionBetween(from, to) {
+  if (!from || !to) return null;
+  if (to.x === from.x && to.y === from.y - 1) return 'up';
+  if (to.x === from.x + 1 && to.y === from.y) return 'right';
+  if (to.x === from.x && to.y === from.y + 1) return 'down';
+  if (to.x === from.x - 1 && to.y === from.y) return 'left';
+  return null;
+}
+
+function isInsideBoard(point) {
+  return point.x >= 0 && point.x < SNAKE_SIZE && point.y >= 0 && point.y < SNAKE_SIZE;
+}
+
+function getSnakeHead(body = snakeBody) {
+  return body[0];
+}
+
+function getSnakeTail(body = snakeBody) {
+  return body[body.length - 1];
+}
+
+function getDirectionVector(directionKey) {
+  return SNAKE_DIRECTIONS.find((direction) => direction.key === directionKey);
+}
+
+function getNextPoint(point, directionKey) {
+  const direction = getDirectionVector(directionKey);
+  return { x: point.x + direction.dx, y: point.y + direction.dy };
+}
+
+function buildOccupiedSet(body, { ignoreTail = false } = {}) {
+  const limit = ignoreTail ? body.length - 1 : body.length;
+  const occupied = new Set();
+  for (let index = 0; index < limit; index += 1) occupied.add(toSnakeKey(body[index]));
+  return occupied;
+}
+
+function getLegalDirections(body = snakeBody, currentDirection = snakeDirection) {
+  const head = getSnakeHead(body);
+  const tail = getSnakeTail(body);
+  const legalDirections = [];
+
+  SNAKE_DIRECTIONS.forEach((direction) => {
+    if (body.length > 1 && SNAKE_OPPOSITE[currentDirection] === direction.key) return;
+
+    const nextPoint = getNextPoint(head, direction.key);
+    if (!isInsideBoard(nextPoint)) return;
+
+    const hitsBody = body.some((segment, index) => index < body.length - 1 && isSamePoint(segment, nextPoint));
+    if (hitsBody && !isSamePoint(nextPoint, tail)) return;
+
+    legalDirections.push(direction.key);
   });
-  easterEggStatus.textContent = getEasterStatusText();
+
+  return legalDirections;
+}
+
+function simulateSnakeMove(body, directionKey, food) {
+  const nextHead = getNextPoint(getSnakeHead(body), directionKey);
+  if (!isInsideBoard(nextHead)) return null;
+
+  const willEat = food && isSamePoint(nextHead, food);
+  const occupied = buildOccupiedSet(body, { ignoreTail: !willEat });
+  if (occupied.has(toSnakeKey(nextHead))) return null;
+
+  const nextBody = [nextHead, ...body.map(cloneSegment)];
+  if (!willEat) nextBody.pop();
+  return { body: nextBody, ateFood: Boolean(willEat) };
+}
+
+function findShortestPath(body, target, { allowTail = true } = {}) {
+  const start = getSnakeHead(body);
+  if (isSamePoint(start, target)) return [];
+
+  const blocked = buildOccupiedSet(body, { ignoreTail: allowTail });
+  const queue = [{ point: start, path: [] }];
+  const visited = new Set([toSnakeKey(start)]);
+
+  while (queue.length) {
+    const current = queue.shift();
+
+    for (const direction of SNAKE_DIRECTIONS) {
+      const nextPoint = getNextPoint(current.point, direction.key);
+      const nextKey = toSnakeKey(nextPoint);
+      if (!isInsideBoard(nextPoint) || visited.has(nextKey)) continue;
+      if (blocked.has(nextKey) && !isSamePoint(nextPoint, target)) continue;
+
+      const nextPath = [...current.path, direction.key];
+      if (isSamePoint(nextPoint, target)) return nextPath;
+
+      visited.add(nextKey);
+      queue.push({ point: nextPoint, path: nextPath });
+    }
+  }
+
+  return null;
+}
+
+function simulatePath(body, food, path) {
+  let simulatedBody = body.map(cloneSegment);
+  for (const directionKey of path) {
+    const result = simulateSnakeMove(simulatedBody, directionKey, food);
+    if (!result) return null;
+    simulatedBody = result.body;
+  }
+  return simulatedBody;
+}
+
+function countReachableCells(startPoint, blocked) {
+  const queue = [startPoint];
+  const visited = new Set([toSnakeKey(startPoint)]);
+
+  while (queue.length) {
+    const point = queue.shift();
+    for (const direction of SNAKE_DIRECTIONS) {
+      const nextPoint = getNextPoint(point, direction.key);
+      const nextKey = toSnakeKey(nextPoint);
+      if (!isInsideBoard(nextPoint) || visited.has(nextKey) || blocked.has(nextKey)) continue;
+      visited.add(nextKey);
+      queue.push(nextPoint);
+    }
+  }
+
+  return visited.size;
+}
+
+function pickTailChasingDirection(body = snakeBody, currentDirection = snakeDirection) {
+  const legalDirections = getLegalDirections(body, currentDirection);
+  let bestDirection = null;
+  let bestScore = -1;
+
+  legalDirections.forEach((directionKey) => {
+    const result = simulateSnakeMove(body, directionKey, snakeFood);
+    if (!result) return;
+
+    const tailPath = findShortestPath(result.body, getSnakeTail(result.body), { allowTail: true });
+    const blocked = buildOccupiedSet(result.body, { ignoreTail: true });
+    const openScore = countReachableCells(getSnakeHead(result.body), blocked);
+    const pathScore = tailPath ? tailPath.length : -1;
+    const totalScore = pathScore >= 0 ? pathScore * 1000 + openScore : openScore;
+
+    if (totalScore > bestScore) {
+      bestScore = totalScore;
+      bestDirection = directionKey;
+    }
+  });
+
+  return bestDirection || legalDirections[0] || null;
+}
+
+function getHamiltonianDirection(body = snakeBody) {
+  const head = getSnakeHead(body);
+  const headIndex = getCycleIndex(head);
+  if (headIndex == null) return null;
+
+  const nextPoint = SNAKE_HAMILTONIAN_CYCLE[(headIndex + 1) % SNAKE_HAMILTONIAN_CYCLE.length];
+  const directionKey = getDirectionBetween(head, nextPoint);
+  if (!directionKey) return null;
+
+  const result = simulateSnakeMove(body, directionKey, snakeFood);
+  return result ? directionKey : null;
+}
+
+function getHamiltonianShortcutDirection(body = snakeBody, currentDirection = snakeDirection) {
+  const head = getSnakeHead(body);
+  const tail = getSnakeTail(body);
+  const food = snakeFood;
+  const headIndex = getCycleIndex(head);
+  const tailIndex = getCycleIndex(tail);
+  const foodIndex = food ? getCycleIndex(food) : null;
+  if (headIndex == null || tailIndex == null) return null;
+
+  const headToTail = getCycleDistance(headIndex, tailIndex);
+  const headToFood = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(headIndex, foodIndex);
+  const legalDirections = getLegalDirections(body, currentDirection);
+  let bestDirection = null;
+  let bestScore = -Infinity;
+
+  legalDirections.forEach((directionKey) => {
+    const result = simulateSnakeMove(body, directionKey, food);
+    if (!result) return;
+
+    const nextHead = getSnakeHead(result.body);
+    const nextIndex = getCycleIndex(nextHead);
+    if (nextIndex == null) return;
+
+    const advance = getCycleDistance(headIndex, nextIndex);
+    if (advance <= 0) return;
+
+    const tailMargin = getCycleDistance(nextIndex, tailIndex);
+    const safetyMargin = result.ateFood ? 2 : 1;
+    if (tailMargin <= safetyMargin || advance >= headToTail) return;
+
+    const tailPath = findShortestPath(result.body, getSnakeTail(result.body), { allowTail: true });
+    if (!tailPath) return;
+
+    const blocked = buildOccupiedSet(result.body, { ignoreTail: true });
+    const openScore = countReachableCells(nextHead, blocked);
+    const foodDistance = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(nextIndex, foodIndex);
+    const improvesFood = foodDistance < headToFood;
+    const followsCycle = advance === 1;
+    const score =
+      tailMargin * 1000 +
+      openScore * 10 +
+      (followsCycle ? 150 : 0) +
+      (improvesFood ? 500 : 0) -
+      advance * 12 -
+      foodDistance;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestDirection = directionKey;
+    }
+  });
+
+  return bestDirection;
+}
+
+function getAutoSolveDirection() {
+  const pathToFood = snakeFood ? findShortestPath(snakeBody, snakeFood, { allowTail: true }) : null;
+  const isLatePhase = snakeBody.length >= SNAKE_FILL_THRESHOLD;
+
+  if (!isLatePhase && pathToFood && pathToFood.length) {
+    const simulatedBody = simulatePath(snakeBody, snakeFood, pathToFood);
+    if (simulatedBody) {
+      const canSeeTailAfterEating = findShortestPath(simulatedBody, getSnakeTail(simulatedBody), { allowTail: true });
+      if (canSeeTailAfterEating) return pathToFood[0];
+    }
+  }
+
+  if (isLatePhase) {
+    const shortcutDirection = getHamiltonianShortcutDirection();
+    if (shortcutDirection) return shortcutDirection;
+
+    const cycleDirection = getHamiltonianDirection();
+    if (cycleDirection) return cycleDirection;
+  }
+
+  if (pathToFood && pathToFood.length) {
+    const simulatedBody = simulatePath(snakeBody, snakeFood, pathToFood);
+    if (simulatedBody) {
+      const canSeeTailAfterEating = findShortestPath(simulatedBody, getSnakeTail(simulatedBody), { allowTail: true });
+      if (canSeeTailAfterEating) return pathToFood[0];
+    }
+  }
+
+  return pickTailChasingDirection();
+}
+
+function placeSnakeFood() {
+  const occupied = buildOccupiedSet(snakeBody);
+  const emptyCells = [];
+
+  for (let y = 0; y < SNAKE_SIZE; y += 1) {
+    for (let x = 0; x < SNAKE_SIZE; x += 1) {
+      const point = { x, y };
+      if (!occupied.has(toSnakeKey(point))) emptyCells.push(point);
+    }
+  }
+
+  snakeFood = emptyCells.length
+    ? cloneSegment(emptyCells[Math.floor(Math.random() * emptyCells.length)])
+    : null;
+}
+
+function updateEasterHud() {
+  const score = Math.max(0, snakeBody.length - SNAKE_START.length);
+
+  if (snakeWon) {
+    easterEggStatus.textContent = easterText('Board cleared. Perfect run.', '\u5168\u5716\u5403\u6eff\u4e86\u3002');
+  } else if (snakeGameOver) {
+    easterEggStatus.textContent = easterText(`Game over. Score: ${score}`, `\u904a\u6232\u7d50\u675f\uff0c\u5206\u6578\uff1a${score}`);
+  } else {
+    easterEggStatus.textContent = easterText(`Score: ${score}`, `\u5206\u6578\uff1a${score}`);
+  }
+
+  if (easterEggScore) {
+    easterEggScore.textContent = easterText(
+      `Length ${snakeBody.length} / ${SNAKE_TARGET_LENGTH}`,
+      `\u9577\u5ea6 ${snakeBody.length} / ${SNAKE_TARGET_LENGTH}`,
+    );
+  }
+
+  if (easterEggMode) {
+    easterEggMode.textContent = snakeAutoSolve
+      ? easterText('Auto Solve', '\u81ea\u52d5\u89e3\u984c')
+      : easterText('Manual', '\u624b\u52d5');
+  }
+
+  if (easterEggAuto) {
+    easterEggAuto.textContent = snakeAutoSolve
+      ? easterText('Auto Solve: On', 'Auto Solve\uff1a\u958b')
+      : easterText('Auto Solve: Off', 'Auto Solve\uff1a\u95dc');
+    easterEggAuto.classList.toggle('active', snakeAutoSolve);
+  }
+
+  if (easterEggLive) easterEggLive.textContent = easterEggStatus.textContent;
+}
+
+function renderSnakeBoard() {
+  if (!easterEggBoard || !easterBoardCells.length) return;
+
+  easterBoardCells.forEach((cell) => {
+    cell.classList.remove(
+      'cell-snake',
+      'cell-head',
+      'cell-food',
+      'trail-up',
+      'trail-right',
+      'trail-down',
+      'trail-left',
+    );
+  });
+
+  if (snakeFood) {
+    const foodIndex = snakeFood.y * SNAKE_SIZE + snakeFood.x;
+    easterBoardCells[foodIndex]?.classList.add('cell-food');
+  }
+
+  snakeBody.forEach((segment, index) => {
+    const cellIndex = segment.y * SNAKE_SIZE + segment.x;
+    const cell = easterBoardCells[cellIndex];
+    if (!cell) return;
+
+    cell.classList.add('cell-snake');
+    const previousSegment = snakeBody[index - 1];
+
+    if (index === 0) {
+      cell.classList.add('cell-head');
+      return;
+    }
+
+    const trailDirection = previousSegment ? getDirectionBetween(segment, previousSegment) : null;
+    if (trailDirection) cell.classList.add(`trail-${trailDirection}`);
+  });
+
+  updateEasterHud();
+}
+
+function buildSnakeBoard() {
+  if (!easterEggBoard || easterBoardCells.length) return;
+
+  easterEggBoard.innerHTML = '';
+  easterBoardCells = Array.from({ length: SNAKE_TARGET_LENGTH }, (_, index) => {
+    const cell = document.createElement('div');
+    cell.className = 'easter-cell';
+    cell.setAttribute('role', 'gridcell');
+    cell.setAttribute('aria-label', `cell-${index + 1}`);
+    cell.innerHTML = `
+      <span class="snake-trail" aria-hidden="true"></span>
+      <span class="snake-core" aria-hidden="true"></span>
+      <span class="snake-food-dot" aria-hidden="true"></span>
+    `;
+    easterEggBoard.appendChild(cell);
+    return cell;
+  });
+}
+
+function stopSnakeLoop() {
+  if (snakeLoopTimer) {
+    clearInterval(snakeLoopTimer);
+    snakeLoopTimer = null;
+  }
+}
+
+function startSnakeLoop() {
+  stopSnakeLoop();
+  const tickMs = snakeAutoSolve
+    ? Math.max(16, Math.round(SNAKE_TICK_MS / SNAKE_AUTO_SPEED_MULTIPLIER))
+    : SNAKE_TICK_MS;
+  snakeLoopTimer = setInterval(stepSnakeGame, tickMs);
+}
+
+function finishSnakeGame({ won = false } = {}) {
+  snakeGameOver = !won;
+  snakeWon = won;
+  stopSnakeLoop();
+  renderSnakeBoard();
+}
+
+function stepSnakeGame() {
+  if (snakeGameOver || snakeWon) return;
+
+  if (snakeAutoSolve) {
+    const autoDirection = getAutoSolveDirection();
+    if (autoDirection) snakeNextDirection = autoDirection;
+  }
+
+  if (snakeBody.length > 1 && SNAKE_OPPOSITE[snakeDirection] === snakeNextDirection) {
+    snakeNextDirection = snakeDirection;
+  }
+
+  const result = simulateSnakeMove(snakeBody, snakeNextDirection, snakeFood);
+  if (!result) {
+    finishSnakeGame();
+    return;
+  }
+
+  snakeDirection = snakeNextDirection;
+  snakeBody = result.body;
+
+  if (result.ateFood) {
+    if (snakeBody.length >= SNAKE_TARGET_LENGTH) {
+      finishSnakeGame({ won: true });
+      return;
+    }
+    placeSnakeFood();
+  }
+
+  renderSnakeBoard();
 }
 
 function resetEasterGame() {
-  easterBoardState = Array(9).fill('');
-  easterTurn = 'x';
-  easterGameEnded = false;
-  easterEggStatus.textContent = 'X to move';
-  syncEasterBoard();
+  buildSnakeBoard();
+  stopSnakeLoop();
+  snakeBody = SNAKE_START.map(cloneSegment);
+  snakeDirection = 'right';
+  snakeNextDirection = 'right';
+  snakeGameOver = false;
+  snakeWon = false;
+  placeSnakeFood();
+  renderSnakeBoard();
+  startSnakeLoop();
 }
 
 function openEasterEgg() {
@@ -1109,43 +1607,12 @@ function openEasterEgg() {
 
 function closeEasterEgg() {
   if (!easterEggBackdrop) return;
+  stopSnakeLoop();
   easterEggBackdrop.classList.remove('open');
   easterEggBackdrop.setAttribute('aria-hidden', 'true');
   if (!modalBackdrop || !modalBackdrop.classList.contains('open')) {
     bodyElement.classList.remove('modal-open');
   }
-}
-
-function finishEasterGame(winner) {
-  easterGameEnded = true;
-  easterEggStatus.textContent = winner ? `${winner === 'x' ? 'X' : 'O'} wins` : 'Draw';
-  syncEasterBoard();
-}
-
-function checkEasterWinner() {
-  for (const line of EASTER_WIN_LINES) {
-    const [a, b, c] = line;
-    if (easterBoardState[a] && easterBoardState[a] === easterBoardState[b] && easterBoardState[a] === easterBoardState[c]) {
-      return easterBoardState[a];
-    }
-  }
-  return '';
-}
-
-function handleEasterMove(index) {
-  if (easterGameEnded || easterBoardState[index]) return;
-  easterBoardState[index] = easterTurn;
-  const winner = checkEasterWinner();
-  if (winner) {
-    finishEasterGame(winner);
-    return;
-  }
-  if (easterBoardState.every(Boolean)) {
-    finishEasterGame('');
-    return;
-  }
-  easterTurn = easterTurn === 'x' ? 'o' : 'x';
-  syncEasterBoard();
 }
 
 function clearEasterClickTimer() {
@@ -1159,7 +1626,7 @@ function registerEasterClick() {
   easterClickCount += 1;
   clearEasterClickTimer();
 
-  if (easterClickCount >= 5) {
+  if (easterClickCount >= 3) {
     easterClickCount = 0;
     openEasterEgg();
     return;
@@ -1171,7 +1638,19 @@ function registerEasterClick() {
   }, 1600);
 }
 
-if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus && easterEggReset) {
+function setSnakeDirection(directionKey) {
+  if (!directionKey) return;
+  snakeAutoSolve = false;
+  if (snakeBody.length > 1 && SNAKE_OPPOSITE[snakeDirection] === directionKey) return;
+  snakeNextDirection = directionKey;
+  updateEasterHud();
+  startSnakeLoop();
+}
+
+if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus && easterEggReset && easterEggAuto) {
+  buildSnakeBoard();
+  renderSnakeBoard();
+
   heroPhotoTrigger.addEventListener('click', registerEasterClick);
   heroPhotoTrigger.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -1180,16 +1659,35 @@ if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus &
     }
   });
 
-  easterEggCells.forEach((cell, index) => {
-    cell.addEventListener('click', () => handleEasterMove(index));
+  easterEggReset.addEventListener('click', resetEasterGame);
+  easterEggAuto.addEventListener('click', () => {
+    snakeAutoSolve = !snakeAutoSolve;
+    updateEasterHud();
+    startSnakeLoop();
+  });
+  easterEggControls.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!easterEggBackdrop.classList.contains('open')) return;
+      setSnakeDirection(button.dataset.direction);
+    });
   });
 
-  easterEggReset.addEventListener('click', resetEasterGame);
   easterEggBackdrop.addEventListener('click', (event) => {
     if (event.target === easterEggBackdrop) closeEasterEgg();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && easterEggBackdrop.classList.contains('open')) closeEasterEgg();
+    if (!easterEggBackdrop.classList.contains('open')) return;
+
+    if (event.key === 'Escape') {
+      closeEasterEgg();
+      return;
+    }
+
+    const directionKey = SNAKE_DIRECTION_MAP[event.code] || SNAKE_DIRECTION_MAP[event.key];
+    if (!directionKey) return;
+
+    event.preventDefault();
+    setSnakeDirection(directionKey);
   });
 }
 
