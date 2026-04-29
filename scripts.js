@@ -1057,7 +1057,7 @@ langSwitchButton.addEventListener('click', () => {
   }, 240);
 });
 
-/* ---------------- Easter Egg: Long-Press Tic-Tac-Toe ---------------- */
+/* ---------------- Easter Egg: 5-Click Tic-Tac-Toe ---------------- */
 const easterEggBackdrop = document.getElementById('easter-egg');
 const easterEggBoard = document.getElementById('easter-board');
 const easterEggStatus = document.getElementById('easter-status');
@@ -1069,7 +1069,8 @@ const EASTER_WIN_LINES = [
   [0, 3, 6], [1, 4, 7], [2, 5, 8],
   [0, 4, 8], [2, 4, 6],
 ];
-let easterPressTimer = null;
+let easterClickCount = 0;
+let easterClickTimer = null;
 let easterBoardState = Array(9).fill('');
 let easterTurn = 'x';
 let easterGameEnded = false;
@@ -1147,32 +1148,37 @@ function handleEasterMove(index) {
   syncEasterBoard();
 }
 
-function clearEasterPressTimer() {
-  if (easterPressTimer) {
-    clearTimeout(easterPressTimer);
-    easterPressTimer = null;
+function clearEasterClickTimer() {
+  if (easterClickTimer) {
+    clearTimeout(easterClickTimer);
+    easterClickTimer = null;
   }
 }
 
-function beginEasterPress() {
-  clearEasterPressTimer();
-  easterPressTimer = setTimeout(() => {
+function registerEasterClick() {
+  easterClickCount += 1;
+  clearEasterClickTimer();
+
+  if (easterClickCount >= 5) {
+    easterClickCount = 0;
     openEasterEgg();
-  }, 3000);
+    return;
+  }
+
+  easterClickTimer = setTimeout(() => {
+    easterClickCount = 0;
+    easterClickTimer = null;
+  }, 1600);
 }
 
 if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus && easterEggReset) {
-  heroPhotoTrigger.addEventListener('pointerdown', beginEasterPress);
-  heroPhotoTrigger.addEventListener('pointerup', clearEasterPressTimer);
-  heroPhotoTrigger.addEventListener('pointerleave', clearEasterPressTimer);
-  heroPhotoTrigger.addEventListener('pointercancel', clearEasterPressTimer);
+  heroPhotoTrigger.addEventListener('click', registerEasterClick);
   heroPhotoTrigger.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      beginEasterPress();
+      registerEasterClick();
     }
   });
-  heroPhotoTrigger.addEventListener('keyup', clearEasterPressTimer);
 
   easterEggCells.forEach((cell, index) => {
     cell.addEventListener('click', () => handleEasterMove(index));

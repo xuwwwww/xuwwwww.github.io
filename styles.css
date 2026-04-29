@@ -307,8 +307,8 @@ body.page-lang-switching { opacity: 0; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 18px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
 }
 .school-logo {
@@ -1379,8 +1379,8 @@ body.modal-open { overflow: hidden; }
     justify-content: center;
   }
   .school-logo-frame {
-    width: 60px;
-    height: 16px;
+    width: 72px;
+    height: 19px;
   }
   .hero-bio {
     font-size: 0.97rem;
@@ -1513,8 +1513,8 @@ body.modal-open { overflow: hidden; }
     letter-spacing: 0.04em;
   }
   .school-logo-frame {
-    width: 56px;
-    height: 15px;
+    width: 68px;
+    height: 18px;
   }
   .award-note { font-size: 0.84rem; }
 
