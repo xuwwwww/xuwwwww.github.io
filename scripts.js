@@ -975,6 +975,14 @@ const AWARDS = {
 };
 
 const DETAILS = { ...PROJECTS, ...AWARDS };
+const DETAIL_RESOURCE_LINKS = {
+  'moe-dugan': [
+    { label: 'CS Poster', url: 'research/CS_poster.pdf' },
+  ],
+  'clinical-nlp': [
+    { label: 'EE Poster', url: 'research/EE_poster.pdf' },
+  ],
+};
 
 /* ---------------- Language Switch ---------------- */
 function updateCopyTooltips(lang) {
@@ -1346,6 +1354,7 @@ function getHamiltonianShortcutDirection(body = snakeBody, currentDirection = sn
 
   const headToTail = getCycleDistance(headIndex, tailIndex);
   const headToFood = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(headIndex, foodIndex);
+  const foodIsAhead = foodIndex != null && headToFood < headToTail;
   const legalDirections = getLegalDirections(body, currentDirection);
   let bestDirection = null;
   let bestScore = -Infinity;
@@ -1362,8 +1371,14 @@ function getHamiltonianShortcutDirection(body = snakeBody, currentDirection = sn
     if (advance <= 0) return;
 
     const tailMargin = getCycleDistance(nextIndex, tailIndex);
-    const safetyMargin = result.ateFood ? 2 : 1;
+    const safetyMargin = Math.max(
+      result.ateFood ? 2 : 1,
+      Math.min(10, Math.ceil((body.length - SNAKE_FILL_THRESHOLD + 1) / 5)),
+    );
     if (tailMargin <= safetyMargin || advance >= headToTail) return;
+
+    if (foodIsAhead && advance > headToFood) return;
+    if (!foodIsAhead && advance !== 1) return;
 
     const tailPath = findShortestPath(result.body, getSnakeTail(result.body), { allowTail: true });
     if (!tailPath) return;
@@ -1371,15 +1386,13 @@ function getHamiltonianShortcutDirection(body = snakeBody, currentDirection = sn
     const blocked = buildOccupiedSet(result.body, { ignoreTail: true });
     const openScore = countReachableCells(nextHead, blocked);
     const foodDistance = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(nextIndex, foodIndex);
-    const improvesFood = foodDistance < headToFood;
     const followsCycle = advance === 1;
     const score =
-      tailMargin * 1000 +
+      tailMargin * 100 +
       openScore * 10 +
-      (followsCycle ? 150 : 0) +
-      (improvesFood ? 500 : 0) -
-      advance * 12 -
-      foodDistance;
+      (followsCycle ? 300 : 0) -
+      advance * 8 -
+      foodDistance * 12;
 
     if (score > bestScore) {
       bestScore = score;
@@ -1408,6 +1421,8 @@ function getAutoSolveDirection() {
 
     const cycleDirection = getHamiltonianDirection();
     if (cycleDirection) return cycleDirection;
+
+    return pickTailChasingDirection();
   }
 
   if (pathToFood && pathToFood.length) {
@@ -1789,6 +1804,7 @@ function renderDetail(id) {
   const detail = DETAILS[id];
   if (!detail) return;
   const data = detail[currentLang === 'zh-TW' ? 'zh' : 'en'] || detail.en;
+  const extraLinks = DETAIL_RESOURCE_LINKS[id] || [];
 
   modalPeriod.textContent = data.period || '';
   modalTitle.textContent = data.title || '';
@@ -1845,6 +1861,40 @@ function renderDetail(id) {
       modalSections.appendChild(wrap);
     }
   });
+
+  if (extraLinks.length) {
+    const h = document.createElement('h4');
+    h.textContent = currentLang === 'zh-TW' ? '\u6d77\u5831\u8207\u8cc7\u6599' : 'Posters & Resources';
+    modalSections.appendChild(h);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'modal-link-row';
+    extraLinks.forEach((link) => {
+      const a = document.createElement('a');
+      a.className = 'modal-link';
+      a.href = link.url;
+      a.target = '_blank';
+      a.rel = 'noreferrer';
+      a.textContent = `${link.label} · ${currentLang === 'zh-TW' ? '\u5b8c\u6574\u958b\u555f' : 'Open full'}`;
+      wrap.appendChild(a);
+    });
+    modalSections.appendChild(wrap);
+
+    const preview = extraLinks[0];
+    if (preview) {
+      const previewWrap = document.createElement('div');
+      previewWrap.className = 'modal-preview';
+
+      const iframe = document.createElement('iframe');
+      iframe.className = 'modal-preview-frame';
+      iframe.src = `${preview.url}#page=1&view=FitH`;
+      iframe.title = `${data.title} preview`;
+      iframe.loading = 'lazy';
+
+      previewWrap.appendChild(iframe);
+      modalSections.appendChild(previewWrap);
+    }
+  }
 }
 
 function openDetail(id, trigger) {
@@ -1876,6 +1926,24 @@ document.querySelectorAll('[data-project]').forEach((card) => {
       openDetail(card.dataset.project, card);
     }
   });
+});
+
+document.querySelectorAll('.project-resource-link, .project-preview-frame').forEach((el) => {
+  el.addEventListener('click', (event) => event.stopPropagation());
+  el.addEventListener('keydown', (event) => event.stopPropagation());
+});
+
+document.querySelectorAll('.project-preview-toggle').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const resource = button.closest('.project-resource');
+    const preview = resource?.querySelector('.project-preview');
+    if (!preview) return;
+    const nextExpanded = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false');
+    preview.hidden = !nextExpanded;
+  });
+  button.addEventListener('keydown', (event) => event.stopPropagation());
 });
 
 document.querySelectorAll('[data-award]').forEach((card) => {
