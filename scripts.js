@@ -977,10 +977,10 @@ const AWARDS = {
 const DETAILS = { ...PROJECTS, ...AWARDS };
 const DETAIL_RESOURCE_LINKS = {
   'moe-dugan': [
-    { label: 'CS Poster', url: 'research/CS_poster.pdf' },
+    { label: 'CS Poster', url: 'assets/research/CS_poster.pdf' },
   ],
   'clinical-nlp': [
-    { label: 'EE Poster', url: 'research/EE_poster.pdf' },
+    { label: 'EE Poster', url: 'assets/research/EE_poster.pdf' },
   ],
 };
 

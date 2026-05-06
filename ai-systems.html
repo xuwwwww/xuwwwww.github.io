@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PerfRunbench project page: resource guard, CPU tuning, memory tuning, GPU tuning, benchmark automation, and HTML reports.">
+  <title class="lang-en">PerfRunbench - AI Performance Tooling</title>
+  <title class="lang-zh-TW">PerfRunbench - AI 效能工具</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="lang-en systems-page">
+
+  <header class="topbar" id="topbar">
+    <a href="index.html#top" class="brand" aria-label="Home">
+      <span class="brand-name">Louis Wu</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#about"><span class="lang-en">About</span><span class="lang-zh-TW">關於</span></a>
+      <a href="index.html#projects"><span class="lang-en">Projects</span><span class="lang-zh-TW">專案</span></a>
+      <a class="active" href="ai-systems.html">PerfRunbench</a>
+      <a href="#how-it-works"><span class="lang-en">How It Works</span><span class="lang-zh-TW">運作方式</span></a>
+      <a href="#evidence"><span class="lang-en">Evidence</span><span class="lang-zh-TW">佐證</span></a>
+      <a href="#docs"><span class="lang-en">Docs</span><span class="lang-zh-TW">文件</span></a>
+    </nav>
+
+    <div class="topbar-actions">
+      <button id="lang-switch" type="button" aria-label="Switch language">
+        <span id="lang-switch-label">中文</span>
+      </button>
+      <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="project-hero reveal">
+      <div class="project-hero-copy">
+        <span class="eyebrow">
+          <span class="lang-en">AI workload performance tooling</span>
+          <span class="lang-zh-TW">AI 工作負載效能工具</span>
+        </span>
+        <h1>PerfRunbench</h1>
+        <p class="project-lede">
+          <span class="lang-en">Benchmark, tune, and report AI workload performance under CPU, memory, runtime, and GPU constraints</span>
+          <span class="lang-zh-TW">在 CPU、記憶體、runtime 與 GPU 條件限制下，對 AI 工作負載進行 benchmark、調校與報告產出</span>
+        </p>
+        <div class="project-actions">
+          <a class="btn btn-primary" href="assets/perfrunbench/docs/perfrunbench-user-guide.pdf" target="_blank" rel="noopener">
+            <span class="lang-en">User Guide</span>
+            <span class="lang-zh-TW">使用指南</span>
+          </a>
+          <a class="btn btn-secondary" href="assets/perfrunbench/reports/report-comparison.html" target="_blank" rel="noopener">
+            <span class="lang-en">Demo Report</span>
+            <span class="lang-zh-TW">Demo 報告</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/xuwwwww/PerfRunbench" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn btn-ghost" href="assets/perfrunbench/docs/perfrunbench-slides.pdf" target="_blank" rel="noopener">
+            <span class="lang-en">Slides</span>
+            <span class="lang-zh-TW">簡報</span>
+          </a>
+        </div>
+      </div>
+      <div class="project-hero-panel">
+        <h2>
+          <span class="lang-en">What it proves</span>
+          <span class="lang-zh-TW">目前佐證</span>
+        </h2>
+        <div class="metric-list">
+          <div>
+            <strong>+4.775%</strong>
+            <span class="lang-en">CPU/runtime normalized samples/sec vs paired baseline</span>
+            <span class="lang-zh-TW">CPU/runtime normalized samples/sec 相較 paired baseline 提升</span>
+          </div>
+          <div>
+            <strong>+3.455%</strong>
+            <span class="lang-en">GPU workload samples/sec in guarded GPU comparison</span>
+            <span class="lang-zh-TW">GPU guard comparison 中 workload samples/sec 提升</span>
+          </div>
+          <div>
+            <strong>-46.472%</strong>
+            <span class="lang-en">Peak memory in the memory tuning demo</span>
+            <span class="lang-zh-TW">memory tuning demo 中 peak memory 降低</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <h2 class="section-title">
+          <span class="lang-en">What PerfRunbench Does</span>
+          <span class="lang-zh-TW">PerfRunbench 能做什麼</span>
+        </h2>
+      </div>
+      <div class="capability-grid">
+        <article class="systems-card">
+          <h3>Resource Guard</h3>
+          <p>
+            <span class="lang-en">Wrap a training or benchmark command with memory budget, reserved CPU cores, CPU quota, cgroup sampling, and optional hard kill</span>
+            <span class="lang-zh-TW">包住原本的 training 或 benchmark command，加入 memory budget、reserved CPU cores、CPU quota、cgroup sampling 與 optional hard kill</span>
+          </p>
+        </article>
+        <article class="systems-card">
+          <h3>CPU / Memory Tuning</h3>
+          <p>
+            <span class="lang-en">Compare Linux, WSL, Windows, runtime, and memory profiles against a baseline with repeat-aware reports</span>
+            <span class="lang-zh-TW">把 Linux、WSL、Windows、runtime、memory profiles 跟 baseline 比較，並輸出 repeat-aware reports</span>
+          </p>
+        </article>
+        <article class="systems-card">
+          <h3>GPU Tuning</h3>
+          <p>
+            <span class="lang-en">Apply reversible NVIDIA runtime profiles such as performance, balanced, and guard, then compare GPU throughput and TFLOPS</span>
+            <span class="lang-zh-TW">套用可還原的 NVIDIA runtime profiles，例如 performance、balanced、guard，並比較 GPU throughput 與 TFLOPS</span>
+          </p>
+        </article>
+        <article class="systems-card">
+          <h3>Reports</h3>
+          <p>
+            <span class="lang-en">Generate HTML reports and recommendation JSON so runs are inspectable without digging through raw terminal logs</span>
+            <span class="lang-zh-TW">產生 HTML reports 與 recommendation JSON，讓結果不用翻 raw terminal logs 也能檢查</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <h2 class="section-title">
+          <span class="lang-en">How It Works</span>
+          <span class="lang-zh-TW">如何做到</span>
+        </h2>
+      </div>
+      <div class="mechanism-grid">
+        <article class="mechanism-card">
+          <span class="mechanism-step">1</span>
+          <h3>
+            <span class="lang-en">Wrap the existing command</span>
+            <span class="lang-zh-TW">包住原本的 command</span>
+          </h3>
+          <p>
+            <span class="lang-en">PerfRunbench does not replace the training script, it launches the original command after <code>--</code>, so the workload can stay in its own Python, conda, venv, shell, or Docker environment</span>
+            <span class="lang-zh-TW">PerfRunbench 不取代 training script，而是在 <code>--</code> 後啟動原本的 command，因此 workload 可以保留自己的 Python、conda、venv、shell 或 Docker 環境</span>
+          </p>
+          <pre class="code-block"><code>autotuneai run --memory-budget-gb 22 -- python train.py</code></pre>
+        </article>
+        <article class="mechanism-card">
+          <span class="mechanism-step">2</span>
+          <h3>
+            <span class="lang-en">Select an executor</span>
+            <span class="lang-zh-TW">選擇 executor</span>
+          </h3>
+          <p>
+            <span class="lang-en">The runner chooses <code>local</code>, <code>systemd</code>, or <code>docker</code>, on Linux/WSL, <code>systemd</code> can create a transient scope so CPU and memory limits are enforced through cgroups</span>
+            <span class="lang-zh-TW">Runner 會選擇 <code>local</code>、<code>systemd</code> 或 <code>docker</code>，在 Linux/WSL 上，<code>systemd</code> 可以建立 transient scope，透過 cgroups 執行 CPU 與 memory limits</span>
+          </p>
+        </article>
+        <article class="mechanism-card">
+          <span class="mechanism-step">3</span>
+          <h3>
+            <span class="lang-en">Apply resource guard</span>
+            <span class="lang-zh-TW">套用 resource guard</span>
+          </h3>
+          <p>
+            <span class="lang-en">CPU quota, reserved cores, memory budget, affinity, and optional hard-kill rules are applied around the process, when cgroups are available, it samples <code>memory.current</code>, <code>memory.peak</code>, and <code>cpu.stat</code></span>
+            <span class="lang-zh-TW">在 process 外層套用 CPU quota、reserved cores、memory budget、affinity 與 optional hard-kill，若可使用 cgroups，會取樣 <code>memory.current</code>、<code>memory.peak</code> 與 <code>cpu.stat</code></span>
+          </p>
+        </article>
+        <article class="mechanism-card">
+          <span class="mechanism-step">4</span>
+          <h3>
+            <span class="lang-en">Apply runtime tuning</span>
+            <span class="lang-zh-TW">套用 runtime tuning</span>
+          </h3>
+          <p>
+            <span class="lang-en">System profiles adjust reversible OS/runtime knobs, runtime profiles set process-local environment variables, GPU profiles use <code>nvidia-smi</code> controls such as persistence mode, power limit, and supported application clocks when available</span>
+            <span class="lang-zh-TW">System profiles 會調整可還原的 OS/runtime knobs；runtime profiles 會設定 process-local environment variables；GPU profiles 會在可用時透過 <code>nvidia-smi</code> 控制 persistence mode、power limit 與 supported application clocks</span>
+          </p>
+        </article>
+        <article class="mechanism-card">
+          <span class="mechanism-step">5</span>
+          <h3>
+            <span class="lang-en">Compare against paired baselines</span>
+            <span class="lang-zh-TW">用 paired baselines 比較</span>
+          </h3>
+          <p>
+            <span class="lang-en">Performance sweeps run baseline controls near candidate runs, then rank profiles by normalized throughput such as <code>samples_per_second</code> or <code>gpu_tflops_estimate</code>, this avoids judging candidates only by cold-start raw numbers</span>
+            <span class="lang-zh-TW">Performance sweeps 會在 candidate 附近插入 baseline controls，再用 normalized throughput，例如 <code>samples_per_second</code> 或 <code>gpu_tflops_estimate</code> 排名，避免只看 cold-start raw numbers</span>
+          </p>
+        </article>
+        <article class="mechanism-card">
+          <span class="mechanism-step">6</span>
+          <h3>
+            <span class="lang-en">Restore and write evidence</span>
+            <span class="lang-zh-TW">還原並輸出佐證</span>
+          </h3>
+          <p>
+            <span class="lang-en">Runs write before/after/diff files such as <code>system_tuning_before.json</code>, <code>gpu_tuning_diff.json</code>, <code>resource_summary.json</code>, and HTML reports, interrupted runs can be recovered with <code>autotuneai restore --active</code></span>
+            <span class="lang-zh-TW">每次 run 會輸出 before/after/diff 檔案，例如 <code>system_tuning_before.json</code>、<code>gpu_tuning_diff.json</code>、<code>resource_summary.json</code> 與 HTML reports，中斷後可用 <code>autotuneai restore --active</code> 復原</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <h2 class="section-title">
+          <span class="lang-en">Baseline Improvements Shown</span>
+          <span class="lang-zh-TW">目前 baseline improvement 佐證</span>
+        </h2>
+      </div>
+      <div class="proof-grid">
+        <article class="proof-card">
+          <span>CPU / Runtime</span>
+          <strong>+4.775%</strong>
+          <p>
+            <span class="lang-en">Recommended profile: <code>performance:linux-throughput+runtime-cpu</code>, metric: normalized samples/sec vs paired baseline</span>
+            <span class="lang-zh-TW">推薦 profile：<code>performance:linux-throughput+runtime-cpu</code>，指標是相對 paired baseline 的 normalized samples/sec</span>
+          </p>
+          <a href="assets/perfrunbench/reports/report-comparison.html" target="_blank" rel="noopener">
+            <span class="lang-en">Open recommendation report</span>
+            <span class="lang-zh-TW">開啟 recommendation report</span>
+          </a>
+        </article>
+        <article class="proof-card">
+          <span>GPU Guard</span>
+          <strong>+3.455%</strong>
+          <p>
+            <span class="lang-en">Aggregate GPU workload samples/sec improved; GPU TFLOPS estimate also improved by <code>+3.457%</code></span>
+            <span class="lang-zh-TW">Aggregate GPU workload samples/sec 提升；GPU TFLOPS estimate 也提升 <code>+3.457%</code></span>
+          </p>
+          <a href="assets/perfrunbench/reports/gpu-guard-comparison.html" target="_blank" rel="noopener">
+            <span class="lang-en">Open GPU report</span>
+            <span class="lang-zh-TW">開啟 GPU report</span>
+          </a>
+        </article>
+        <article class="proof-card">
+          <span>Memory Tuning</span>
+          <strong>-46.472%</strong>
+          <p>
+            <span class="lang-en">Peak memory dropped from <code>1.743 MB</code> to <code>0.933 MB</code> in the tuning demo, with benchmark duration also down <code>-1.763%</code></span>
+            <span class="lang-zh-TW">在 tuning demo 中，peak memory 從 <code>1.743 MB</code> 降到 <code>0.933 MB</code>，benchmark duration 也下降 <code>-1.763%</code></span>
+          </p>
+          <a href="assets/perfrunbench/reports/memory-tuning-comparison.html" target="_blank" rel="noopener">
+            <span class="lang-en">Open memory report</span>
+            <span class="lang-zh-TW">開啟 memory report</span>
+          </a>
+        </article>
+        <article class="proof-card">
+          <span>CPU Confirmation</span>
+          <strong>+1.245%</strong>
+          <p>
+            <span class="lang-en">Aggregate workload samples/sec improved on the CPU confirmation run while benchmark duration decreased <code>-0.072%</code></span>
+            <span class="lang-zh-TW">CPU confirmation run 的 aggregate workload samples/sec 提升，同時 benchmark duration 下降 <code>-0.072%</code></span>
+          </p>
+          <a href="assets/perfrunbench/reports/cpu-performance-confirm.html" target="_blank" rel="noopener">
+            <span class="lang-en">Open CPU report</span>
+            <span class="lang-zh-TW">開啟 CPU report</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <h2 class="section-title">
+          <span class="lang-en">Core Commands</span>
+          <span class="lang-zh-TW">核心指令</span>
+        </h2>
+      </div>
+      <div class="command-grid">
+        <div>
+          <h3>
+            <span class="lang-en">Run with CPU and memory guard</span>
+            <span class="lang-zh-TW">使用 CPU 與 memory guard 執行</span>
+          </h3>
+          <pre class="code-block"><code>autotuneai run --executor systemd --memory-budget-gb 22 --cpu-quota-percent 90 -- python train.py</code></pre>
+        </div>
+        <div>
+          <h3>
+            <span class="lang-en">Compare runtime tuning</span>
+            <span class="lang-zh-TW">比較 runtime tuning</span>
+          </h3>
+          <pre class="code-block"><code>autotuneai compare-tuning --profile linux-throughput --runtime-profile runtime-cpu-performance --repeat 3 -- python benchmark.py</code></pre>
+        </div>
+        <div>
+          <h3>
+            <span class="lang-en">Run GPU performance sweep</span>
+            <span class="lang-zh-TW">執行 GPU performance sweep</span>
+          </h3>
+          <pre class="code-block"><code>autotuneai optimize-performance --target gpu --gpu-profile nvidia-performance -- python examples/gpu_training_pressure.py</code></pre>
+        </div>
+        <div>
+          <h3>
+            <span class="lang-en">Restore runtime settings</span>
+            <span class="lang-zh-TW">還原 runtime settings</span>
+          </h3>
+          <pre class="code-block"><code>autotuneai restore --active</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <h2 class="section-title">
+          <span class="lang-en">Evidence</span>
+          <span class="lang-zh-TW">佐證</span>
+        </h2>
+      </div>
+      <div class="evidence-grid">
+        <article class="evidence-card evidence-card-wide">
+          <h3>
+            <span class="lang-en">CLI Run + Resource Summary</span>
+            <span class="lang-zh-TW">CLI 執行與 resource summary</span>
+          </h3>
+          <figure class="evidence-figure">
+            <img src="assets/perfrunbench/screenshots/perfrunbench-cli-run.png" alt="PerfRunbench CLI run and resource analysis output">
+            <figcaption>
+              <span class="lang-en">Shows the wrapper command, generated run directory, report path, CPU budget, memory budget, and cgroup/resource fields</span>
+              <span class="lang-zh-TW">顯示 wrapper command、產生的 run directory、report path、CPU budget、memory budget 與 cgroup/resource 欄位</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="evidence-card">
+          <h3>
+            <span class="lang-en">Recommendation Report</span>
+            <span class="lang-zh-TW">Recommendation report</span>
+          </h3>
+          <figure class="evidence-figure">
+            <img src="assets/perfrunbench/screenshots/perfrunbench-report-home.png" alt="PerfRunbench auto recommendation report">
+            <figcaption>
+              <span class="lang-en">HTML recommendation report with current baseline and recommended configuration</span>
+              <span class="lang-zh-TW">HTML recommendation report，包含 current baseline 與 recommended configuration</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="evidence-card">
+          <h3>
+            <span class="lang-en">Comparison Chart</span>
+            <span class="lang-zh-TW">Comparison chart</span>
+          </h3>
+          <figure class="evidence-figure">
+            <img src="assets/perfrunbench/screenshots/perfrunbench-comparison-chart.png" alt="PerfRunbench tuning comparison chart">
+            <figcaption>
+              <span class="lang-en">Comparison chart showing runtime tuning deltas instead of raw logs only</span>
+              <span class="lang-zh-TW">以 chart 顯示 runtime tuning deltas，而不只是 raw logs</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="evidence-card">
+          <h3>
+            <span class="lang-en">Tuned Run Report</span>
+            <span class="lang-zh-TW">Tuned run report</span>
+          </h3>
+          <figure class="evidence-figure">
+            <img src="assets/perfrunbench/screenshots/latest_tuned_run_report.png" alt="PerfRunbench tuned run report">
+            <figcaption>
+              <span class="lang-en">Run-level HTML report with before/after memory and tuning snapshot fields</span>
+              <span class="lang-zh-TW">Run-level HTML report，包含 before/after memory 與 tuning snapshot 欄位</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="evidence-card">
+          <h3>
+            <span class="lang-en">Repo Structure</span>
+            <span class="lang-zh-TW">Repo 結構</span>
+          </h3>
+          <figure class="evidence-figure">
+            <img src="assets/perfrunbench/screenshots/perfrunbench-repo-structure.png" alt="PerfRunbench repository structure">
+            <figcaption>
+              <span class="lang-en">Package, configs, docs, examples, results, scripts, and tests</span>
+              <span class="lang-zh-TW">包含 package、configs、docs、examples、results、scripts 與 tests</span>
+            </figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <h2 class="section-title">
+          <span class="lang-en">How the Tool Is Organized</span>
+          <span class="lang-zh-TW">工具架構</span>
+        </h2>
+      </div>
+      <div class="architecture-layout compact-architecture">
+        <div class="architecture-flow" aria-label="PerfRunbench architecture flow">
+          <div class="flow-node">
+            <span class="lang-en">User command</span>
+            <span class="lang-zh-TW">使用者 command</span>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node">PerfRunbench CLI</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node">Executor: local / systemd / Docker</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node">
+            <span class="lang-en">Resource guard + tuning profile</span>
+            <span class="lang-zh-TW">Resource guard + tuning profile</span>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node">
+            <span class="lang-en">Benchmark result + HTML report</span>
+            <span class="lang-zh-TW">Benchmark result + HTML report</span>
+          </div>
+        </div>
+        <div class="stack-panel">
+          <h3>
+            <span class="lang-en">Supported Surface</span>
+            <span class="lang-zh-TW">支援範圍</span>
+          </h3>
+          <div class="stack-list">
+            <span class="tag">Python CLI</span>
+            <span class="tag">Linux / WSL</span>
+            <span class="tag">Windows profiles</span>
+            <span class="tag">systemd / cgroups</span>
+            <span class="tag">Docker</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">ONNX Runtime</span>
+            <span class="tag">NVIDIA SMI</span>
+            <span class="tag">HTML reports</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="docs" class="card-section reveal">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <h2 class="section-title">
+          <span class="lang-en">Docs and Artifacts</span>
+          <span class="lang-zh-TW">文件與成果</span>
+        </h2>
+      </div>
+      <div class="link-grid docs-grid">
+        <a class="link-card" href="assets/perfrunbench/docs/perfrunbench-user-guide.pdf" target="_blank" rel="noopener">
+          <h3><span class="lang-en">User Guide PDF</span><span class="lang-zh-TW">使用指南 PDF</span></h3>
+          <p><span class="lang-en">Full usage guide with resource guard, CPU, memory, GPU, restore, and reporting commands</span><span class="lang-zh-TW">完整使用指南，包含 resource guard、CPU、memory、GPU、restore 與 reporting commands</span></p>
+        </a>
+        <a class="link-card" href="https://github.com/xuwwwww/PerfRunbench/blob/main/USER_GUIDE.md" target="_blank" rel="noopener">
+          <h3>User Guide MD</h3>
+          <p><span class="lang-en">GitHub version of the same guide</span><span class="lang-zh-TW">GitHub 上的 Markdown 版使用指南</span></p>
+        </a>
+        <a class="link-card" href="https://github.com/xuwwwww/PerfRunbench" target="_blank" rel="noopener">
+          <h3>GitHub Repo</h3>
+          <p><span class="lang-en">Source code, README, configs, examples, and tests</span><span class="lang-zh-TW">原始碼、README、configs、examples 與 tests</span></p>
+        </a>
+        <a class="link-card" href="assets/perfrunbench/reports/report-comparison.html" target="_blank" rel="noopener">
+          <h3><span class="lang-en">Recommendation Report</span><span class="lang-zh-TW">Recommendation report</span></h3>
+          <p><span class="lang-en">CPU/runtime recommendation report</span><span class="lang-zh-TW">CPU/runtime recommendation report</span></p>
+        </a>
+        <a class="link-card" href="assets/perfrunbench/reports/gpu-guard-comparison.html" target="_blank" rel="noopener">
+          <h3>GPU Report</h3>
+          <p><span class="lang-en">GPU guard comparison report</span><span class="lang-zh-TW">GPU guard comparison report</span></p>
+        </a>
+        <a class="link-card" href="assets/perfrunbench/reports/memory-tuning-comparison.html" target="_blank" rel="noopener">
+          <h3>Memory Report</h3>
+          <p><span class="lang-en">Memory tuning comparison report</span><span class="lang-zh-TW">Memory tuning comparison report</span></p>
+        </a>
+        <a class="link-card" href="assets/perfrunbench/reports/cpu-performance-confirm.html" target="_blank" rel="noopener">
+          <h3>CPU Report</h3>
+          <p><span class="lang-en">CPU confirmation report</span><span class="lang-zh-TW">CPU confirmation report</span></p>
+        </a>
+        <a class="link-card" href="assets/perfrunbench/docs/perfrunbench-slides.pdf" target="_blank" rel="noopener">
+          <h3><span class="lang-en">Slides</span><span class="lang-zh-TW">簡報</span></h3>
+          <p><span class="lang-en">Project overview deck for reviewers and readers</span><span class="lang-zh-TW">給審閱者與讀者快速了解專案的簡報</span></p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>© 2026 Louis Wu</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="mailto:louis20030920@gmail.com">Email</a>
+        <a href="https://github.com/xuwwwww" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/louis-wu-65ba6b270/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="project-modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="modal-scroll">
+        <div class="modal-header">
+          <span class="modal-period" id="modal-period"></span>
+          <h2 id="modal-title"></h2>
+          <p class="modal-org" id="modal-org"></p>
+          <div class="tag-row" id="modal-tags"></div>
+        </div>
+        <div class="modal-body">
+          <p id="modal-summary"></p>
+          <div id="modal-sections"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
