@@ -1017,6 +1017,15 @@ function trackEvent(name, params = {}) {
   window.gtag('event', name, params);
 }
 
+function normalizeAnalyticsId(value, fallback = 'unknown') {
+  const normalized = String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+  return normalized || fallback;
+}
+
 async function copyTextToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text);
@@ -2001,7 +2010,79 @@ function attachAnalyticsHandlers() {
   });
 }
 
+function getSectionName(section, index) {
+  return normalizeAnalyticsId(
+    section.dataset.analyticsSection || section.id || `section_${index + 1}`,
+    `section_${index + 1}`
+  );
+}
+
+function getComponentInfo(element, index) {
+  if (element.dataset.project) {
+    return { component_type: 'project', component_id: element.dataset.project };
+  }
+  if (element.dataset.award) {
+    return { component_type: 'award', component_id: element.dataset.award };
+  }
+  return {
+    component_type: normalizeAnalyticsId(element.dataset.analyticsComponentType, 'component'),
+    component_id: normalizeAnalyticsId(element.dataset.analyticsComponent || `component_${index + 1}`, `component_${index + 1}`),
+  };
+}
+
+function attachViewTracking() {
+  if (!('IntersectionObserver' in window)) return;
+
+  const seenSections = new Set();
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const sectionName = getSectionName(entry.target, Number(entry.target.dataset.analyticsIndex || 0));
+        if (seenSections.has(sectionName)) return;
+        seenSections.add(sectionName);
+        trackEvent('section_view', {
+          section_name: sectionName,
+          page_path: window.location.pathname,
+        });
+        sectionObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.45, rootMargin: '0px 0px -12% 0px' }
+  );
+
+  Array.from(document.querySelectorAll('main > section')).forEach((section, index) => {
+    section.dataset.analyticsIndex = String(index);
+    sectionObserver.observe(section);
+  });
+
+  const seenComponents = new Set();
+  const componentObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const info = getComponentInfo(entry.target, Number(entry.target.dataset.analyticsIndex || 0));
+        const key = `${info.component_type}:${info.component_id}`;
+        if (seenComponents.has(key)) return;
+        seenComponents.add(key);
+        trackEvent('component_view', {
+          ...info,
+          page_path: window.location.pathname,
+        });
+        componentObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.6, rootMargin: '0px 0px -10% 0px' }
+  );
+
+  Array.from(document.querySelectorAll('[data-project], [data-award], [data-analytics-component]')).forEach((component, index) => {
+    component.dataset.analyticsIndex = String(index);
+    componentObserver.observe(component);
+  });
+}
+
 /* ---------------- Initialize ---------------- */
 setLanguage(currentLang, { persist: false });
 attachCopyHandlers();
 attachAnalyticsHandlers();
+attachViewTracking();
