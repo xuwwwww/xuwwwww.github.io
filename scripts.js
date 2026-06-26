@@ -1787,7 +1787,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
 }
 
 /* ---------------- Active Section Highlight ---------------- */
-const sectionIds = ['about', 'experience', 'projects', 'awards', 'skills', 'coursework'];
+const sectionIds = ['about', 'ai-featured', 'experience', 'projects', 'awards', 'skills', 'coursework'];
 const navAnchors = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
 const sectionMap = sectionIds
   .map((id) => ({ id, el: document.getElementById(id) }))
