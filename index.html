@@ -143,6 +143,87 @@
       </div>
     </section>
 
+    <!-- Current Focus / Reviewer Shortcuts -->
+    <section id="now" class="focus-review reveal" data-analytics-section="current_focus">
+      <div class="focus-panel">
+        <span class="featured-kicker">
+          <span class="lang-en">Current Focus</span>
+          <span class="lang-zh-TW">近期重點</span>
+        </span>
+        <h2>
+          <span class="lang-en">AI systems, medical AI, and performance evidence.</span>
+          <span class="lang-zh-TW">AI 系統、醫療 AI，以及可驗證的效能證據。</span>
+        </h2>
+        <p>
+          <span class="lang-en">I am currently sharpening portfolio-ready systems work around benchmark automation, resource-aware AI workloads, clinical retrieval, and medical image modeling.</span>
+          <span class="lang-zh-TW">我目前聚焦在可展示的系統型作品：benchmark 自動化、資源受限 AI 工作負載、臨床檢索，以及醫學影像模型。</span>
+        </p>
+      </div>
+      <div class="review-panel">
+        <span class="featured-kicker">
+          <span class="lang-en">60-Second Review</span>
+          <span class="lang-zh-TW">快速瀏覽</span>
+        </span>
+        <div class="review-links">
+          <a class="btn btn-primary" href="assets/docs/resume_DingXu_2026_May.pdf" target="_blank" rel="noopener">
+            <span class="lang-en">Resume</span>
+            <span class="lang-zh-TW">履歷</span>
+          </a>
+          <a class="btn btn-ghost" href="#ai-featured">PerfRunbench</a>
+          <a class="btn btn-ghost" href="#projects">
+            <span class="lang-en">Projects</span>
+            <span class="lang-zh-TW">專案</span>
+          </a>
+          <a class="btn btn-ghost copy-trigger"
+             href="mailto:louis20030920@gmail.com"
+             data-copy="louis20030920@gmail.com"
+             data-tooltip=""
+             data-tooltip-en="Click to copy"
+             data-tooltip-zh="點擊複製"
+             data-copied-en="Copied!"
+             data-copied-zh="已複製">
+            Email
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trajectory Snapshot -->
+    <section id="trajectory" class="trajectory-snapshot reveal" data-analytics-section="trajectory_snapshot">
+      <div class="trajectory-head">
+        <span class="featured-kicker">
+          <span class="lang-en">Trajectory</span>
+          <span class="lang-zh-TW">發展路徑</span>
+        </span>
+        <h2>
+          <span class="lang-en">A compact path from robotics and hardware into AI systems.</span>
+          <span class="lang-zh-TW">從機器人與硬體，收斂到 AI 系統與醫療 AI。</span>
+        </h2>
+      </div>
+      <ol class="trajectory-list">
+        <li>
+          <span class="trajectory-year">2017-2020</span>
+          <span class="lang-en">Robotics competitions: WRO, TIRT, ROBO-ONE.</span>
+          <span class="lang-zh-TW">機器人競賽：WRO、TIRT、ROBO-ONE。</span>
+        </li>
+        <li>
+          <span class="trajectory-year">2022-2024</span>
+          <span class="lang-en">Hardware and embedded builds, from assistive devices to EV bike systems.</span>
+          <span class="lang-zh-TW">硬體與嵌入式實作，從輔具到電動自行車系統。</span>
+        </li>
+        <li>
+          <span class="trajectory-year">2024-Now</span>
+          <span class="lang-en">Medical AI research across denoising, segmentation, and clinical retrieval.</span>
+          <span class="lang-zh-TW">醫療 AI 研究，涵蓋去雜訊、分割與臨床檢索。</span>
+        </li>
+        <li>
+          <span class="trajectory-year">2025</span>
+          <span class="lang-en">Performance engineering and benchmark automation through PerfRunbench.</span>
+          <span class="lang-zh-TW">透過 PerfRunbench 聚焦效能工程與 benchmark 自動化。</span>
+        </li>
+      </ol>
+    </section>
+
     <!-- PerfRunbench -->
     <section id="ai-featured" class="featured-portfolio reveal" aria-labelledby="ai-featured-title" data-analytics-section="featured_perfrunbench">
       <div class="featured-copy">
@@ -255,6 +336,30 @@
         </h2>
       </div>
 
+      <div class="project-filters" aria-label="Project filters">
+        <button class="project-filter active" type="button" data-filter="all">
+          <span class="lang-en">All</span>
+          <span class="lang-zh-TW">全部</span>
+        </button>
+        <button class="project-filter" type="button" data-filter="ai">AI</button>
+        <button class="project-filter" type="button" data-filter="medical">
+          <span class="lang-en">Medical</span>
+          <span class="lang-zh-TW">醫療</span>
+        </button>
+        <button class="project-filter" type="button" data-filter="systems">
+          <span class="lang-en">Systems</span>
+          <span class="lang-zh-TW">系統</span>
+        </button>
+        <button class="project-filter" type="button" data-filter="hardware">
+          <span class="lang-en">Hardware</span>
+          <span class="lang-zh-TW">硬體</span>
+        </button>
+        <button class="project-filter" type="button" data-filter="robotics">
+          <span class="lang-en">Robotics</span>
+          <span class="lang-zh-TW">機器人</span>
+        </button>
+      </div>
+
       <h3 class="subsection-title">
         <span class="lang-en">Featured Research</span>
         <span class="lang-zh-TW">主要研究</span>
@@ -262,7 +367,7 @@
 
       <div class="project-grid">
 
-        <article class="project-card" data-project="moe-dugan" tabindex="0" role="button">
+        <article class="project-card" data-project="moe-dugan" data-categories="ai medical" tabindex="0" role="button">
           <div class="project-card-top">
             <span class="project-period">2024 – Now</span>
             <span class="project-badge">
@@ -294,7 +399,7 @@
           </span>
         </article>
 
-        <article class="project-card" data-project="clinical-nlp" tabindex="0" role="button">
+        <article class="project-card" data-project="clinical-nlp" data-categories="ai medical" tabindex="0" role="button">
           <div class="project-card-top">
             <span class="project-period">2023 – Now</span>
             <span class="project-badge">
@@ -326,7 +431,7 @@
           </span>
         </article>
 
-        <article class="project-card" data-project="emg" tabindex="0" role="button">
+        <article class="project-card" data-project="emg" data-categories="ai medical" tabindex="0" role="button">
           <div class="project-card-top">
             <span class="project-period">2025</span>
             <span class="project-badge">
@@ -357,7 +462,7 @@
           </span>
         </article>
 
-        <article class="project-card" data-project="brain-tumor" tabindex="0" role="button">
+        <article class="project-card" data-project="brain-tumor" data-categories="ai medical" tabindex="0" role="button">
           <div class="project-card-top">
             <span class="project-period">2024</span>
             <span class="project-badge">
@@ -395,7 +500,7 @@
       </h3>
 
       <div class="mini-grid">
-        <article class="mini-card" data-project="bci" tabindex="0" role="button">
+        <article class="mini-card" data-project="bci" data-categories="ai medical" tabindex="0" role="button">
           <span class="mini-period">2024</span>
           <h4>
             <span class="lang-en">Brain-Computer Interface Group</span>
@@ -406,7 +511,7 @@
             <span class="lang-zh-TW">EEG 讀書會與文獻分享。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="solidworks" tabindex="0" role="button">
+        <article class="mini-card" data-project="solidworks" data-categories="hardware" tabindex="0" role="button">
           <span class="mini-period">2023</span>
           <h4>
             <span class="lang-en">SolidWorks Educational Videos</span>
@@ -417,7 +522,7 @@
             <span class="lang-zh-TW">教授應力模擬與拓撲優化給 NTU 賽車隊結構組員。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="blind-cane" tabindex="0" role="button">
+        <article class="mini-card" data-project="blind-cane" data-categories="ai hardware" tabindex="0" role="button">
           <span class="mini-period">2022</span>
           <h4>
             <span class="lang-en">AI-Powered Blind Cane</span>
@@ -428,7 +533,7 @@
             <span class="lang-zh-TW">Raspberry Pi 為核心搭載影像辨識。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="iot-fridge" tabindex="0" role="button">
+        <article class="mini-card" data-project="iot-fridge" data-categories="hardware" tabindex="0" role="button">
           <span class="mini-period">2022</span>
           <h4>
             <span class="lang-en">IoT Refrigerator</span>
@@ -439,7 +544,7 @@
             <span class="lang-zh-TW">遠端監控與熱電致冷功能。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="rc-plane" tabindex="0" role="button">
+        <article class="mini-card" data-project="rc-plane" data-categories="hardware robotics" tabindex="0" role="button">
           <span class="mini-period">2022</span>
           <h4>
             <span class="lang-en">Remote-Controlled Airplane</span>
@@ -450,7 +555,7 @@
             <span class="lang-zh-TW">使用 Arduino 與 SolidWorks 製作。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="ev-bike" tabindex="0" role="button">
+        <article class="mini-card" data-project="ev-bike" data-categories="hardware systems" tabindex="0" role="button">
           <span class="mini-period">2024</span>
           <h4>
             <span class="lang-en">Electric Bicycle</span>
@@ -461,7 +566,7 @@
             <span class="lang-zh-TW">自行設計與製作。</span>
           </p>
         </article>
-        <article class="mini-card" data-project="mediatek" tabindex="0" role="button">
+        <article class="mini-card" data-project="mediatek" data-categories="hardware" tabindex="0" role="button">
           <span class="mini-period">2019</span>
           <h4>
             <span class="lang-en">MediaTek Funded Science Fair</span>

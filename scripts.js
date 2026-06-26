@@ -1810,6 +1810,29 @@ if ('IntersectionObserver' in window && sectionMap.length) {
   sectionMap.forEach((s) => sectionObserver.observe(s.el));
 }
 
+/* ---------------- Project Filters ---------------- */
+const projectFilterButtons = Array.from(document.querySelectorAll('.project-filter'));
+const filterableProjectCards = Array.from(document.querySelectorAll('[data-project][data-categories]'));
+
+function applyProjectFilter(filter) {
+  const activeFilter = filter || 'all';
+  projectFilterButtons.forEach((button) => {
+    button.classList.toggle('active', button.dataset.filter === activeFilter);
+  });
+  filterableProjectCards.forEach((card) => {
+    const categories = (card.dataset.categories || '').split(/\s+/);
+    const show = activeFilter === 'all' || categories.includes(activeFilter);
+    card.classList.toggle('is-filtered', !show);
+  });
+  trackEvent('project_filter', {
+    filter: activeFilter,
+  });
+}
+
+projectFilterButtons.forEach((button) => {
+  button.addEventListener('click', () => applyProjectFilter(button.dataset.filter));
+});
+
 /* ---------------- Project Modal ---------------- */
 const modalBackdrop = document.getElementById('project-modal');
 const modalClose = document.getElementById('modal-close');
