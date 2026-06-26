@@ -1149,8 +1149,6 @@ const SNAKE_HAMILTONIAN_INDEX = new Map(
   SNAKE_HAMILTONIAN_CYCLE.map((point, index) => [toCycleKey(point.x, point.y), index]),
 );
 
-let easterClickCount = 0;
-let easterClickTimer = null;
 let easterBoardCells = [];
 let snakeBody = [];
 let snakeFood = null;
@@ -1650,7 +1648,7 @@ function resetEasterGame() {
 function openEasterEgg() {
   if (!easterEggBackdrop) return;
   trackEvent('easter_egg_open', {
-    trigger: 'profile_photo_three_click',
+    trigger: 'profile_photo_click',
   });
   resetEasterGame();
   easterEggBackdrop.classList.add('open');
@@ -1668,29 +1666,6 @@ function closeEasterEgg() {
   }
 }
 
-function clearEasterClickTimer() {
-  if (easterClickTimer) {
-    clearTimeout(easterClickTimer);
-    easterClickTimer = null;
-  }
-}
-
-function registerEasterClick() {
-  easterClickCount += 1;
-  clearEasterClickTimer();
-
-  if (easterClickCount >= 3) {
-    easterClickCount = 0;
-    openEasterEgg();
-    return;
-  }
-
-  easterClickTimer = setTimeout(() => {
-    easterClickCount = 0;
-    easterClickTimer = null;
-  }, 1600);
-}
-
 function setSnakeDirection(directionKey) {
   if (!directionKey) return;
   snakeAutoSolve = false;
@@ -1704,11 +1679,11 @@ if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus &
   buildSnakeBoard();
   renderSnakeBoard();
 
-  heroPhotoTrigger.addEventListener('click', registerEasterClick);
+  heroPhotoTrigger.addEventListener('click', openEasterEgg);
   heroPhotoTrigger.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      registerEasterClick();
+      openEasterEgg();
     }
   });
 
