@@ -6,7 +6,9 @@ const langSwitchButton = document.getElementById('lang-switch');
 const langSwitchLabel = document.getElementById('lang-switch-label');
 const bodyElement = document.body;
 const htmlElement = document.documentElement;
-let currentLang = 'en';
+const LANGUAGE_STORAGE_KEY = 'preferred-language';
+const SUPPORTED_LANGUAGES = new Set(['en', 'zh-TW']);
+let currentLang = getStoredLanguage();
 
 /* ---------------- Project Detail Registry ---------------- */
 const PROJECTS = {
@@ -992,6 +994,29 @@ function updateCopyTooltips(lang) {
   });
 }
 
+function normalizeLanguage(lang) {
+  return SUPPORTED_LANGUAGES.has(lang) ? lang : 'en';
+}
+
+function getStoredLanguage() {
+  try {
+    return normalizeLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY));
+  } catch (err) {
+    return 'en';
+  }
+}
+
+function saveLanguagePreference(lang) {
+  try {
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, normalizeLanguage(lang));
+  } catch (err) {}
+}
+
+function trackEvent(name, params = {}) {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', name, params);
+}
+
 async function copyTextToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text);
@@ -1026,6 +1051,9 @@ function attachCopyHandlers() {
           el.dataset.tooltip = normalMsg || '';
           el.classList.remove('show-tooltip');
         }, 900);
+        trackEvent('copy_click', {
+          copy_target: textToCopy.slice(0, 80),
+        });
       } catch (err) {
         console.error('Copy failed:', err);
       }
@@ -1033,14 +1061,17 @@ function attachCopyHandlers() {
   });
 }
 
-function setLanguage(lang) {
+function setLanguage(lang, options = {}) {
+  const { persist = true } = options;
+  lang = normalizeLanguage(lang);
   currentLang = lang;
   bodyElement.classList.remove('lang-en', 'lang-zh-TW');
   bodyElement.classList.add(`lang-${lang}`);
   if (langSwitchLabel) {
-    langSwitchLabel.textContent = lang === 'en' ? '中文' : 'English';
+    langSwitchLabel.textContent = lang === 'en' ? '\u4e2d\u6587' : 'English';
   }
   htmlElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-TW');
+  if (persist) saveLanguagePreference(lang);
   try {
     const newTitle = document.querySelector(`title.lang-${lang}`).textContent;
     document.title = newTitle;
@@ -1055,6 +1086,10 @@ function setLanguage(lang) {
 
 langSwitchButton.addEventListener('click', () => {
   const newLang = currentLang === 'en' ? 'zh-TW' : 'en';
+  trackEvent('language_switch', {
+    from_language: currentLang,
+    to_language: newLang,
+  });
   langSwitchButton.classList.add('active-switch');
   setTimeout(() => langSwitchButton.classList.remove('active-switch'), 320);
 
@@ -1614,6 +1649,9 @@ function resetEasterGame() {
 
 function openEasterEgg() {
   if (!easterEggBackdrop) return;
+  trackEvent('easter_egg_open', {
+    trigger: 'profile_photo_three_click',
+  });
   resetEasterGame();
   easterEggBackdrop.classList.add('open');
   easterEggBackdrop.setAttribute('aria-hidden', 'false');
@@ -1899,6 +1937,10 @@ function renderDetail(id) {
 
 function openDetail(id, trigger) {
   if (!DETAILS[id]) return;
+  trackEvent('detail_open', {
+    detail_id: id,
+    detail_type: PROJECTS[id] ? 'project' : 'award',
+  });
   currentDetailId = id;
   lastFocusedTrigger = trigger || null;
   renderDetail(id);
@@ -1964,6 +2006,27 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) closeDetail();
 });
 
+function attachAnalyticsHandlers() {
+  document.querySelectorAll('a[href]').forEach((link) => {
+    if (link.dataset.analyticsBound === '1') return;
+    link.dataset.analyticsBound = '1';
+    link.addEventListener('click', () => {
+      let targetUrl;
+      try {
+        targetUrl = new URL(link.getAttribute('href'), window.location.href);
+      } catch (err) {
+        return;
+      }
+      trackEvent('link_click', {
+        link_url: targetUrl.href,
+        link_text: link.textContent.trim().slice(0, 80),
+        outbound: targetUrl.origin !== window.location.origin,
+      });
+    });
+  });
+}
+
 /* ---------------- Initialize ---------------- */
-setLanguage(currentLang);
+setLanguage(currentLang, { persist: false });
 attachCopyHandlers();
+attachAnalyticsHandlers();
