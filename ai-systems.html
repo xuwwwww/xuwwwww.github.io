@@ -20,7 +20,6 @@
   </script>
 </head>
 <body class="lang-en systems-page">
-
   <header class="topbar" id="topbar">
     <a href="index.html#top" class="brand" aria-label="Home">
       <span class="brand-name lang-en">Louis Wu</span>
@@ -56,45 +55,41 @@
         </span>
         <h1>PerfRunbench</h1>
         <p class="project-lede">
-          <span class="lang-en">PerfRunbench is my AI benchmarking and tuning toolkit. The newest work is ArmTune: it inspects real Arm targets, builds llama.cpp profiles, searches runtime settings, creates recommendation bundles, and applies them with validation and rollback.</span>
-          <span class="lang-zh-TW">PerfRunbench 是我做 AI benchmark 與調校的工具。最新重點是 ArmTune：檢查真實 Arm 主機、建立 llama.cpp build profile、搜尋 runtime 設定、產生推薦包，並支援驗證後套用與回復。</span>
+          <span class="lang-en">PerfRunbench is my benchmarking and tuning toolkit for real workloads. ArmTune adds an Arm-focused path: inspect the target, build llama.cpp profiles, run bounded runtime searches, measure llama-server serving behavior, produce a Performance Passport, and apply recommendations with validation and rollback.</span>
+          <span class="lang-zh-TW">PerfRunbench 是我針對真實工作負載做 benchmark 與調校的工具。ArmTune 是其中的 Arm 路線：檢查目標主機、建立 llama.cpp profile、執行有界 runtime 搜尋、量測 llama-server serving 表現、產生 Performance Passport，並以可驗證與可回復的方式套用推薦。</span>
         </p>
         <div class="project-actions">
           <a class="btn btn-primary" href="https://github.com/xuwwwww/PerfRunbench" target="_blank" rel="noopener">GitHub</a>
           <a class="btn btn-secondary" href="assets/perfrunbench/docs/perfrunbench-user-guide.pdf" target="_blank" rel="noopener">
             <span class="lang-en">User Guide</span>
-            <span class="lang-zh-TW">使用說明</span>
+            <span class="lang-zh-TW">使用指南</span>
           </a>
           <a class="btn btn-ghost" href="#results">
-            <span class="lang-en">Results</span>
-            <span class="lang-zh-TW">測試結果</span>
-          </a>
-          <a class="btn btn-ghost" href="assets/perfrunbench/reports/report-comparison.html" target="_blank" rel="noopener">
-            <span class="lang-en">Demo Report</span>
-            <span class="lang-zh-TW">Demo 報告</span>
+            <span class="lang-en">Measured Results</span>
+            <span class="lang-zh-TW">實測結果</span>
           </a>
         </div>
       </div>
       <div class="project-hero-panel">
         <h2>
-          <span class="lang-en">Latest Highlights</span>
-          <span class="lang-zh-TW">最新重點</span>
+          <span class="lang-en">Measured Arm Scope</span>
+          <span class="lang-zh-TW">Arm 實測範圍</span>
         </h2>
         <div class="metric-list">
           <div>
-            <strong>v0.3.0</strong>
-            <span class="lang-en">llama-server serving autotuning, recommendation bundles, and serving passports</span>
-            <span class="lang-zh-TW">llama-server serving 調校、推薦包與 serving passport</span>
+            <strong>C7g</strong>
+            <span class="lang-en">Ubuntu 24.04 Arm64 target, Neoverse-V1, 8 logical CPUs</span>
+            <span class="lang-zh-TW">Ubuntu 24.04 Arm64 目標主機，Neoverse-V1，8 logical CPUs</span>
           </div>
           <div>
-            <strong>+84% to +86%</strong>
-            <span class="lang-en">Output tok/s gains on validated remote serving workloads at concurrency 4</span>
-            <span class="lang-zh-TW">concurrency 4 遠端 serving 工作負載的 output tok/s 提升</span>
+            <strong>Qwen2.5</strong>
+            <span class="lang-en">Qwen2.5-7B Q4_K_M with pinned llama.cpp source and fixed protocols</span>
+            <span class="lang-zh-TW">Qwen2.5-7B Q4_K_M，搭配固定 llama.cpp source 與量測協定</span>
           </div>
           <div>
-            <strong>608</strong>
-            <span class="lang-en">Measured serving requests with no retries, request failures, or quality failures</span>
-            <span class="lang-zh-TW">serving 測量請求數，沒有 retry、request failure 或 quality failure</span>
+            <strong>Passport</strong>
+            <span class="lang-en">Preliminary measured Performance Passport, verified with 82 artifact manifests</span>
+            <span class="lang-zh-TW">初步實測 Performance Passport，並重新驗證 82 份 artifact manifest</span>
           </div>
         </div>
       </div>
@@ -105,37 +100,25 @@
         <span class="section-tag">01</span>
         <h2 class="section-title">
           <span class="lang-en">What It Does</span>
-          <span class="lang-zh-TW">它在做什麼</span>
+          <span class="lang-zh-TW">它做什麼</span>
         </h2>
       </div>
       <div class="capability-grid">
         <article class="systems-card">
-          <h3>ArmTune</h3>
-          <p>
-            <span class="lang-en">Checks Arm Linux targets, CPU topology, runtime capability, model paths, and benchmark readiness before tuning starts.</span>
-            <span class="lang-zh-TW">在調校前先檢查 Arm Linux 主機、CPU topology、runtime 能力、模型路徑與 benchmark 準備狀態。</span>
-          </p>
+          <h3>Target Inspection</h3>
+          <p><span class="lang-en">Validates Linux Arm64 readiness, CPU topology, runtime tools, model paths, SSH trust, artifact destinations, and production benchmark requirements before a run starts.</span><span class="lang-zh-TW">在開始調校前檢查 Linux Arm64 readiness、CPU topology、runtime 工具、模型路徑、SSH trust、artifact 輸出位置與 production benchmark 條件。</span></p>
         </article>
         <article class="systems-card">
-          <h3>llama.cpp</h3>
-          <p>
-            <span class="lang-en">Builds portable, native, and optimized profiles, then compares throughput and latency under fixed test rules.</span>
-            <span class="lang-zh-TW">建立 portable、native、optimized profile，並在固定測試規則下比較 throughput 與 latency。</span>
-          </p>
+          <h3>Build Profiles</h3>
+          <p><span class="lang-en">Builds portable, arm-native, and optimized llama.cpp variants while preserving CMake cache, compile commands, binary hashes, and build evidence.</span><span class="lang-zh-TW">建立 portable、arm-native 與 optimized llama.cpp variants，並保留 CMake cache、compile commands、binary hash 與 build evidence。</span></p>
         </article>
         <article class="systems-card">
-          <h3>Serving Search</h3>
-          <p>
-            <span class="lang-en">Runs staged searches for llama-server settings, concurrency, slots, batch choices, and recommendation classes.</span>
-            <span class="lang-zh-TW">針對 llama-server 設定、concurrency、slots、batch 選項與推薦類型做分階段搜尋。</span>
-          </p>
+          <h3>Runtime Search</h3>
+          <p><span class="lang-en">Runs staged candidate searches over threads, CPU affinity, batch settings, and serving parameters with paired baselines and a configured noise band.</span><span class="lang-zh-TW">針對 threads、CPU affinity、batch 設定與 serving 參數做階段式 candidate search，搭配 paired baseline 與設定好的 noise band。</span></p>
         </article>
         <article class="systems-card">
           <h3>Guarded Apply</h3>
-          <p>
-            <span class="lang-en">Shows, validates, dry-runs, applies, checks status, and rolls back recommendations instead of blindly changing a machine.</span>
-            <span class="lang-zh-TW">推薦不會直接亂套用；先顯示、驗證、dry-run，再支援套用、狀態檢查與 rollback。</span>
-          </p>
+          <p><span class="lang-en">Packages recommendations with tested scope, status checks, dry-run behavior, process-scoped apply, lease tracking, and rollback.</span><span class="lang-zh-TW">把推薦結果包成有測試範圍、狀態檢查、dry-run、process-scoped apply、lease tracking 與 rollback 的 RecommendationBundle。</span></p>
         </article>
       </div>
     </section>
@@ -145,80 +128,44 @@
         <span class="section-tag">02</span>
         <h2 class="section-title">
           <span class="lang-en">Workflow</span>
-          <span class="lang-zh-TW">工作流程</span>
+          <span class="lang-zh-TW">流程</span>
         </h2>
       </div>
       <div class="mechanism-grid">
         <article class="mechanism-card">
           <span class="mechanism-step">1</span>
-          <h3>
-            <span class="lang-en">Inspect the target</span>
-            <span class="lang-zh-TW">檢查目標主機</span>
-          </h3>
-          <p>
-            <span class="lang-en">Confirm Linux Arm64, CPU model, SSH trust, runtime tools, model file, and benchmark readiness.</span>
-            <span class="lang-zh-TW">確認 Linux Arm64、CPU 型號、SSH 信任、runtime 工具、模型檔案與 benchmark 狀態。</span>
-          </p>
+          <h3><span class="lang-en">Inspect and gate</span><span class="lang-zh-TW">檢查與 gate</span></h3>
+          <p><span class="lang-en">Run doctor and host inspection before touching a remote machine or claiming benchmark readiness.</span><span class="lang-zh-TW">先跑 doctor 與 host inspection，再碰遠端主機或宣稱 benchmark ready。</span></p>
           <pre class="code-block"><code>autotuneai arm doctor --target-config target.json --require-production</code></pre>
         </article>
         <article class="mechanism-card">
           <span class="mechanism-step">2</span>
-          <h3>
-            <span class="lang-en">Build and compare profiles</span>
-            <span class="lang-zh-TW">建立並比較 profile</span>
-          </h3>
-          <p>
-            <span class="lang-en">Build llama.cpp variants and compare them with fixed prompt, thread, model, and repetition settings.</span>
-            <span class="lang-zh-TW">建立 llama.cpp 版本，並用固定 prompt、thread、model 與重複次數比較。</span>
-          </p>
+          <h3><span class="lang-en">Build evidence-backed profiles</span><span class="lang-zh-TW">建立可追溯 profile</span></h3>
+          <p><span class="lang-en">Create profile plans, execute fixed builds, and preserve hashes and compiler evidence.</span><span class="lang-zh-TW">建立 profile plan、執行固定 build，並保存 hash 與編譯證據。</span></p>
           <pre class="code-block"><code>autotuneai arm build-profile --config build_profiles.json</code></pre>
         </article>
         <article class="mechanism-card">
           <span class="mechanism-step">3</span>
-          <h3>
-            <span class="lang-en">Search runtime settings</span>
-            <span class="lang-zh-TW">搜尋 runtime 設定</span>
-          </h3>
-          <p>
-            <span class="lang-en">Try bounded candidates such as thread count, CPU affinity, batch settings, and serving slots.</span>
-            <span class="lang-zh-TW">在範圍內測 thread 數、CPU affinity、batch 設定與 serving slots。</span>
-          </p>
-          <pre class="code-block"><code>autotuneai arm optimize --config llama_bench_optimize.json</code></pre>
+          <h3><span class="lang-en">Compare and search</span><span class="lang-zh-TW">比較與搜尋</span></h3>
+          <p><span class="lang-en">Compare build profiles, then run bounded runtime search with a staged candidate set.</span><span class="lang-zh-TW">先比較 build profile，再用階段式 candidate set 做有界 runtime search。</span></p>
+          <pre class="code-block"><code>autotuneai arm optimize --config runtime_search.json</code></pre>
         </article>
         <article class="mechanism-card">
           <span class="mechanism-step">4</span>
-          <h3>
-            <span class="lang-en">Create a recommendation</span>
-            <span class="lang-zh-TW">產生推薦</span>
-          </h3>
-          <p>
-            <span class="lang-en">Package the selected settings with workload scope, checks, and the reason it was selected.</span>
-            <span class="lang-zh-TW">把選出的設定、適用 workload、檢查條件與選擇原因包成推薦檔。</span>
-          </p>
-          <pre class="code-block"><code>autotuneai serve recommend --workload interactive-short --concurrency 4</code></pre>
+          <h3><span class="lang-en">Measure serving behavior</span><span class="lang-zh-TW">量測 serving 行為</span></h3>
+          <p><span class="lang-en">Use llama-server to capture request completion, nonempty output, TTFT, end-to-end latency, cleanup, and port release.</span><span class="lang-zh-TW">用 llama-server 量測 request completion、nonempty output、TTFT、end-to-end latency、cleanup 與 port release。</span></p>
+          <pre class="code-block"><code>autotuneai arm optimize --config llama_server_secondary.json</code></pre>
         </article>
         <article class="mechanism-card">
           <span class="mechanism-step">5</span>
-          <h3>
-            <span class="lang-en">Run the chosen setup</span>
-            <span class="lang-zh-TW">執行選出的設定</span>
-          </h3>
-          <p>
-            <span class="lang-en">Start the best serving profile through the CLI while keeping the recommendation scoped to the tested environment.</span>
-            <span class="lang-zh-TW">用 CLI 啟動最佳 serving profile，並保留它只適用於測過環境的邊界。</span>
-          </p>
-          <pre class="code-block"><code>autotuneai serve run --best --workload interactive-short --concurrency 4</code></pre>
+          <h3><span class="lang-en">Generate a Passport</span><span class="lang-zh-TW">產生 Passport</span></h3>
+          <p><span class="lang-en">Turn measured profile comparison into a scoped Performance Passport and verify its required evidence.</span><span class="lang-zh-TW">把實測 profile comparison 轉成有範圍限制的 Performance Passport，並驗證必要證據。</span></p>
+          <pre class="code-block"><code>autotuneai arm passport --comparison-result profile_comparison_result.json</code></pre>
         </article>
         <article class="mechanism-card">
           <span class="mechanism-step">6</span>
-          <h3>
-            <span class="lang-en">Apply and roll back</span>
-            <span class="lang-zh-TW">套用與回復</span>
-          </h3>
-          <p>
-            <span class="lang-en">Validate, canary, lease, status-check, and roll back process-scoped recommendations.</span>
-            <span class="lang-zh-TW">支援 validate、canary、lease、status check，以及 process scope 的 rollback。</span>
-          </p>
+          <h3><span class="lang-en">Apply with rollback</span><span class="lang-zh-TW">套用與回復</span></h3>
+          <p><span class="lang-en">Apply only process-scoped recommendations after validation, with status checks and rollback kept in the workflow.</span><span class="lang-zh-TW">只在驗證後套用 process-scoped 推薦，流程中保留 status check 與 rollback。</span></p>
           <pre class="code-block"><code>autotuneai recommendation apply --bundle recommendation.json --dry-run</code></pre>
         </article>
       </div>
@@ -228,97 +175,75 @@
       <div class="section-head">
         <span class="section-tag">03</span>
         <h2 class="section-title">
-          <span class="lang-en">Recent Results</span>
-          <span class="lang-zh-TW">近期結果</span>
+          <span class="lang-en">Recent Measured Results</span>
+          <span class="lang-zh-TW">近期實測結果</span>
         </h2>
       </div>
       <div class="proof-grid">
         <article class="proof-card">
-          <span>Interactive Serving</span>
-          <strong>+84.092%</strong>
-          <p>
-            <span class="lang-en">Output tok/s improved from <code>17.032</code> to <code>31.355</code> on the tested C7g server and T4g remote-client path.</span>
-            <span class="lang-zh-TW">在測試的 C7g server 與 T4g 遠端 client 路徑中，output tok/s 從 <code>17.032</code> 到 <code>31.355</code>。</span>
-          </p>
+          <span>llama-bench</span>
+          <strong>+61.94%</strong>
+          <p><span class="lang-en">Build-profile decode median improved from 10.825 to 17.530 tok/s, portable-baseline to arm-native.</span><span class="lang-zh-TW">build-profile decode median 從 10.825 提升到 17.530 tok/s，portable-baseline 對 arm-native。</span></p>
         </article>
         <article class="proof-card">
-          <span>Decode Heavy</span>
-          <strong>+86.490%</strong>
-          <p>
-            <span class="lang-en">Decode-heavy serving workload improved from <code>17.046</code> to <code>31.790</code> output tok/s.</span>
-            <span class="lang-zh-TW">decode-heavy serving workload 的 output tok/s 從 <code>17.046</code> 到 <code>31.790</code>。</span>
-          </p>
+          <span>Runtime Search</span>
+          <strong>+28.25%</strong>
+          <p><span class="lang-en">Bounded runtime search improved decode median from 13.630 to 17.480 tok/s under the tested protocol.</span><span class="lang-zh-TW">有界 runtime search 在測試協定下讓 decode median 從 13.630 提升到 17.480 tok/s。</span></p>
         </article>
         <article class="proof-card">
-          <span>Prefill Heavy</span>
-          <strong>+69.375%</strong>
-          <p>
-            <span class="lang-en">Prefill-heavy serving workload improved from <code>16.563</code> to <code>28.054</code> output tok/s.</span>
-            <span class="lang-zh-TW">prefill-heavy serving workload 的 output tok/s 從 <code>16.563</code> 到 <code>28.054</code>。</span>
-          </p>
+          <span>Serving TTFT</span>
+          <strong>+35.40%</strong>
+          <p><span class="lang-en">llama-server TTFT median dropped from 97.260 ms to 62.826 ms, reported as lower latency.</span><span class="lang-zh-TW">llama-server TTFT median 從 97.260 ms 降到 62.826 ms，以 latency 降低方式呈現。</span></p>
         </article>
         <article class="proof-card">
-          <span>Arm Build Profile</span>
-          <strong>17.530 tok/s</strong>
-          <p>
-            <span class="lang-en">Best llama-bench build-profile median decode rate on the tested C7g / Neoverse-V1 target.</span>
-            <span class="lang-zh-TW">測試 C7g / Neoverse-V1 目標上的最佳 llama-bench build-profile median decode rate。</span>
-          </p>
+          <span>Serving E2E</span>
+          <strong>+37.34%</strong>
+          <p><span class="lang-en">End-to-end median latency dropped from 2114.831 ms to 1325.070 ms for the same measured profile comparison.</span><span class="lang-zh-TW">同一組 profile comparison 中，end-to-end median latency 從 2114.831 ms 降到 1325.070 ms。</span></p>
         </article>
       </div>
+      <p class="scope-note">
+        <span class="lang-en">Scope: one user-provisioned C7g / Graviton3 Arm64 target, Qwen2.5-7B Q4_K_M, pinned llama.cpp source, fixed prompt and measurement protocols. These are measured results, not a global optimality or cross-instance portability claim.</span>
+        <span class="lang-zh-TW">範圍：單一 user-provisioned C7g / Graviton3 Arm64 目標、Qwen2.5-7B Q4_K_M、固定 llama.cpp source、固定 prompt 與量測協定。這是實測結果，但不是全域最佳化或跨機型可攜性的宣稱。</span>
+      </p>
     </section>
 
     <section class="card-section reveal" data-analytics-section="perfrunbench_platform">
       <div class="section-head">
         <span class="section-tag">04</span>
         <h2 class="section-title">
-          <span class="lang-en">Tested Scope</span>
-          <span class="lang-zh-TW">測試範圍</span>
+          <span class="lang-en">Architecture and Evidence</span>
+          <span class="lang-zh-TW">架構與證據</span>
         </h2>
       </div>
       <div class="architecture-layout compact-architecture">
         <div class="architecture-flow" aria-label="PerfRunbench ArmTune flow">
-          <div class="flow-node">
-            <span class="lang-en">Controller CLI</span>
-            <span class="lang-zh-TW">Controller CLI</span>
-          </div>
+          <div class="flow-node"><span class="lang-en">Controller CLI</span><span class="lang-zh-TW">Controller CLI</span></div>
           <div class="flow-arrow">↓</div>
-          <div class="flow-node">
-            <span class="lang-en">C7g / Neoverse-V1 Arm64 server</span>
-            <span class="lang-zh-TW">C7g / Neoverse-V1 Arm64 server</span>
-          </div>
+          <div class="flow-node"><span class="lang-en">Arm64 target inspection</span><span class="lang-zh-TW">Arm64 目標檢查</span></div>
           <div class="flow-arrow">↓</div>
-          <div class="flow-node">
-            <span class="lang-en">Qwen2.5-7B Q4_K_M + llama.cpp</span>
-            <span class="lang-zh-TW">Qwen2.5-7B Q4_K_M + llama.cpp</span>
-          </div>
+          <div class="flow-node"><span class="lang-en">llama.cpp build and runtime candidates</span><span class="lang-zh-TW">llama.cpp build 與 runtime candidates</span></div>
           <div class="flow-arrow">↓</div>
-          <div class="flow-node">
-            <span class="lang-en">T4g remote client, concurrency 4</span>
-            <span class="lang-zh-TW">T4g 遠端 client，concurrency 4</span>
-          </div>
+          <div class="flow-node"><span class="lang-en">llama-bench and llama-server measurements</span><span class="lang-zh-TW">llama-bench 與 llama-server 量測</span></div>
           <div class="flow-arrow">↓</div>
-          <div class="flow-node">
-            <span class="lang-en">Recommendation bundle + Serving Passport</span>
-            <span class="lang-zh-TW">推薦包 + Serving Passport</span>
-          </div>
+          <div class="flow-node"><span class="lang-en">RecommendationBundle and Performance Passport</span><span class="lang-zh-TW">RecommendationBundle 與 Performance Passport</span></div>
         </div>
-        <div class="stack-panel">
-          <h3>
-            <span class="lang-en">Supported Surface</span>
-            <span class="lang-zh-TW">支援範圍</span>
-          </h3>
-          <div class="stack-list">
-            <span class="tag">Python CLI</span>
-            <span class="tag">Linux Arm64</span>
-            <span class="tag">llama.cpp</span>
-            <span class="tag">llama-server</span>
-            <span class="tag">Qwen GGUF</span>
-            <span class="tag">Remote Client</span>
-            <span class="tag">HTML Reports</span>
-            <span class="tag">Rollback</span>
-          </div>
-        </div>
+        <figure class="evidence-figure">
+          <img src="assets/perfrunbench/screenshots/latest_tuned_run_report.png" alt="PerfRunbench tuned run report screenshot" loading="lazy">
+          <figcaption>
+            <span class="lang-en">Report artifact from a tuned PerfRunbench run.</span>
+            <span class="lang-zh-TW">PerfRunbench 調校後產生的 report artifact。</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="stack-list">
+        <span class="tag">Python CLI</span>
+        <span class="tag">Linux Arm64</span>
+        <span class="tag">llama.cpp</span>
+        <span class="tag">llama-server</span>
+        <span class="tag">Qwen GGUF</span>
+        <span class="tag">SSH Target</span>
+        <span class="tag">HTML Reports</span>
+        <span class="tag">Rollback</span>
       </div>
     </section>
 
@@ -341,11 +266,11 @@
         </a>
         <a class="link-card" href="https://github.com/xuwwwww/PerfRunbench/blob/main/USER_GUIDE.md" target="_blank" rel="noopener">
           <h3>User Guide MD</h3>
-          <p><span class="lang-en">Full command guide for resource guard, tuning, restore, and reporting.</span><span class="lang-zh-TW">完整指令說明，包含 resource guard、調校、回復與報告。</span></p>
+          <p><span class="lang-en">Command guide for resource guards, tuning, restore, and reporting.</span><span class="lang-zh-TW">resource guard、調校、restore 與 report 的指令指南。</span></p>
         </a>
         <a class="link-card" href="assets/perfrunbench/docs/perfrunbench-user-guide.pdf" target="_blank" rel="noopener">
-          <h3><span class="lang-en">User Guide PDF</span><span class="lang-zh-TW">使用說明 PDF</span></h3>
-          <p><span class="lang-en">Local PDF copy for quick review.</span><span class="lang-zh-TW">網站內的 PDF 版本，方便快速查看。</span></p>
+          <h3><span class="lang-en">User Guide PDF</span><span class="lang-zh-TW">使用指南 PDF</span></h3>
+          <p><span class="lang-en">Local PDF copy for quick review.</span><span class="lang-zh-TW">可快速查看的本地 PDF 版本。</span></p>
         </a>
         <a class="link-card" href="assets/perfrunbench/reports/report-comparison.html" target="_blank" rel="noopener">
           <h3><span class="lang-en">CPU Runtime Demo</span><span class="lang-zh-TW">CPU Runtime Demo</span></h3>
@@ -353,15 +278,15 @@
         </a>
         <a class="link-card" href="assets/perfrunbench/reports/gpu-guard-comparison.html" target="_blank" rel="noopener">
           <h3>GPU Guard Demo</h3>
-          <p><span class="lang-en">Older GPU guard comparison report.</span><span class="lang-zh-TW">較早期的 GPU guard 比較報告。</span></p>
+          <p><span class="lang-en">Older GPU guard comparison report.</span><span class="lang-zh-TW">較早期的 GPU guard comparison report。</span></p>
         </a>
         <a class="link-card" href="assets/perfrunbench/reports/memory-tuning-comparison.html" target="_blank" rel="noopener">
           <h3>Memory Demo</h3>
-          <p><span class="lang-en">Older memory tuning comparison report.</span><span class="lang-zh-TW">較早期的 memory tuning 比較報告。</span></p>
+          <p><span class="lang-en">Older memory tuning comparison report.</span><span class="lang-zh-TW">較早期的 memory tuning comparison report。</span></p>
         </a>
         <a class="link-card" href="assets/perfrunbench/docs/perfrunbench-slides.pdf" target="_blank" rel="noopener">
-          <h3><span class="lang-en">Slides</span><span class="lang-zh-TW">投影片</span></h3>
-          <p><span class="lang-en">Project overview deck.</span><span class="lang-zh-TW">專案簡報。</span></p>
+          <h3><span class="lang-en">Slides</span><span class="lang-zh-TW">簡報</span></h3>
+          <p><span class="lang-en">Project overview deck.</span><span class="lang-zh-TW">專案概覽簡報。</span></p>
         </a>
       </div>
     </section>
@@ -381,26 +306,6 @@
       </div>
     </div>
   </footer>
-
-  <div class="modal-backdrop" id="project-modal" aria-hidden="true">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal-close" id="modal-close" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-      <div class="modal-scroll">
-        <div class="modal-header">
-          <span class="modal-period" id="modal-period"></span>
-          <h2 id="modal-title"></h2>
-          <p class="modal-org" id="modal-org"></p>
-          <div class="tag-row" id="modal-tags"></div>
-        </div>
-        <div class="modal-body">
-          <p id="modal-summary"></p>
-          <div id="modal-sections"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="scripts.js"></script>
 </body>
