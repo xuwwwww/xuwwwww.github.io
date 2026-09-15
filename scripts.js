@@ -14,19 +14,19 @@ let currentLang = getStoredLanguage();
 const PROJECTS = {
   'moe-dugan': {
     en: {
-      period: '2024 – Present',
+      period: '2024',
       title: 'MoE-DUGAN: Generative Denoising for Low-Dose CT',
       org: 'Lab of AI & Computer Vision · NTUST',
       tags: ['PyTorch', 'GAN', 'DDPM', 'Mixture of Experts', 'Medical Imaging'],
       summary:
-        'A research project extending Dual-Discriminator GANs with a Mixture-of-Experts adaptive loss-weighting module for multi-modal medical image denoising (CT / MRI / Ultrasound).',
+        'An undergraduate research project extending the dual-discriminator DUGAN architecture with expert routing and adaptive adversarial-loss weighting for low-dose CT denoising.',
       sections: [
         {
           heading: 'Highlights',
           bullets: [
-            'Designed the MoE-DUGAN framework extending Dual-Discriminator GANs for Low-Dose CT (LDCT) denoising.',
-            'Implemented a “Noise Expert” module (Mixture of Experts) that dynamically adjusts adversarial loss weights across modalities.',
-            'Validated on multi-modal datasets including CT, MRI, and Ultrasound to assess generalization.',
+            'Extended the dual-discriminator DUGAN architecture into MoE-DUGAN for low-dose CT image denoising.',
+            'Designed expert routing around image noise characteristics and implemented a Noise Expert module that adapts adversarial-loss weights.',
+            'Analyzed image features and loss behavior under different noise conditions to guide the mixture-of-experts training design.',
           ],
         },
         {
@@ -36,19 +36,19 @@ const PROJECTS = {
       ],
     },
     zh: {
-      period: '2024年 – 至今',
+      period: '2024',
       title: 'MoE-DUGAN：低劑量 CT 生成式去雜訊',
       org: 'AI 與電腦視覺實驗室 · NTUST',
       tags: ['PyTorch', 'GAN', 'DDPM', 'Mixture of Experts', '醫學影像'],
       summary:
-        '延伸 Dual-Discriminator GANs，加入 Mixture-of-Experts 動態調整對抗式 loss 權重的模組，應用於多模態醫學影像（CT / MRI / 超音波）去雜訊。',
+        '大學部研究專題：延伸 dual-discriminator DUGAN 架構，加入 expert routing 與可調式對抗 loss 權重，用於低劑量 CT 去雜訊。',
       sections: [
         {
           heading: '研究亮點',
           bullets: [
-            '設計 MoE-DUGAN 架構，延伸 Dual-Discriminator GANs 用於低劑量 CT（LDCT）去雜訊。',
-            '實作「Noise Expert」模組（Mixture of Experts），在多模態資料間動態調整對抗式 loss 權重。',
-            '在 CT、MRI、超音波等多模態資料上驗證模型泛化能力。',
+            '將 dual-discriminator DUGAN 架構延伸為 MoE-DUGAN，用於低劑量 CT 影像去雜訊。',
+            '依影像雜訊特性設計 expert routing，並實作可調整對抗 loss 權重的 Noise Expert。',
+            '分析不同雜訊條件下的影像特徵與 loss 行為，據此調整 mixture-of-experts 訓練設計。',
           ],
         },
         {
@@ -61,7 +61,7 @@ const PROJECTS = {
 
   'clinical-nlp': {
     en: {
-      period: '2023 – Present',
+      period: '2023',
       title: 'LLM-Guided Retrieval for Clinical Narratives (RAG)',
       org: 'Lab of Medical Imaging · NTUST',
       tags: ['PyTorch', 'RAG', 'LoRA', 'BioBERT', 'NLP'],
@@ -88,7 +88,7 @@ const PROJECTS = {
       ],
     },
     zh: {
-      period: '2023年 – 至今',
+      period: '2023',
       title: '長篇臨床敘述的 LLM 導引檢索（RAG）',
       org: '醫學影像實驗室 · NTUST',
       tags: ['PyTorch', 'RAG', 'LoRA', 'BioBERT', 'NLP'],
@@ -118,39 +118,110 @@ const PROJECTS = {
 
   'emg': {
     en: {
-      period: '2025',
-      title: 'EMG Signal Prediction',
-      org: 'Independent Project',
-      tags: ['CNN+GRU', 'MediaPipe', 'Real-time', 'Bio-signal'],
+      period: '2023',
+      title: 'Surface EMG-Based Hand-State Classification',
+      org: 'Undergraduate Research Proof of Concept · Taiwan Tech',
+      tags: ['Surface EMG', 'LSTM', 'Time Series', 'Bio-signal'],
       summary:
-        'Low-latency EMG signal processing for grasp-strength estimation. Spectrogram-based 2D CNN sliding window + GRU pipeline, fused with MediaPipe pose data.',
+        'A complete surface-electromyography acquisition and classification proof of concept that distinguishes fist clenching from release.',
       sections: [
         {
           heading: 'Highlights',
           bullets: [
-            'Converted EMG signals into spectrograms for 2D CNN sliding-window analysis.',
-            'Combined CNN feature extraction with a GRU temporal model.',
-            'Integrated MediaPipe to fuse vision-based hand pose information with EMG estimates.',
-            'Achieved low-latency, real-time grasp-strength prediction.',
+            'Set up laboratory sensors and instrumentation to capture muscle-activation signals.',
+            'Prepared and processed the acquired time-series data for model training.',
+            'Trained classifiers, including an LSTM-based model, to distinguish hand states such as fist clenching and release.',
+            'Documented the setup, methods, and results in a complete research report.',
           ],
         },
       ],
     },
     zh: {
-      period: '2025',
-      title: 'EMG 訊號預測',
-      org: '個人專案',
-      tags: ['CNN+GRU', 'MediaPipe', '即時', '生醫訊號'],
+      period: '2023',
+      title: '表面肌電手部狀態分類',
+      org: '大學部研究概念驗證 · 台科大',
+      tags: ['表面肌電', 'LSTM', '時序資料', '生醫訊號'],
       summary:
-        'EMG 訊號處理：將訊號轉成頻譜圖，搭配 2D CNN 滑動窗 + GRU，並與 MediaPipe 視覺資料融合，達成低延遲手部抓握力道判斷。',
+        '完成表面肌電訊號採集與分類的概念驗證，可辨識握拳與放開狀態。',
       sections: [
         {
           heading: '研究亮點',
           bullets: [
-            '將 EMG 訊號轉成頻譜圖，使用 2D CNN 滑動窗進行特徵抽取。',
-            '結合 CNN 特徵與 GRU 時序模型進行預測。',
-            '整合 MediaPipe，將手部姿態資訊與 EMG 估計融合。',
-            '達成低延遲、即時的抓握力道預測。',
+            '使用實驗室感測器與儀器採集肌肉活動訊號。',
+            '整理並處理採集到的時序資料供模型訓練。',
+            '訓練包含 LSTM 的分類模型，辨識握拳與放開等手部狀態。',
+            '將實驗配置、方法與結果整理成完整研究報告。',
+          ],
+        },
+      ],
+    },
+  },
+
+  'atmega-os': {
+    en: {
+      period: 'Sep. 2026 – Present',
+      title: 'ATmega OS: AVR Kernel and RV32I Guest Runtime',
+      org: 'Independent Project',
+      tags: ['AVR C', 'Assembly', 'Preemptive Scheduling', 'UART', 'RV32I'],
+      summary:
+        'A small operating-system kernel built from scratch for an ATmega328P-class board, with preemptive scheduling, kernel synchronization primitives, diagnostics, and dynamically uploaded RISC-V guests.',
+      sections: [
+        {
+          heading: 'Kernel',
+          bullets: [
+            'Implemented a stackful preemptive scheduler with per-task SRAM stacks, four fixed-priority levels, and round-robin scheduling within each level.',
+            'Wrote the AVR assembly context switch to save and restore all registers, SREG, and the stack pointer.',
+            'Added sleep, task restart and exit handling, stack guards, panic records, software reboot, and one-shot and periodic software timers.',
+          ],
+        },
+        {
+          heading: 'Synchronization and I/O',
+          bullets: [
+            'Built interrupt-driven UART RX/TX ring buffers, semaphores, a priority-inheritance mutex, message queues, and event flags.',
+            'Implemented an interactive UART shell for uptime, task state, stack-watermark inspection, LED control, and task restart.',
+            'Compressed fixed log messages at build time and decoded their UART frames on the host.',
+          ],
+        },
+        {
+          heading: 'RISC-V Guest Runtime',
+          bullets: [
+            'Ran dynamically uploaded RV32I guests inside a 2 KB SRAM budget without reflashing the AVR firmware.',
+            'Supported up to three resident guests and interleaved execution with a configurable instruction quantum.',
+            'Validated the system on a 16 MHz ATmega328P-class board at a 2 kHz scheduler tick with automated and hardware-regression tests.',
+          ],
+        },
+      ],
+    },
+    zh: {
+      period: '2026 年 9 月 – 至今',
+      title: 'ATmega OS：AVR 即時核心與 RV32I Guest Runtime',
+      org: '個人專案',
+      tags: ['AVR C', 'Assembly', '搶先式排程', 'UART', 'RV32I'],
+      summary:
+        '從零開始為 ATmega328P 相容板實作的小型作業系統核心，包含搶先式排程、核心同步原語、診斷機制與可動態載入的 RISC-V guest。',
+      sections: [
+        {
+          heading: '核心',
+          bullets: [
+            '實作 stackful preemptive scheduler，每個 task 使用獨立 SRAM stack，具四級固定優先權與同級 round-robin。',
+            '以 AVR assembly 撰寫 context switch，保存並恢復全部 registers、SREG 與 stack pointer。',
+            '加入 sleep、task restart 與 exit、stack guard、panic record、software reboot，以及 one-shot／periodic software timer。',
+          ],
+        },
+        {
+          heading: '同步與輸入輸出',
+          bullets: [
+            '建立 UART RX/TX interrupt ring buffer、semaphore、priority-inheritance mutex、message queue 與 event flags。',
+            '實作互動式 UART shell，可查詢 uptime、task 狀態與 stack 水位，並控制 LED、重啟 task。',
+            '在 build 階段壓縮固定 log message，並由電腦端解碼 UART frame。',
+          ],
+        },
+        {
+          heading: 'RISC-V Guest Runtime',
+          bullets: [
+            '在 2 KB SRAM 限制內執行動態上傳的 RV32I guest，不需重新燒錄 AVR firmware。',
+            '支援最多三個 resident guest，並以可調 instruction quantum 交錯執行。',
+            '在 16 MHz ATmega328P 相容板與 2 kHz scheduler tick 上，通過自動化與硬體 regression 測試。',
           ],
         },
       ],
@@ -1795,6 +1866,7 @@ const sectionMap = sectionIds
   .filter((x) => x.el);
 const portfolioCarousel = document.getElementById('portfolio-carousel');
 const carouselCards = sectionMap.map((section) => section.el);
+const carouselModeQuery = window.matchMedia('(min-width: 761px)');
 let activeCarouselIndex = 0;
 let dragState = null;
 let carouselSyncFrame = 0;
@@ -1802,6 +1874,10 @@ let wheelGestureFrame = 0;
 let lastWheelInputAt = 0;
 let suppressCarouselClick = false;
 const WHEEL_GESTURE_IDLE_MS = 160;
+
+function isCarouselMode() {
+  return carouselModeQuery.matches;
+}
 
 function setActiveSection(id) {
   navAnchors.forEach((a) => {
@@ -1848,6 +1924,10 @@ function setCarouselIndex(index, { scroll = true, behavior = 'smooth' } = {}) {
   updateCarouselStates(nextIndex);
   setActiveSection(activeCard.id);
   if (scroll && activeCard && portfolioCarousel) {
+    if (!isCarouselMode()) {
+      activeCard.scrollIntoView({ behavior, block: 'start' });
+      return;
+    }
     const targetTop = activeCard.offsetTop - (portfolioCarousel.clientHeight - activeCard.offsetHeight) / 2;
     const maxTop = portfolioCarousel.scrollHeight - portfolioCarousel.clientHeight;
     portfolioCarousel.scrollTo({
@@ -1859,11 +1939,17 @@ function setCarouselIndex(index, { scroll = true, behavior = 'smooth' } = {}) {
 
 function syncCarouselFromScroll() {
   carouselSyncFrame = 0;
+  if (!isCarouselMode()) return;
   const nearestIndex = getNearestCarouselIndex();
   if (nearestIndex !== activeCarouselIndex) setCarouselIndex(nearestIndex, { scroll: false });
 }
 
 function settleWheelGesture(timestamp) {
+  if (!isCarouselMode()) {
+    wheelGestureFrame = 0;
+    portfolioCarousel.classList.remove('is-wheel-driving');
+    return;
+  }
   const idleFor = timestamp - lastWheelInputAt;
   if (idleFor < WHEEL_GESTURE_IDLE_MS) {
     wheelGestureFrame = requestAnimationFrame(settleWheelGesture);
@@ -1882,6 +1968,7 @@ if (portfolioCarousel && carouselCards.length) {
   }, { passive: true });
 
   window.addEventListener('wheel', (event) => {
+    if (!isCarouselMode()) return;
     if (bodyElement.classList.contains('modal-open')) return;
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
 
@@ -1894,6 +1981,7 @@ if (portfolioCarousel && carouselCards.length) {
   }, { passive: false });
 
   portfolioCarousel.addEventListener('pointerdown', (event) => {
+    if (!isCarouselMode()) return;
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (event.target.closest('.hero-photo-wrap')) return;
     if (event.target.closest('input, summary, select, textarea, [contenteditable="true"]')) return;
@@ -1941,6 +2029,7 @@ if (portfolioCarousel && carouselCards.length) {
   }, true);
 
   portfolioCarousel.addEventListener('keydown', (event) => {
+    if (!isCarouselMode()) return;
     const previousKeys = ['ArrowUp', 'PageUp'];
     const nextKeys = ['ArrowDown', 'PageDown', ' '];
     if (previousKeys.includes(event.key)) {
@@ -1974,6 +2063,14 @@ if (portfolioCarousel && carouselCards.length) {
       event.preventDefault();
       setCarouselIndex(targetIndex);
     });
+  });
+
+  carouselModeQuery.addEventListener('change', (event) => {
+    dragState = null;
+    portfolioCarousel.classList.remove('is-dragging', 'is-wheel-driving');
+    if (wheelGestureFrame) cancelAnimationFrame(wheelGestureFrame);
+    wheelGestureFrame = 0;
+    if (event.matches) setCarouselIndex(activeCarouselIndex, { scroll: false });
   });
 
   setCarouselIndex(0, { scroll: false });

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PerfRunbench and ArmTune project page: Arm inference tuning, llama.cpp serving autotuning, benchmark automation, guarded recommendations, and HTML reports.">
-  <title>PerfRunbench - Arm Inference Tuning</title>
+  <meta name="description" content="PerfRunbench is a cross-platform AI benchmarking and systems-autotuning framework with resource guards, reversible tuning, measured comparisons, reports, and an Arm inference workflow.">
+  <title>PerfRunbench - Reproducible AI Benchmarking and Systems Autotuning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -50,13 +50,13 @@
     <section class="project-hero reveal" data-analytics-section="perfrunbench_hero">
       <div class="project-hero-copy">
         <span class="eyebrow">
-          <span class="lang-en">Arm inference and serving autotuning</span>
-          <span class="lang-zh-TW">Arm 推論與 serving 自動調校</span>
+          <span class="lang-en">Reproducible AI benchmarking and systems autotuning</span>
+          <span class="lang-zh-TW">可重現的 AI benchmark 與系統自動調校</span>
         </span>
         <h1>PerfRunbench</h1>
         <p class="project-lede">
-          <span class="lang-en">PerfRunbench is my benchmarking and tuning toolkit for real workloads. ArmTune adds an Arm-focused path: inspect the target, build llama.cpp profiles, run bounded runtime searches, measure llama-server serving behavior, produce a Performance Passport, and apply recommendations with validation and rollback.</span>
-          <span class="lang-zh-TW">PerfRunbench 是我針對真實工作負載做 benchmark 與調校的工具。ArmTune 是其中的 Arm 路線：檢查目標主機、建立 llama.cpp profile、執行有界 runtime 搜尋、量測 llama-server serving 表現、產生 Performance Passport，並以可驗證與可回復的方式套用推薦。</span>
+          <span class="lang-en">PerfRunbench runs training and inference workloads with CPU, memory, and GPU guards; compares reversible runtime and host settings; and records every experiment in HTML and JSON. The same framework supports local, systemd, and Docker executors across Windows/WSL, Linux with NVIDIA GPUs, and Arm systems. ArmTune is its dedicated path for measured Arm inference tuning.</span>
+          <span class="lang-zh-TW">PerfRunbench 可在 CPU、記憶體與 GPU 資源限制下執行訓練與推論工作負載，比較可回復的 runtime 與主機設定，並以 HTML 和 JSON 保存每次實驗。相同框架支援 Windows/WSL、Linux + NVIDIA GPU 與 Arm 系統上的 local、systemd、Docker executor；ArmTune 則是其中專門處理 Arm 推論實測與調校的流程。</span>
         </p>
         <div class="project-actions">
           <a class="btn btn-primary" href="https://github.com/xuwwwww/PerfRunbench" target="_blank" rel="noopener">GitHub</a>
@@ -72,24 +72,24 @@
       </div>
       <div class="project-hero-panel">
         <h2>
-          <span class="lang-en">Measured Arm Scope</span>
-          <span class="lang-zh-TW">Arm 實測範圍</span>
+          <span class="lang-en">Project at a Glance</span>
+          <span class="lang-zh-TW">專案一覽</span>
         </h2>
         <div class="metric-list">
           <div>
-            <strong>C7g</strong>
-            <span class="lang-en">Ubuntu 24.04 Arm64 target, Neoverse-V1, 8 logical CPUs</span>
-            <span class="lang-zh-TW">Ubuntu 24.04 Arm64 目標主機，Neoverse-V1，8 logical CPUs</span>
+            <strong>3 Executors</strong>
+            <span class="lang-en">Local processes, systemd services, and Docker containers</span>
+            <span class="lang-zh-TW">Local process、systemd service 與 Docker container</span>
           </div>
           <div>
-            <strong>Qwen2.5</strong>
-            <span class="lang-en">Qwen2.5-7B Q4_K_M with pinned llama.cpp source and fixed protocols</span>
-            <span class="lang-zh-TW">Qwen2.5-7B Q4_K_M，搭配固定 llama.cpp source 與量測協定</span>
+            <strong>4 Platforms</strong>
+            <span class="lang-en">Windows, WSL, Linux/NVIDIA, and Linux Arm64</span>
+            <span class="lang-zh-TW">Windows、WSL、Linux/NVIDIA 與 Linux Arm64</span>
           </div>
           <div>
-            <strong>Passport</strong>
-            <span class="lang-en">Preliminary measured Performance Passport, verified with 82 artifact manifests</span>
-            <span class="lang-zh-TW">初步實測 Performance Passport，並重新驗證 82 份 artifact manifest</span>
+            <strong>Safe Tuning</strong>
+            <span class="lang-en">Snapshots, validation, canary runs, leases, restore, and rollback</span>
+            <span class="lang-zh-TW">Snapshot、驗證、canary run、lease、restore 與 rollback</span>
           </div>
         </div>
       </div>
@@ -105,30 +105,58 @@
       </div>
       <div class="capability-grid">
         <article class="systems-card">
-          <h3>Target Inspection</h3>
-          <p><span class="lang-en">Validates Linux Arm64 readiness, CPU topology, runtime tools, model paths, SSH trust, artifact destinations, and production benchmark requirements before a run starts.</span><span class="lang-zh-TW">在開始調校前檢查 Linux Arm64 readiness、CPU topology、runtime 工具、模型路徑、SSH trust、artifact 輸出位置與 production benchmark 條件。</span></p>
+          <h3>Resource-Guarded Runs</h3>
+          <p><span class="lang-en">Wraps arbitrary training and inference commands with CPU, memory, and GPU budgets, run-state tracking, cleanup, and executor-specific lifecycle checks.</span><span class="lang-zh-TW">以 CPU、記憶體與 GPU budget 包裝任意訓練或推論指令，並處理 run state、cleanup 與不同 executor 的 lifecycle check。</span></p>
         </article>
         <article class="systems-card">
-          <h3>Build Profiles</h3>
-          <p><span class="lang-en">Builds portable, arm-native, and optimized llama.cpp variants while preserving CMake cache, compile commands, binary hashes, and build evidence.</span><span class="lang-zh-TW">建立 portable、arm-native 與 optimized llama.cpp variants，並保留 CMake cache、compile commands、binary hash 與 build evidence。</span></p>
+          <h3>Reversible Tuning</h3>
+          <p><span class="lang-en">Applies process, runtime, Linux, WSL, Windows, and NVIDIA profiles with pre-run snapshots, post-run checks, restore, and rollback.</span><span class="lang-zh-TW">套用 process、runtime、Linux、WSL、Windows 與 NVIDIA profile，並保留執行前 snapshot、執行後檢查、restore 與 rollback。</span></p>
         </article>
         <article class="systems-card">
-          <h3>Runtime Search</h3>
-          <p><span class="lang-en">Runs staged candidate searches over threads, CPU affinity, batch settings, and serving parameters with paired baselines and a configured noise band.</span><span class="lang-zh-TW">針對 threads、CPU affinity、batch 設定與 serving 參數做階段式 candidate search，搭配 paired baseline 與設定好的 noise band。</span></p>
+          <h3>Measured Search</h3>
+          <p><span class="lang-en">Searches candidate settings with fixed workloads, paired baselines, configured noise bands, and statistical confirmation instead of assuming that aggressive settings are faster.</span><span class="lang-zh-TW">使用固定工作負載、paired baseline、noise band 與統計確認搜尋候選設定，而不是假設較激進的設定一定較快。</span></p>
         </article>
         <article class="systems-card">
-          <h3>Guarded Apply</h3>
-          <p><span class="lang-en">Packages recommendations with tested scope, status checks, dry-run behavior, process-scoped apply, lease tracking, and rollback.</span><span class="lang-zh-TW">把推薦結果包成有測試範圍、狀態檢查、dry-run、process-scoped apply、lease tracking 與 rollback 的 RecommendationBundle。</span></p>
+          <h3>Reports and Recommendations</h3>
+          <p><span class="lang-en">Produces traceable HTML/JSON comparisons and packages eligible settings with their measured scope, evidence, dry-run behavior, status checks, and rollback path.</span><span class="lang-zh-TW">產生可追溯的 HTML/JSON 比較，並把合格設定與實測範圍、證據、dry-run、狀態檢查及 rollback 路徑一起保存。</span></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card-section reveal" data-analytics-section="perfrunbench_platform_scope">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <h2 class="section-title">
+          <span class="lang-en">Cross-Platform Scope</span>
+          <span class="lang-zh-TW">跨平台範圍</span>
+        </h2>
+      </div>
+      <div class="capability-grid">
+        <article class="systems-card">
+          <h3>Windows / WSL</h3>
+          <p><span class="lang-en">Profiles Windows and WSL workloads, records CPU and memory state, and runs fixed-batch GPU experiments with NVIDIA monitoring and rollback.</span><span class="lang-zh-TW">分析 Windows 與 WSL 工作負載，記錄 CPU／記憶體狀態，並以 NVIDIA monitoring 與 rollback 執行固定 batch 的 GPU 實驗。</span></p>
+        </article>
+        <article class="systems-card">
+          <h3>Linux / NVIDIA</h3>
+          <p><span class="lang-en">Combines system, runtime, and GPU profiles on Linux while checking whether each profile helps, stays within noise, or causes a regression.</span><span class="lang-zh-TW">在 Linux 上組合 system、runtime 與 GPU profile，並判斷各設定是有效、落在雜訊範圍內，或造成退步。</span></p>
+        </article>
+        <article class="systems-card">
+          <h3>ArmTune</h3>
+          <p><span class="lang-en">Inspects Arm64 targets, builds portable and Arm-specific llama.cpp profiles, searches runtime settings, measures llama-server behavior, and creates a Performance Passport.</span><span class="lang-zh-TW">檢查 Arm64 主機、建立 portable 與 Arm 專用 llama.cpp profile、搜尋 runtime 設定、量測 llama-server，並產生 Performance Passport。</span></p>
+        </article>
+        <article class="systems-card">
+          <h3>Experimental Workloads</h3>
+          <p><span class="lang-en">Keeps workload adapters separate from the framework, including PyTorch/timm inference, synthetic pressure tests, llama.cpp, and an optional BootTrace structured-output workload.</span><span class="lang-zh-TW">將 workload adapter 與框架分離，涵蓋 PyTorch/timm inference、synthetic pressure test、llama.cpp，以及選用的 BootTrace structured-output workload。</span></p>
         </article>
       </div>
     </section>
 
     <section id="workflow" class="card-section reveal">
       <div class="section-head">
-        <span class="section-tag">02</span>
+        <span class="section-tag">03</span>
         <h2 class="section-title">
-          <span class="lang-en">Workflow</span>
-          <span class="lang-zh-TW">流程</span>
+          <span class="lang-en">ArmTune Workflow</span>
+          <span class="lang-zh-TW">ArmTune 流程</span>
         </h2>
       </div>
       <div class="mechanism-grid">
@@ -173,13 +201,23 @@
 
     <section id="results" class="card-section reveal" data-analytics-section="perfrunbench_results">
       <div class="section-head">
-        <span class="section-tag">03</span>
+        <span class="section-tag">04</span>
         <h2 class="section-title">
           <span class="lang-en">Recent Measured Results</span>
           <span class="lang-zh-TW">近期實測結果</span>
         </h2>
       </div>
       <div class="proof-grid">
+        <article class="proof-card">
+          <span>Windows · RTX 3060</span>
+          <strong>+9.80%</strong>
+          <p><span class="lang-en">Paired normalized improvement on a fixed-batch timm inference sweep; raw throughput increased from 215.629 to 224.735 samples/s.</span><span class="lang-zh-TW">固定 batch 的 timm inference paired sweep，normalized improvement 為 9.80%；raw throughput 從 215.629 提升至 224.735 samples/s。</span></p>
+        </article>
+        <article class="proof-card">
+          <span>WSL · RTX 3060</span>
+          <strong>+6.69%</strong>
+          <p><span class="lang-en">Paired normalized improvement on the matching WSL fixed-batch sweep; raw throughput increased from 209.000 to 218.628 samples/s.</span><span class="lang-zh-TW">相同固定 batch protocol 的 WSL paired sweep，normalized improvement 為 6.69%；raw throughput 從 209.000 提升至 218.628 samples/s。</span></p>
+        </article>
         <article class="proof-card">
           <span>llama-bench</span>
           <strong>+61.94%</strong>
@@ -202,17 +240,17 @@
         </article>
       </div>
       <p class="scope-note">
-        <span class="lang-en">Scope: one user-provisioned C7g / Graviton3 Arm64 target, Qwen2.5-7B Q4_K_M, pinned llama.cpp source, fixed prompt and measurement protocols. These are measured results, not a global optimality or cross-instance portability claim.</span>
-        <span class="lang-zh-TW">範圍：單一 user-provisioned C7g / Graviton3 Arm64 目標、Qwen2.5-7B Q4_K_M、固定 llama.cpp source、固定 prompt 與量測協定。這是實測結果，但不是全域最佳化或跨機型可攜性的宣稱。</span>
+        <span class="lang-en">Each result belongs to its own host and protocol. Windows/WSL figures use fixed-batch timm sweeps on an RTX 3060 Laptop GPU. Arm figures use one C7g / Graviton3 Arm64 target, Qwen2.5-7B Q4_K_M, pinned llama.cpp source, and fixed measurement protocols. They are not a global optimum or a cross-platform speedup claim.</span>
+        <span class="lang-zh-TW">每組結果只適用於各自的主機與 protocol。Windows/WSL 數據來自 RTX 3060 Laptop GPU 的固定 batch timm sweep；Arm 數據來自單一 C7g / Graviton3 Arm64 主機、Qwen2.5-7B Q4_K_M、固定 llama.cpp source 與量測協定。這些結果不代表全域最佳值，也不能合併成跨平台加速宣稱。</span>
       </p>
     </section>
 
     <section class="card-section reveal" data-analytics-section="perfrunbench_platform">
       <div class="section-head">
-        <span class="section-tag">04</span>
+        <span class="section-tag">05</span>
         <h2 class="section-title">
-          <span class="lang-en">Architecture and Evidence</span>
-          <span class="lang-zh-TW">架構與證據</span>
+          <span class="lang-en">ArmTune Architecture and Evidence</span>
+          <span class="lang-zh-TW">ArmTune 架構與證據</span>
         </h2>
       </div>
       <div class="architecture-layout compact-architecture">
@@ -249,7 +287,7 @@
 
     <section id="docs" class="card-section reveal">
       <div class="section-head">
-        <span class="section-tag">05</span>
+        <span class="section-tag">06</span>
         <h2 class="section-title">
           <span class="lang-en">Docs and Reports</span>
           <span class="lang-zh-TW">文件與報告</span>

@@ -1212,7 +1212,7 @@ body.page-lang-switching { opacity: 0; }
    ========================================================= */
 .activities-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 .activity-column h3 {
@@ -1976,6 +1976,9 @@ body.modal-open { overflow: hidden; }
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
+.systems-page .proof-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .mechanism-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2272,6 +2275,7 @@ body.modal-open { overflow: hidden; }
   .systems-grid,
   .capability-grid,
   .proof-grid,
+  .systems-page .proof-grid,
   .mechanism-grid,
   .link-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2456,6 +2460,7 @@ body.modal-open { overflow: hidden; }
   .systems-grid,
   .capability-grid,
   .proof-grid,
+  .systems-page .proof-grid,
   .mechanism-grid,
   .command-grid,
   .link-grid {
@@ -2463,11 +2468,6 @@ body.modal-open { overflow: hidden; }
   }
   .evidence-card-wide {
     grid-column: auto;
-  }
-  .portfolio-carousel {
-    width: 100%;
-    min-height: 540px;
-    padding-inline: 18px;
   }
   /* Cards */
   .card-section {
@@ -2488,27 +2488,35 @@ body.modal-open { overflow: hidden; }
   .quick-facts { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
   .fact { padding: 14px 16px; }
   .portfolio-carousel {
-    height: calc(100svh - var(--nav-height-mobile) - 24px);
-    min-height: 500px;
+    width: 100%;
+    height: auto;
+    min-height: 0;
     margin: 6px auto 24px;
-    padding: 180px 14px;
-    scroll-padding-block: 180px;
+    padding: 0 10px;
+    overflow: visible;
+    overscroll-behavior: auto;
+    scroll-padding-block: 0;
+    scroll-snap-type: none;
+    perspective: none;
+    cursor: auto;
+    touch-action: auto;
   }
-  .portfolio-carousel > .carousel-card {
-    margin-bottom: 10px;
-  }
-  .portfolio-carousel > .carousel-card[data-coverflow-state="active"] {
-    left: -10px;
-    width: calc(100% + 20px);
-    max-width: calc(var(--max-width) + 20px);
-  }
+  .portfolio-carousel > .carousel-card,
+  .portfolio-carousel > .carousel-card[data-coverflow-state="active"],
   .portfolio-carousel > .carousel-card[data-coverflow-state="before"],
-  .portfolio-carousel > .carousel-card[data-coverflow-state="after"] {
-    transform: translateZ(-16px) scale(0.94);
-  }
+  .portfolio-carousel > .carousel-card[data-coverflow-state="after"],
   .portfolio-carousel > .carousel-card[data-coverflow-state="past"],
   .portfolio-carousel > .carousel-card[data-coverflow-state="future"] {
-    transform: translateZ(-40px) scale(0.88);
+    left: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 12px;
+    scroll-snap-align: none;
+    z-index: auto;
+    transform: none;
+    opacity: 1;
+    filter: none;
+    transition: none;
   }
 
   /* Timeline */
