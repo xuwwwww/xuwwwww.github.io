@@ -9,8 +9,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Sora:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=language-20261101-r4">
+  <link rel="stylesheet" href="portfolio.css?v=compact-20261101-r4">
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Z41G18VKJ"></script>
@@ -21,18 +22,19 @@
     gtag('config', 'G-3Z41G18VKJ');
   </script>
 </head>
-<body class="lang-en">
+<body class="lang-en portfolio-page">
+  <a class="skip-link" href="#portfolio-content"><span class="lang-en">Skip to content</span><span class="lang-zh-TW">跳至主要內容</span></a>
 
   <!-- Top Navigation -->
   <header class="topbar" id="topbar">
     <a href="#top" class="brand" aria-label="Home">
+      <span class="brand-symbol" aria-hidden="true">lw.</span>
       <span class="brand-name lang-en">Louis Wu</span>
       <span class="brand-name lang-zh-TW">Louis 吳定栩</span>
     </a>
 
     <nav class="nav-links" aria-label="Primary">
       <a href="#about"><span class="lang-en">About</span><span class="lang-zh-TW">關於</span></a>
-      <a href="#ai-featured">PerfRunbench</a>
       <a href="#experience"><span class="lang-en">Experience</span><span class="lang-zh-TW">經歷</span></a>
       <a href="#projects"><span class="lang-en">Projects</span><span class="lang-zh-TW">專案</span></a>
       <a href="#awards"><span class="lang-en">Awards</span><span class="lang-zh-TW">獲獎</span></a>
@@ -43,6 +45,7 @@
 
     <div class="topbar-actions">
       <button id="lang-switch" type="button" aria-label="Switch language">
+        <svg class="language-globe" viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4.5" ry="9"/><path d="M3 12h18"/></svg>
         <span id="lang-switch-label">中文</span>
       </button>
       <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
@@ -50,17 +53,16 @@
       </button>
     </div>
   </header>
+  <div class="page-progress" aria-hidden="true"></div>
 
   <main id="top">
     <nav class="section-rail" aria-label="Section overview">
+      <div class="rail-heading"><span class="lang-en">On this page</span><span class="lang-zh-TW">頁面導覽</span></div>
       <a href="#hero-card" data-rail-target="hero-card" aria-label="Introduction">
-        <span class="rail-preview rail-preview-hero"><span class="rail-preview-thumb"><img src="assets/profile/head.jpg" alt="" loading="lazy"></span><span class="rail-preview-copy"><strong><span class="lang-en">Intro</span><span class="lang-zh-TW">自介</span></strong><small><span class="lang-en">Louis Wu</span><span class="lang-zh-TW">吳定栩</span></small></span></span>
+        <span class="rail-preview rail-preview-hero"><span class="rail-preview-copy"><strong><span class="lang-en">Intro</span><span class="lang-zh-TW">自介</span></strong><small><span class="lang-en">Louis Wu</span><span class="lang-zh-TW">吳定栩</span></small></span></span>
       </a>
       <a href="#about" data-rail-target="about" aria-label="About">
         <span class="rail-preview"><span class="rail-preview-index">02</span><span class="rail-preview-copy"><strong><span class="lang-en">About</span><span class="lang-zh-TW">簡介</span></strong><small><span class="lang-en">Background</span><span class="lang-zh-TW">背景</span></small></span></span>
-      </a>
-      <a href="#ai-featured" data-rail-target="ai-featured" aria-label="PerfRunbench">
-        <span class="rail-preview"><span class="rail-preview-index">03</span><span class="rail-preview-copy"><strong>PerfRunbench</strong><small>ArmTune</small></span></span>
       </a>
       <a href="#experience" data-rail-target="experience" aria-label="Experience">
         <span class="rail-preview"><span class="rail-preview-index">04</span><span class="rail-preview-copy"><strong><span class="lang-en">Experience</span><span class="lang-zh-TW">經歷</span></strong><small><span class="lang-en">Work</span><span class="lang-zh-TW">工作</span></small></span></span>
@@ -82,16 +84,18 @@
       </a>
     </nav>
 
-    <div class="portfolio-carousel" id="portfolio-carousel" tabindex="0" aria-label="Portfolio sections">
+    <div class="portfolio-content" id="portfolio-content" tabindex="-1">
       <!-- Hero -->
-    <section id="hero-card" class="hero reveal carousel-card" data-analytics-section="home_hero">
+    <section id="hero-card" class="hero reveal" data-analytics-section="home_hero">
       <div class="hero-grid">
-        <div class="hero-photo-wrap" id="hero-photo-trigger" tabindex="0" aria-label="Profile photo easter egg trigger">
-          <img src="assets/profile/head.jpg" alt="Louis Wu" class="hero-photo">
-          <div class="hero-photo-glow" aria-hidden="true"></div>
+        <div class="hero-visual">
+          <div class="hero-photo-wrap" id="hero-photo-trigger" tabindex="0" role="button" aria-label="Play Snake">
+            <img src="assets/profile/head-portrait.webp" alt="Louis Wu outdoors" class="hero-photo" width="320" height="380" fetchpriority="high">
+          </div>
         </div>
 
         <div class="hero-content">
+          <p class="hero-intro"><span class="lang-en">Systems software &amp; research</span><span class="lang-zh-TW">系統軟體與研究</span></p>
           <h1 class="hero-name">
             <span class="lang-en">Louis Wu</span>
             <span class="lang-zh-TW">Louis 吳定栩</span>
@@ -110,13 +114,15 @@
           </p>
 
           <div class="hero-actions">
+            <div class="hero-primary-actions">
             <a class="btn btn-primary lang-en" href="https://docs.google.com/document/d/18E1US4zonqrK3UxGrhFF95HDXht13BpsEDOWQPCDpgU/edit" target="_blank" rel="noopener">Curriculum Vitae</a>
             <a class="btn btn-primary lang-zh-TW" href="https://docs.google.com/document/d/18E1US4zonqrK3UxGrhFF95HDXht13BpsEDOWQPCDpgU/edit" target="_blank" rel="noopener">學術履歷</a>
             <button class="btn btn-secondary brief-toggle" type="button" aria-expanded="false" aria-controls="hero-brief-modal">
               <span class="lang-en">60-second intro</span>
               <span class="lang-zh-TW">60 秒自介</span>
             </button>
-
+            </div>
+            <div class="hero-contact-links">
             <a class="btn btn-ghost copy-trigger"
                href="mailto:louis20030920@gmail.com"
                data-copy="louis20030920@gmail.com"
@@ -133,13 +139,18 @@
             <a class="btn btn-ghost" href="https://www.linkedin.com/in/louis-wu-65ba6b270/" target="_blank" rel="noopener">
               LinkedIn
             </a>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="hero-footer">
+        <span><span class="lang-en">Firmware, performance, and machine learning systems.</span><span class="lang-zh-TW">韌體、效能工程與機器學習系統。</span></span>
+        <a href="#projects"><span class="lang-en">Explore my work</span><span class="lang-zh-TW">看看我的作品</span><svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M8 2v12m-5-5 5 5 5-5" stroke="currentColor" stroke-width="1.4"/></svg></a>
       </div>
     </section>
 
       <!-- About -->
-    <section id="about" class="card-section reveal carousel-card">
+    <section id="about" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">02</span>
         <h2 class="section-title">
@@ -178,36 +189,8 @@
       </div>
     </section>
 
-    <!-- PerfRunbench -->
-    <section id="ai-featured" class="featured-portfolio reveal carousel-card" aria-labelledby="ai-featured-title" data-analytics-section="featured_perfrunbench">
-      <div class="featured-copy">
-        <span class="featured-kicker">
-          <span class="lang-en">Featured Project</span>
-          <span class="lang-zh-TW">精選專案</span>
-        </span>
-        <h2 id="ai-featured-title">PerfRunbench</h2>
-        <p>
-          <span class="lang-en">A cross-platform framework for running AI workloads under CPU, memory, and GPU limits; comparing reversible system and runtime settings; and producing traceable HTML/JSON reports. It supports local, systemd, and Docker execution on Windows/WSL, Linux, NVIDIA GPUs, and Arm systems. ArmTune is one specialized workflow for measured Arm inference tuning.</span>
-          <span class="lang-zh-TW">跨平台 AI benchmark 與調校框架，可在 CPU、記憶體與 GPU 限制下執行工作負載，比較可回復的系統與 runtime 設定，並輸出可追溯的 HTML/JSON 報告。支援 Windows/WSL、Linux、NVIDIA GPU，以及 local、systemd、Docker 執行；ArmTune 是其中針對 Arm 推論實測的專門流程。</span>
-        </p>
-        <div class="tag-row">
-          <span class="tag">Resource Guards</span>
-          <span class="tag">Windows / WSL / Linux</span>
-          <span class="tag">GPU &amp; Arm Tuning</span>
-          <span class="tag">Rollback</span>
-        </div>
-      </div>
-      <div class="featured-actions">
-        <a class="btn btn-primary" href="ai-systems.html">
-          <span class="lang-en">Open PerfRunbench</span>
-          <span class="lang-zh-TW">開啟 PerfRunbench</span>
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/xuwwwww/PerfRunbench" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </section>
-
     <!-- Experience -->
-    <section id="experience" class="card-section reveal carousel-card">
+    <section id="experience" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">04</span>
         <h2 class="section-title">
@@ -306,7 +289,7 @@
     </section>
 
     <!-- Projects -->
-    <section id="projects" class="card-section reveal carousel-card">
+    <section id="projects" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">05</span>
         <h2 class="section-title">
@@ -321,6 +304,35 @@
       </h3>
 
       <div class="project-grid">
+
+        <article id="ai-featured" class="project-card" data-project="perfrunbench" tabindex="0" role="button" data-analytics-section="featured_perfrunbench">
+          <div class="project-card-top">
+            <span class="project-period">2026</span>
+            <span class="project-badge">
+              <span class="lang-en">Systems · Benchmarking</span>
+              <span class="lang-zh-TW">系統 · 效能評測</span>
+            </span>
+          </div>
+          <h4 class="project-title">PerfRunbench</h4>
+          <p class="project-org">
+            <span class="lang-en">Electrical Engineering · Taiwan Tech</span>
+            <span class="lang-zh-TW">電機工程系 · 台科大</span>
+          </p>
+          <p class="project-summary">
+            <span class="lang-en">A cross-platform framework for resource-guarded AI workloads, reversible runtime tuning, and reproducible HTML/JSON experiment reports.</span>
+            <span class="lang-zh-TW">跨平台 AI 效能評測框架，支援資源限制、可回復的 runtime 調校，以及可重現的 HTML/JSON 實驗報告。</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Benchmarking</span>
+            <span class="tag">Linux / WSL</span>
+            <span class="tag">ArmTune</span>
+          </div>
+          <span class="project-cta">
+            <span class="lang-en">View details</span>
+            <span class="lang-zh-TW">查看詳細</span>
+          </span>
+        </article>
 
         <article class="project-card" data-project="moe-dugan" tabindex="0" role="button">
           <div class="project-card-top">
@@ -536,7 +548,7 @@
     </section>
 
     <!-- Awards -->
-    <section id="awards" class="card-section reveal carousel-card">
+    <section id="awards" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">06</span>
         <h2 class="section-title">
@@ -705,7 +717,7 @@
     </section>
 
     <!-- Activities -->
-    <section id="activities" class="card-section reveal carousel-card">
+    <section id="activities" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">07</span>
         <h2 class="section-title">
@@ -765,7 +777,7 @@
     </section>
 
     <!-- Skills -->
-    <section id="skills" class="card-section reveal carousel-card">
+    <section id="skills" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">08</span>
         <h2 class="section-title">
@@ -818,7 +830,7 @@
             <span class="lang-zh-TW">語言</span>
           </h3>
           <ul class="plain-list">
-            <li><span class="lang-en">English — TOEFL 95</span><span class="lang-zh-TW">英文：托福 95</span></li>
+            <li><span class="lang-en">English — TOEFL iBT 5.0 (100/120 equivalent)</span><span class="lang-zh-TW">英文：托福 iBT 5.0（換算 100/120）</span></li>
             <li><span class="lang-en">Chinese — Native</span><span class="lang-zh-TW">中文：母語</span></li>
           </ul>
         </div>
@@ -840,7 +852,7 @@
     </section>
 
     <!-- Coursework (collapsible) -->
-    <section id="coursework" class="card-section reveal carousel-card">
+    <section id="coursework" class="card-section reveal">
       <div class="section-head">
         <span class="section-tag">09</span>
         <h2 class="section-title">
@@ -1009,14 +1021,14 @@
           <h2 id="easter-title"><span class="lang-en">Snake</span><span class="lang-zh-TW">貪吃蛇</span></h2>
         </div>
         <div class="easter-actions">
-          <button class="easter-auto" id="easter-auto" type="button">Auto Solve: Off</button>
+          <button class="easter-auto active" id="easter-auto" type="button" aria-pressed="true">Auto Solve: On</button>
           <button class="easter-reset" id="easter-reset" type="button">Reset</button>
         </div>
       </div>
       <p class="easter-status" id="easter-status">Score: 0</p>
       <div class="easter-meta">
         <span id="easter-score">Length 3 / 144</span>
-        <span id="easter-mode">Manual</span>
+        <span id="easter-mode">Auto Solve</span>
       </div>
       <div class="easter-board" id="easter-board" role="grid" aria-label="Snake board"></div>
       <div class="easter-controls" aria-label="Snake controls">
@@ -1026,8 +1038,8 @@
         <button class="easter-control easter-control-right" type="button" data-direction="right" aria-label="Move right">→</button>
       </div>
       <p class="easter-hint">
-        <span class="lang-en">Use arrow keys or WASD. Auto solve will plan each step.</span>
-        <span class="lang-zh-TW">用方向鍵或 WASD 操作。Auto solve 會每一步重新規劃。</span>
+        <span class="lang-en">Arrow keys or WASD for manual play. Switching to Auto Solve starts a new game.</span>
+        <span class="lang-zh-TW">方向鍵或 WASD 可切換手動操作。開啟 Auto Solve 會重新開局。</span>
       </p>
       <div class="sr-only" id="easter-live" aria-live="polite"></div>
       <div class="easter-legend" aria-hidden="true">
@@ -1037,6 +1049,6 @@
     </div>
   </div>
 
-  <script src="scripts.js"></script>
+  <script src="scripts.js?v=projects-20261101-r12"></script>
 </body>
 </html>

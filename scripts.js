@@ -6,12 +6,64 @@ const langSwitchButton = document.getElementById('lang-switch');
 const langSwitchLabel = document.getElementById('lang-switch-label');
 const bodyElement = document.body;
 const htmlElement = document.documentElement;
-const LANGUAGE_STORAGE_KEY = 'preferred-language';
 const SUPPORTED_LANGUAGES = new Set(['en', 'zh-TW']);
-let currentLang = getStoredLanguage();
+let currentLang = 'en';
 
 /* ---------------- Project Detail Registry ---------------- */
 const PROJECTS = {
+  'perfrunbench': {
+    en: {
+      period: '2026',
+      title: 'PerfRunbench',
+      org: 'Electrical Engineering · Taiwan Tech',
+      tags: ['Python', 'Benchmarking', 'Linux / WSL', 'ArmTune'],
+      summary:
+        'A cross-platform framework for running AI workloads under CPU, memory, and GPU limits; comparing reversible system and runtime settings; and producing traceable HTML/JSON reports.',
+      sections: [
+        {
+          heading: 'Highlights',
+          bullets: [
+            'Runs training and inference workloads with resource guards through local, systemd, and Docker executors.',
+            'Compares reversible runtime and host settings on matched workloads, recording output rate, response delay, and search cost.',
+            'Supports Windows/WSL, Linux with NVIDIA GPUs, and Arm systems; ArmTune handles measured Arm inference tuning.',
+          ],
+        },
+        {
+          heading: 'Project Links',
+          links: [
+            { label: 'GitHub', url: 'https://github.com/xuwwwww/PerfRunbench' },
+            { label: 'Reports & Documentation', url: 'ai-systems.html' },
+          ],
+        },
+      ],
+    },
+    zh: {
+      period: '2026',
+      title: 'PerfRunbench',
+      org: '電機工程系 · 台科大',
+      tags: ['Python', '效能評測', 'Linux / WSL', 'ArmTune'],
+      summary:
+        '跨平台 AI benchmark 與調校框架，可在 CPU、記憶體與 GPU 限制下執行工作負載，比較可回復的系統與 runtime 設定，並輸出可追溯的 HTML/JSON 報告。',
+      sections: [
+        {
+          heading: '專案重點',
+          bullets: [
+            '透過 local、systemd 與 Docker executor，在資源限制下執行訓練與推論工作負載。',
+            '以相同工作負載比較可回復的 runtime 與主機設定，記錄輸出速率、回應延遲與搜尋成本。',
+            '支援 Windows/WSL、Linux + NVIDIA GPU 與 Arm 系統；ArmTune 處理 Arm 推論的實測與調校。',
+          ],
+        },
+        {
+          heading: '專案連結',
+          links: [
+            { label: 'GitHub', url: 'https://github.com/xuwwwww/PerfRunbench' },
+            { label: '報告與文件', url: 'ai-systems.html' },
+          ],
+        },
+      ],
+    },
+  },
+
   'moe-dugan': {
     en: {
       period: '2024',
@@ -1049,6 +1101,9 @@ const AWARDS = {
 
 const DETAILS = { ...PROJECTS, ...AWARDS };
 const DETAIL_RESOURCE_LINKS = {
+  'perfrunbench': [
+    { label: 'PerfRunbench Poster', url: 'assets/research/perfrunbench-poster.pdf' },
+  ],
   'moe-dugan': [
     { label: 'CS Poster', url: 'assets/research/CS_poster.pdf' },
   ],
@@ -1067,20 +1122,6 @@ function updateCopyTooltips(lang) {
 
 function normalizeLanguage(lang) {
   return SUPPORTED_LANGUAGES.has(lang) ? lang : 'en';
-}
-
-function getStoredLanguage() {
-  try {
-    return normalizeLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY));
-  } catch (err) {
-    return 'en';
-  }
-}
-
-function saveLanguagePreference(lang) {
-  try {
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, normalizeLanguage(lang));
-  } catch (err) {}
 }
 
 function trackEvent(name, params = {}) {
@@ -1141,17 +1182,17 @@ function attachCopyHandlers() {
   });
 }
 
-function setLanguage(lang, options = {}) {
-  const { persist = true } = options;
+function setLanguage(lang) {
   lang = normalizeLanguage(lang);
   currentLang = lang;
   bodyElement.classList.remove('lang-en', 'lang-zh-TW');
   bodyElement.classList.add(`lang-${lang}`);
   if (langSwitchLabel) {
     langSwitchLabel.textContent = lang === 'en' ? '\u4e2d\u6587' : 'English';
+    langSwitchLabel.setAttribute('lang', lang === 'en' ? 'zh-TW' : 'en');
   }
+  langSwitchButton.setAttribute('aria-label', lang === 'en' ? 'Switch to Chinese' : 'Switch to English');
   htmlElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-TW');
-  if (persist) saveLanguagePreference(lang);
   try {
     const newTitle = document.querySelector(`title.lang-${lang}`).textContent;
     document.title = newTitle;
@@ -1180,7 +1221,7 @@ langSwitchButton.addEventListener('click', () => {
   }, 240);
 });
 
-/* ---------------- Easter Egg: 3-Click Snake ---------------- */
+/* ---------------- Easter Egg: Snake ---------------- */
 const easterEggBackdrop = document.getElementById('easter-egg');
 const easterEggBoard = document.getElementById('easter-board');
 const easterEggStatus = document.getElementById('easter-status');
@@ -1194,7 +1235,6 @@ const heroPhotoTrigger = document.getElementById('hero-photo-trigger');
 
 const SNAKE_SIZE = 12;
 const SNAKE_TARGET_LENGTH = SNAKE_SIZE * SNAKE_SIZE;
-const SNAKE_FILL_THRESHOLD = Math.floor(SNAKE_TARGET_LENGTH * 0.7);
 const SNAKE_TICK_MS = 110;
 const SNAKE_AUTO_SPEED_MULTIPLIER = 1.2;
 const SNAKE_START = [
@@ -1225,30 +1265,51 @@ const SNAKE_OPPOSITE = {
   left: 'right',
 };
 const SNAKE_HAMILTONIAN_CYCLE = buildSnakeHamiltonianCycle();
-const SNAKE_HAMILTONIAN_INDEX = new Map(
-  SNAKE_HAMILTONIAN_CYCLE.map((point, index) => [toCycleKey(point.x, point.y), index]),
-);
+const SNAKE_CYCLE_TEMPLATES = buildSnakeCycleTemplates();
+const SNAKE_NEIGHBORS = Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
+  const point = snakeCellPoint(id);
+  return SNAKE_DIRECTIONS.map((direction) => ({ x: point.x + direction.dx, y: point.y + direction.dy }))
+    .filter(isInsideBoard).map(snakeCellId);
+});
+const SNAKE_EDGE_DEPTHS = Uint8Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
+  const { x, y } = snakeCellPoint(id);
+  return Math.min(x, y, SNAKE_SIZE - 1 - x, SNAKE_SIZE - 1 - y);
+});
 
 let easterBoardCells = [];
 let snakeBody = [];
 let snakeFood = null;
 let snakeDirection = 'right';
 let snakeNextDirection = 'right';
-let snakeAutoSolve = false;
+let snakeAutoSolve = true;
 let snakeGameOver = false;
 let snakeWon = false;
 let snakeLoopTimer = null;
+let snakeHamiltonianCycle = SNAKE_HAMILTONIAN_CYCLE;
+let snakeHamiltonianIndex = indexSnakeCycle(snakeHamiltonianCycle);
+let snakeAutoPlan = null;
+const snakeFoodPathCache = new Map();
 
 function easterText(en, zh) {
   return currentLang === 'zh-TW' ? zh : en;
 }
 
-function toCycleKey(x, y) {
-  return `${x},${y}`;
+function snakeCellId(point) {
+  return point.y * SNAKE_SIZE + point.x;
+}
+
+function snakeCellPoint(id) {
+  return { x: id % SNAKE_SIZE, y: Math.floor(id / SNAKE_SIZE) };
+}
+
+function indexSnakeCycle(cycle) {
+  const indices = new Int16Array(SNAKE_TARGET_LENGTH);
+  cycle.forEach((point, index) => { indices[snakeCellId(point)] = index; });
+  return indices;
 }
 
 function getCycleIndex(point) {
-  return SNAKE_HAMILTONIAN_INDEX.get(toCycleKey(point.x, point.y));
+  return snakeHamiltonianIndex[snakeCellId(point)];
 }
 
 function getCycleDistance(fromIndex, toIndex) {
@@ -1279,6 +1340,21 @@ function buildSnakeHamiltonianCycle() {
   }
 
   return cycle;
+}
+
+function buildSnakeCycleTemplates() {
+  const templates = [];
+  for (let rotation = 0; rotation < 4; rotation += 1) {
+    let cycle = SNAKE_HAMILTONIAN_CYCLE.map((point) => {
+      let { x, y } = point;
+      for (let turn = 0; turn < rotation; turn += 1) [x, y] = [SNAKE_SIZE - 1 - y, x];
+      return { x, y };
+    });
+    templates.push({ cycle, indices: indexSnakeCycle(cycle) });
+    cycle = [...cycle].reverse();
+    templates.push({ cycle, indices: indexSnakeCycle(cycle) });
+  }
+  return templates;
 }
 
 function cloneSegment(segment) {
@@ -1330,26 +1406,6 @@ function buildOccupiedSet(body, { ignoreTail = false } = {}) {
   return occupied;
 }
 
-function getLegalDirections(body = snakeBody, currentDirection = snakeDirection) {
-  const head = getSnakeHead(body);
-  const tail = getSnakeTail(body);
-  const legalDirections = [];
-
-  SNAKE_DIRECTIONS.forEach((direction) => {
-    if (body.length > 1 && SNAKE_OPPOSITE[currentDirection] === direction.key) return;
-
-    const nextPoint = getNextPoint(head, direction.key);
-    if (!isInsideBoard(nextPoint)) return;
-
-    const hitsBody = body.some((segment, index) => index < body.length - 1 && isSamePoint(segment, nextPoint));
-    if (hitsBody && !isSamePoint(nextPoint, tail)) return;
-
-    legalDirections.push(direction.key);
-  });
-
-  return legalDirections;
-}
-
 function simulateSnakeMove(body, directionKey, food) {
   const nextHead = getNextPoint(getSnakeHead(body), directionKey);
   if (!isInsideBoard(nextHead)) return null;
@@ -1363,193 +1419,467 @@ function simulateSnakeMove(body, directionKey, food) {
   return { body: nextBody, ateFood: Boolean(willEat) };
 }
 
-function findShortestPath(body, target, { allowTail = true } = {}) {
-  const start = getSnakeHead(body);
-  if (isSamePoint(start, target)) return [];
+function hasSnakeCycleOrder(body, indices = snakeHamiltonianIndex) {
+  // Tail -> body -> head must fit within one lap, including every shortcut.
+  // A reachable tail alone does not preserve this invariant.
+  let span = 0;
+  for (let index = body.length - 1; index > 0; index -= 1) {
+    const distance = getCycleDistance(indices[snakeCellId(body[index])], indices[snakeCellId(body[index - 1])]);
+    if (!distance) return false;
+    span += distance;
+    if (span >= SNAKE_TARGET_LENGTH) return false;
+  }
+  return true;
+}
 
-  const blocked = buildOccupiedSet(body, { ignoreTail: allowTail });
-  const queue = [{ point: start, path: [] }];
-  const visited = new Set([toSnakeKey(start)]);
-
-  while (queue.length) {
-    const current = queue.shift();
-
-    for (const direction of SNAKE_DIRECTIONS) {
-      const nextPoint = getNextPoint(current.point, direction.key);
-      const nextKey = toSnakeKey(nextPoint);
-      if (!isInsideBoard(nextPoint) || visited.has(nextKey)) continue;
-      if (blocked.has(nextKey) && !isSamePoint(nextPoint, target)) continue;
-
-      const nextPath = [...current.path, direction.key];
-      if (isSamePoint(nextPoint, target)) return nextPath;
-
-      visited.add(nextKey);
-      queue.push({ point: nextPoint, path: nextPath });
+function findShortestSnakePath(body, target, order = 0, metrics = null, canStep = null) {
+  const start = snakeCellId(getSnakeHead(body));
+  const end = snakeCellId(target);
+  const blocked = new Uint8Array(SNAKE_TARGET_LENGTH);
+  body.slice(1, -1).forEach((point) => { blocked[snakeCellId(point)] = 1; });
+  const parents = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
+  const costs = new Int16Array(SNAKE_TARGET_LENGTH).fill(32767);
+  const edgeCosts = new Int16Array(SNAKE_TARGET_LENGTH).fill(32767);
+  const heuristic = (id) => Math.abs(id % SNAKE_SIZE - target.x) + Math.abs(Math.floor(id / SNAKE_SIZE) - target.y);
+  // Distance stays primary. Within an f bucket, accumulated edge depth is
+  // an admissible secondary cost: the first goal is the outermost shortest path.
+  const open = new Array(SNAKE_TARGET_LENGTH * 2);
+  let estimate = heuristic(start);
+  let queued = 1;
+  costs[start] = 0;
+  edgeCosts[start] = 0;
+  parents[start] = start;
+  open[estimate] = [{ id: start, cost: 0, edgeCost: 0 }];
+  while (queued) {
+    while (!open[estimate]?.length) estimate += 1;
+    const bucket = open[estimate];
+    let best = bucket.length - 1;
+    for (let i = best - 1; i >= 0; i -= 1) {
+      if (bucket[i].edgeCost < bucket[best].edgeCost) best = i;
+    }
+    const { id, cost, edgeCost } = bucket[best];
+    bucket[best] = bucket[bucket.length - 1];
+    bucket.pop();
+    queued -= 1;
+    if (cost !== costs[id] || edgeCost !== edgeCosts[id]) continue;
+    if (metrics) metrics.expanded = (metrics.expanded || 0) + 1;
+    if (id === end) {
+      const points = [];
+      for (let cell = end; cell !== start; cell = parents[cell]) points.push(snakeCellPoint(cell));
+      points.reverse();
+      return points.map((point, index) => getDirectionBetween(index ? points[index - 1] : body[0], point));
+    }
+    const neighbors = SNAKE_NEIGHBORS[id];
+    for (let offset = neighbors.length - 1; offset >= 0; offset -= 1) {
+      const next = neighbors[(offset + order) % neighbors.length];
+      if (blocked[next] && next !== end) continue;
+      if (canStep && !canStep(id, next)) continue;
+      const nextCost = cost + 1;
+      const nextEdgeCost = edgeCost + SNAKE_EDGE_DEPTHS[next];
+      if (nextCost > costs[next] || (nextCost === costs[next] && nextEdgeCost >= edgeCosts[next])) continue;
+      costs[next] = nextCost;
+      edgeCosts[next] = nextEdgeCost;
+      parents[next] = id;
+      const nextEstimate = nextCost + heuristic(next);
+      (open[nextEstimate] ||= []).push({ id: next, cost: nextCost, edgeCost: nextEdgeCost });
+      queued += 1;
     }
   }
-
   return null;
 }
 
-function simulatePath(body, food, path) {
-  let simulatedBody = body.map(cloneSegment);
-  for (const directionKey of path) {
-    const result = simulateSnakeMove(simulatedBody, directionKey, food);
+function* findShortestSnakeAlternatives(body, target, length, limit = 8) {
+  const start = snakeCellId(getSnakeHead(body));
+  const end = snakeCellId(target);
+  const blocked = new Uint8Array(SNAKE_TARGET_LENGTH);
+  body.slice(1, -1).forEach((point) => { blocked[snakeCellId(point)] = 1; });
+  const distances = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
+  const edgeCosts = new Int16Array(SNAKE_TARGET_LENGTH).fill(32767);
+  const queue = [end];
+  distances[end] = edgeCosts[end] = 0;
+  // Reverse BFS builds the shortest-path DAG and its exact remaining edge cost.
+  for (let cursor = 0; cursor < queue.length; cursor += 1) {
+    const id = queue[cursor];
+    for (const next of SNAKE_NEIGHBORS[id]) {
+      if (blocked[next]) continue;
+      const distance = distances[id] + 1;
+      if (distances[next] !== -1 && distances[next] < distance) continue;
+      if (distances[next] === -1) {
+        distances[next] = distance;
+        queue.push(next);
+      }
+      edgeCosts[next] = Math.min(edgeCosts[next], SNAKE_EDGE_DEPTHS[id] + edgeCosts[id]);
+    }
+  }
+  if (distances[start] !== length) return;
+  const open = [{ ids: [start], cost: 0, estimate: edgeCosts[start] }];
+  let yielded = 0;
+  // Enumerate only equal-length routes, most peripheral first. Prefer deeper
+  // prefixes on a tie so a large family of equivalent routes stays inexpensive.
+  while (open.length && yielded < limit) {
+    let best = open.length - 1;
+    for (let i = best - 1; i >= 0; i -= 1) {
+      if (open[i].estimate < open[best].estimate
+        || (open[i].estimate === open[best].estimate && open[i].ids.length > open[best].ids.length)) best = i;
+    }
+    const current = open[best];
+    open[best] = open[open.length - 1];
+    open.pop();
+    const id = current.ids[current.ids.length - 1];
+    if (id === end) {
+      yielded += 1;
+      yield current.ids.slice(1).map((cell, i) => getDirectionBetween(snakeCellPoint(current.ids[i]), snakeCellPoint(cell)));
+      continue;
+    }
+    for (const next of SNAKE_NEIGHBORS[id]) {
+      if (distances[next] !== distances[id] - 1) continue;
+      const cost = current.cost + SNAKE_EDGE_DEPTHS[next];
+      open.push({ ids: [...current.ids, next], cost, estimate: cost + edgeCosts[next] });
+    }
+  }
+}
+
+function getSnakePathEdgeCost(body, path) {
+  let point = getSnakeHead(body);
+  let cost = 0;
+  for (const direction of path) {
+    point = getNextPoint(point, direction);
+    cost += SNAKE_EDGE_DEPTHS[snakeCellId(point)];
+  }
+  return cost;
+}
+
+function simulateSnakePath(body, food, path) {
+  let resultBody = body;
+  for (const direction of path) {
+    const result = simulateSnakeMove(resultBody, direction, food);
     if (!result) return null;
-    simulatedBody = result.body;
+    resultBody = result.body;
   }
-  return simulatedBody;
+  return resultBody;
 }
 
-function countReachableCells(startPoint, blocked) {
-  const queue = [startPoint];
-  const visited = new Set([toSnakeKey(startPoint)]);
+function buildSnakeCompletionCycle(body) {
+  const fixedBody = [...body].reverse().map(snakeCellId);
+  // Keep the actual body intact; stretch a head-to-tail return path into a tour.
+  // A partial tour is never a completion certificate.
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const returnPath = findShortestSnakePath(body, getSnakeTail(body), attempt % 4);
+    if (!returnPath) return null;
+    let point = getSnakeHead(body);
+    const cycle = [...fixedBody];
+    returnPath.slice(0, -1).forEach((direction) => {
+      point = getNextPoint(point, direction);
+      cycle.push(snakeCellId(point));
+    });
+    const used = new Uint8Array(SNAKE_TARGET_LENGTH);
+    cycle.forEach((id) => { used[id] = 1; });
+    let changed = true;
+    while (changed && cycle.length < SNAKE_TARGET_LENGTH) {
+      changed = false;
+      const edgeCount = cycle.length - fixedBody.length + 1;
+      for (let scan = 0; scan < edgeCount; scan += 1) {
+        const edge = fixedBody.length - 1 + (scan + attempt) % edgeCount;
+        const a = cycle[edge];
+        const b = cycle[(edge + 1) % cycle.length];
+        const horizontal = Math.abs(a - b) === 1;
+        const offsets = horizontal ? [-SNAKE_SIZE, SNAKE_SIZE] : [-1, 1];
+        if (attempt % 2) offsets.reverse();
+        for (const offset of offsets) {
+          const c = a + offset;
+          const d = b + offset;
+          if (!SNAKE_NEIGHBORS[a].includes(c) || !SNAKE_NEIGHBORS[b].includes(d) || used[c] || used[d]) continue;
+          used[c] = used[d] = 1;
+          cycle.splice(edge + 1, 0, c, d);
+          changed = true;
+          break;
+        }
+        if (changed) break;
+      }
+    }
+    if (cycle.length === SNAKE_TARGET_LENGTH) return cycle.map(snakeCellPoint);
+  }
+  return null;
+}
 
-  while (queue.length) {
-    const point = queue.shift();
-    for (const direction of SNAKE_DIRECTIONS) {
-      const nextPoint = getNextPoint(point, direction.key);
-      const nextKey = toSnakeKey(nextPoint);
-      if (!isInsideBoard(nextPoint) || visited.has(nextKey) || blocked.has(nextKey)) continue;
-      visited.add(nextKey);
-      queue.push(nextPoint);
+function rewireSnakeCompletionCycle(body) {
+  const bodyIds = body.map(snakeCellId);
+  const spanOf = (indices) => {
+    let span = 0;
+    for (let i = 1; i < bodyIds.length; i += 1) {
+      span += getCycleDistance(indices[bodyIds[i]], indices[bodyIds[i - 1]]);
+    }
+    return span;
+  };
+  let bestCycle = snakeHamiltonianCycle;
+  let bestSpan = spanOf(snakeHamiltonianIndex);
+  for (const template of SNAKE_CYCLE_TEMPLATES) {
+    const span = spanOf(template.indices);
+    if (span < bestSpan) {
+      bestSpan = span;
+      bestCycle = template.cycle;
     }
   }
-
-  return visited.size;
-}
-
-function pickTailChasingDirection(body = snakeBody, currentDirection = snakeDirection) {
-  const legalDirections = getLegalDirections(body, currentDirection);
-  let bestDirection = null;
-  let bestScore = -1;
-
-  legalDirections.forEach((directionKey) => {
-    const result = simulateSnakeMove(body, directionKey, snakeFood);
-    if (!result) return;
-
-    const tailPath = findShortestPath(result.body, getSnakeTail(result.body), { allowTail: true });
-    const blocked = buildOccupiedSet(result.body, { ignoreTail: true });
-    const openScore = countReachableCells(getSnakeHead(result.body), blocked);
-    const pathScore = tailPath ? tailPath.length : -1;
-    const totalScore = pathScore >= 0 ? pathScore * 1000 + openScore : openScore;
-
-    if (totalScore > bestScore) {
-      bestScore = totalScore;
-      bestDirection = directionKey;
+  const squares = [];
+  for (let y = 0; y < SNAKE_SIZE - 1; y += 1) {
+    for (let x = 0; x < SNAKE_SIZE - 1; x += 1) squares.push(y * SNAKE_SIZE + x);
+  }
+  const head = body[0];
+  const distance = (id) => Math.abs(id % SNAKE_SIZE - head.x) + Math.abs(Math.floor(id / SNAKE_SIZE) - head.y);
+  squares.sort((a, b) => distance(a) - distance(b));
+  let budget = 1600;
+  for (let iteration = 0; iteration < 4 && budget > 0; iteration += 1) {
+    const ids = bestCycle.map(snakeCellId);
+    const first = new Int16Array(SNAKE_TARGET_LENGTH);
+    const second = new Int16Array(SNAKE_TARGET_LENGTH);
+    ids.forEach((id, index) => {
+      first[id] = ids[(index + 1) % ids.length];
+      second[id] = ids[(index + ids.length - 1) % ids.length];
+    });
+    const connected = (a, b) => first[a] === b || second[a] === b;
+    const squareFlip = (a) => {
+      const b = a + 1;
+      const c = a + SNAKE_SIZE;
+      const d = c + 1;
+      if (connected(a, b) && connected(c, d) && !connected(a, c) && !connected(b, d)) return [a, b, c, d];
+      if (connected(a, c) && connected(b, d) && !connected(a, b) && !connected(c, d)) return [a, c, b, d];
+      return null;
+    };
+    const replace = (id, oldNeighbor, newNeighbor) => {
+      if (first[id] === oldNeighbor) first[id] = newNeighbor;
+      else second[id] = newNeighbor;
+    };
+    const flip = (edges, undo = false) => {
+      let [a, b, c, d] = edges;
+      if (undo) [b, c] = [c, b];
+      replace(a, b, c);
+      replace(b, a, d);
+      replace(c, d, a);
+      replace(d, c, b);
+    };
+    const oldSpan = bestSpan;
+    let nextCycle = null;
+    // One square flip splits a tour. Only commit after a second flip joins
+    // the two components into a single 144-cell tour again.
+    for (const cutSquare of squares) {
+      const cut = squareFlip(cutSquare);
+      if (!cut) continue;
+      flip(cut);
+      const component = new Uint8Array(SNAKE_TARGET_LENGTH);
+      let previous = -1;
+      let current = cut[0];
+      do {
+        component[current] = 1;
+        const next = first[current] === previous ? second[current] : first[current];
+        previous = current;
+        current = next;
+      } while (current !== cut[0]);
+      for (const joinSquare of squares) {
+        const join = squareFlip(joinSquare);
+        if (!join || component[join[0]] === component[join[2]]) continue;
+        if (budget-- <= 0) break;
+        flip(join);
+        const candidate = [];
+        const indices = new Int16Array(SNAKE_TARGET_LENGTH);
+        previous = -1;
+        current = bodyIds[bodyIds.length - 1];
+        do {
+          indices[current] = candidate.length;
+          candidate.push(current);
+          const next = first[current] === previous ? second[current] : first[current];
+          previous = current;
+          current = next;
+        } while (current !== candidate[0] && candidate.length <= SNAKE_TARGET_LENGTH);
+        if (candidate.length === SNAKE_TARGET_LENGTH) {
+          const forwardSpan = spanOf(indices);
+          const reverseSpan = (body.length - 1) * SNAKE_TARGET_LENGTH - forwardSpan;
+          const span = Math.min(forwardSpan, reverseSpan);
+          if (span < bestSpan) {
+            bestSpan = span;
+            nextCycle = (forwardSpan < reverseSpan ? candidate : candidate.reverse()).map(snakeCellPoint);
+            if (span < SNAKE_TARGET_LENGTH) return nextCycle;
+          }
+        }
+        flip(join, true);
+      }
+      flip(cut, true);
+      if (budget <= 0) break;
     }
-  });
-
-  return bestDirection || legalDirections[0] || null;
+    if (bestSpan >= oldSpan || !nextCycle) break;
+    bestCycle = nextCycle;
+  }
+  return null;
 }
 
-function getHamiltonianDirection(body = snakeBody) {
-  const head = getSnakeHead(body);
-  const headIndex = getCycleIndex(head);
-  if (headIndex == null) return null;
-
-  const nextPoint = SNAKE_HAMILTONIAN_CYCLE[(headIndex + 1) % SNAKE_HAMILTONIAN_CYCLE.length];
-  const directionKey = getDirectionBetween(head, nextPoint);
-  if (!directionKey) return null;
-
-  const result = simulateSnakeMove(body, directionKey, snakeFood);
-  return result ? directionKey : null;
+function certifySnakeFoodPath(path) {
+  const body = simulateSnakePath(snakeBody, snakeFood, path);
+  if (!body) return null;
+  return certifySnakeBody(body);
 }
 
-function getHamiltonianShortcutDirection(body = snakeBody, currentDirection = snakeDirection) {
-  const head = getSnakeHead(body);
-  const tail = getSnakeTail(body);
-  const food = snakeFood;
-  const headIndex = getCycleIndex(head);
-  const tailIndex = getCycleIndex(tail);
-  const foodIndex = food ? getCycleIndex(food) : null;
-  if (headIndex == null || tailIndex == null) return null;
-
-  const headToTail = getCycleDistance(headIndex, tailIndex);
-  const headToFood = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(headIndex, foodIndex);
-  const foodIsAhead = foodIndex != null && headToFood < headToTail;
-  const legalDirections = getLegalDirections(body, currentDirection);
-  let bestDirection = null;
-  let bestScore = -Infinity;
-
-  legalDirections.forEach((directionKey) => {
-    const result = simulateSnakeMove(body, directionKey, food);
-    if (!result) return;
-
-    const nextHead = getSnakeHead(result.body);
-    const nextIndex = getCycleIndex(nextHead);
-    if (nextIndex == null) return;
-
-    const advance = getCycleDistance(headIndex, nextIndex);
-    if (advance <= 0) return;
-
-    const tailMargin = getCycleDistance(nextIndex, tailIndex);
-    const safetyMargin = Math.max(
-      result.ateFood ? 2 : 1,
-      Math.min(10, Math.ceil((body.length - SNAKE_FILL_THRESHOLD + 1) / 5)),
-    );
-    if (tailMargin <= safetyMargin || advance >= headToTail) return;
-
-    if (foodIsAhead && advance > headToFood) return;
-    if (!foodIsAhead && advance !== 1) return;
-
-    const tailPath = findShortestPath(result.body, getSnakeTail(result.body), { allowTail: true });
-    if (!tailPath) return;
-
-    const blocked = buildOccupiedSet(result.body, { ignoreTail: true });
-    const openScore = countReachableCells(nextHead, blocked);
-    const foodDistance = foodIndex == null ? SNAKE_TARGET_LENGTH : getCycleDistance(nextIndex, foodIndex);
-    const followsCycle = advance === 1;
-    const score =
-      tailMargin * 100 +
-      openScore * 10 +
-      (followsCycle ? 300 : 0) -
-      advance * 8 -
-      foodDistance * 12;
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestDirection = directionKey;
+function certifySnakeBody(body) {
+  const key = body.map(snakeCellId).join(',');
+  if (snakeFoodPathCache.has(key)) return snakeFoodPathCache.get(key);
+  let cycle = hasSnakeCycleOrder(body) ? snakeHamiltonianCycle : null;
+  if (!cycle) {
+    for (const template of SNAKE_CYCLE_TEMPLATES) {
+      if (hasSnakeCycleOrder(body, template.indices)) {
+        cycle = template.cycle;
+        break;
+      }
     }
-  });
+  }
+  cycle ||= rewireSnakeCompletionCycle(body) || buildSnakeCompletionCycle(body);
+  // A shared prefix can lead to the same landing body on successive ticks.
+  // Reuse its proof (or failed search) until eating changes the board and tour.
+  snakeFoodPathCache.set(key, cycle);
+  return cycle;
+}
 
+function findSafeSnakeFoodPath(body, food, indices = snakeHamiltonianIndex, maxLength = SNAKE_TARGET_LENGTH - 1) {
+  const head = getSnakeHead(body);
+  const headIndex = indices[snakeCellId(head)];
+  const foodDistance = getCycleDistance(headIndex, indices[snakeCellId(food)]);
+  const tailDistance = getCycleDistance(headIndex, indices[snakeCellId(getSnakeTail(body))]);
+  // Keep the safety arc, but apply the same shortest-first, edge-second ranking.
+  const shortest = findShortestSnakePath(body, food, 0, null, (from, to) => {
+    const distance = getCycleDistance(headIndex, indices[to]);
+    return distance > getCycleDistance(headIndex, indices[from])
+      && distance <= foodDistance && distance < tailDistance;
+  });
+  if (shortest) return shortest.length <= maxLength ? shortest : null;
+  if (foodDistance > maxLength) return null;
+  // The food can lie in a gap behind the current tail. Following the tour lets
+  // that tail vacate cells; a static blocked-cell search cannot see this route.
+  const cells = new Int16Array(SNAKE_TARGET_LENGTH);
+  indices.forEach((index, id) => { cells[index] = id; });
+  const path = [];
+  let previous = head;
+  for (let step = 1; step <= foodDistance; step += 1) {
+    const point = snakeCellPoint(cells[(headIndex + step) % SNAKE_TARGET_LENGTH]);
+    path.push(getDirectionBetween(previous, point));
+    previous = point;
+  }
+  return simulateSnakePath(body, food, path) ? path : null;
+}
+
+function findSafeSnakeFoodPlan(body, food, maxLength, maxEdgeCost = Infinity) {
+  const tours = [{ cycle: snakeHamiltonianCycle, indices: snakeHamiltonianIndex }, ...SNAKE_CYCLE_TEMPLATES];
+  if (snakeAutoPlan && !tours.some(({ cycle }) => cycle === snakeAutoPlan.cycle)) {
+    tours.push({ cycle: snakeAutoPlan.cycle, indices: indexSnakeCycle(snakeAutoPlan.cycle) });
+  }
+  let best = null;
+  for (const { cycle, indices } of tours) {
+    if (!hasSnakeCycleOrder(body, indices)) continue;
+    const path = findSafeSnakeFoodPath(body, food, indices, maxLength);
+    if (!path?.length || path.length > maxLength) continue;
+    const edgeCost = getSnakePathEdgeCost(body, path);
+    if (path.length === maxLength && edgeCost >= maxEdgeCost) continue;
+    best = { path, cycle };
+    maxLength = path.length;
+    maxEdgeCost = edgeCost;
+  }
+  return best;
+}
+
+function findSafeSnakeFirstStepPlan(direction, maxLength) {
+  const result = simulateSnakeMove(snakeBody, direction, snakeFood);
+  if (!result || result.ateFood || maxLength < 2) return null;
+  let plan = findSafeSnakeFoodPlan(result.body, snakeFood, maxLength - 1);
+  if (!plan) {
+    const cycle = certifySnakeBody(result.body);
+    if (!cycle) return null;
+    const path = findSafeSnakeFoodPath(result.body, snakeFood, indexSnakeCycle(cycle), maxLength - 1);
+    if (!path?.length || path.length >= maxLength) return null;
+    plan = { path, cycle };
+  }
+  return { path: [direction, ...plan.path], cycle: plan.cycle };
+}
+
+function getSafeSnakeCycleDirection() {
+  if (!hasSnakeCycleOrder(snakeBody)) return null;
+  const head = getSnakeHead();
+  const headIndex = getCycleIndex(head);
+  const foodDistance = getCycleDistance(headIndex, getCycleIndex(snakeFood));
+  const shortestDirection = findSafeSnakeFoodPath(snakeBody, snakeFood)?.[0];
+  let bestDirection = null;
+  let bestAdvance = 0;
+
+  for (const direction of SNAKE_DIRECTIONS) {
+    const nextPoint = getNextPoint(head, direction.key);
+    if (!isInsideBoard(nextPoint)) continue;
+    const advance = getCycleDistance(headIndex, getCycleIndex(nextPoint));
+    if (!advance || advance > foodDistance) continue;
+    const result = simulateSnakeMove(snakeBody, direction.key, snakeFood);
+    if (!result || !hasSnakeCycleOrder(result.body)) continue;
+    if (direction.key === shortestDirection) return direction.key;
+    if (advance > bestAdvance) {
+      bestAdvance = advance;
+      bestDirection = direction.key;
+    }
+  }
   return bestDirection;
 }
 
 function getAutoSolveDirection() {
-  const pathToFood = snakeFood ? findShortestPath(snakeBody, snakeFood, { allowTail: true }) : null;
-  const isLatePhase = snakeBody.length >= SNAKE_FILL_THRESHOLD;
-
-  if (!isLatePhase && pathToFood && pathToFood.length) {
-    const simulatedBody = simulatePath(snakeBody, snakeFood, pathToFood);
-    if (simulatedBody) {
-      const canSeeTailAfterEating = findShortestPath(simulatedBody, getSnakeTail(simulatedBody), { allowTail: true });
-      if (canSeeTailAfterEating) return pathToFood[0];
+  if (!snakeFood) return null;
+  const shortest = findShortestSnakePath(snakeBody, snakeFood);
+  const remaining = snakeAutoPlan
+    ? snakeAutoPlan.path.length
+    : getCycleDistance(getCycleIndex(getSnakeHead()), getCycleIndex(snakeFood));
+  const currentEdgeCost = snakeAutoPlan ? getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path) : Infinity;
+  // Re-evaluate at every length, including the endgame. Never replace a route
+  // with a longer one, or trade progress for a merely safe single move.
+  if (shortest?.length && shortest.length <= remaining
+    && (shortest.length < remaining || getSnakePathEdgeCost(snakeBody, shortest) < currentEdgeCost)) {
+    let cycle = certifySnakeFoodPath(shortest);
+    if (cycle) {
+      snakeAutoPlan = { path: shortest, cycle };
+    } else {
+      const tried = shortest.join(',');
+      for (const path of findShortestSnakeAlternatives(snakeBody, snakeFood, shortest.length)) {
+        if (path.join(',') === tried) continue;
+        if (path.length === remaining && getSnakePathEdgeCost(snakeBody, path) >= currentEdgeCost) break;
+        cycle = certifySnakeFoodPath(path);
+        if (cycle) {
+          snakeAutoPlan = { path, cycle };
+          break;
+        }
+      }
     }
   }
-
-  if (isLatePhase) {
-    const shortcutDirection = getHamiltonianShortcutDirection();
-    if (shortcutDirection) return shortcutDirection;
-
-    const cycleDirection = getHamiltonianDirection();
-    if (cycleDirection) return cycleDirection;
-
-    return pickTailChasingDirection();
-  }
-
-  if (pathToFood && pathToFood.length) {
-    const simulatedBody = simulatePath(snakeBody, snakeFood, pathToFood);
-    if (simulatedBody) {
-      const canSeeTailAfterEating = findShortestPath(simulatedBody, getSnakeTail(simulatedBody), { allowTail: true });
-      if (canSeeTailAfterEating) return pathToFood[0];
+  // An unrestricted shortest path may be unsafe while a different, slightly
+  // longer certified shortcut still beats the pending route. Compare it too.
+  const safePlan = findSafeSnakeFoodPlan(snakeBody, snakeFood,
+    snakeAutoPlan?.path.length ?? remaining,
+    snakeAutoPlan ? getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path) : Infinity);
+  if (safePlan) snakeAutoPlan = safePlan;
+  // A shortest first step need not force us to finish the same static route.
+  // Require a complete retreat to this apple within the OLD remaining budget;
+  // unlike one-step-only rewiring, this cannot reset the budget and chase tails.
+  if (shortest?.length && shortest[0] !== snakeAutoPlan?.path[0]) {
+    const stepPlan = findSafeSnakeFirstStepPlan(shortest[0], snakeAutoPlan?.path.length ?? remaining);
+    if (stepPlan && (!snakeAutoPlan || stepPlan.path.length < snakeAutoPlan.path.length
+      || (stepPlan.path.length === snakeAutoPlan.path.length
+        && getSnakePathEdgeCost(snakeBody, stepPlan.path) < getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path)))) {
+      snakeAutoPlan = stepPlan;
     }
   }
+  if (snakeAutoPlan) return snakeAutoPlan.path[0];
+  return getSafeSnakeCycleDirection();
+}
 
-  return pickTailChasingDirection();
+function advanceSnakeAutoPlan() {
+  if (!snakeAutoPlan) return;
+  snakeAutoPlan.path.shift();
+  if (snakeAutoPlan.path.length) return;
+  snakeHamiltonianCycle = snakeAutoPlan.cycle;
+  snakeHamiltonianIndex = indexSnakeCycle(snakeHamiltonianCycle);
+  snakeAutoPlan = null;
 }
 
 function placeSnakeFood() {
+  snakeFoodPathCache.clear();
   const occupied = buildOccupiedSet(snakeBody);
   const emptyCells = [];
 
@@ -1594,9 +1924,18 @@ function updateEasterHud() {
       ? easterText('Auto Solve: On', 'Auto Solve\uff1a\u958b')
       : easterText('Auto Solve: Off', 'Auto Solve\uff1a\u95dc');
     easterEggAuto.classList.toggle('active', snakeAutoSolve);
+    easterEggAuto.setAttribute('aria-pressed', String(snakeAutoSolve));
   }
 
   if (easterEggLive) easterEggLive.textContent = easterEggStatus.textContent;
+}
+
+function getSnakeSegmentColor(index, length) {
+  if (index === 0) return '#8fd18f';
+  const fade = (index - 1) / Math.max(1, length - 2);
+  const front = [47, 125, 50];
+  const tail = [101, 158, 74];
+  return `rgb(${front.map((channel, axis) => Math.round(channel + (tail[axis] - channel) * fade)).join(', ')})`;
 }
 
 function renderSnakeBoard() {
@@ -1612,6 +1951,8 @@ function renderSnakeBoard() {
       'trail-down',
       'trail-left',
     );
+    cell.style.removeProperty('--snake-core-fill');
+    cell.style.removeProperty('--snake-trail-fill');
   });
 
   if (snakeFood) {
@@ -1625,6 +1966,8 @@ function renderSnakeBoard() {
     if (!cell) return;
 
     cell.classList.add('cell-snake');
+    const color = getSnakeSegmentColor(index, snakeBody.length);
+    cell.style.setProperty('--snake-core-fill', color);
     const previousSegment = snakeBody[index - 1];
 
     if (index === 0) {
@@ -1633,7 +1976,12 @@ function renderSnakeBoard() {
     }
 
     const trailDirection = previousSegment ? getDirectionBetween(segment, previousSegment) : null;
-    if (trailDirection) cell.classList.add(`trail-${trailDirection}`);
+    if (trailDirection) {
+      cell.classList.add(`trail-${trailDirection}`);
+      const previousColor = getSnakeSegmentColor(index - 1, snakeBody.length);
+      const cssDirection = { up: 'top', right: 'right', down: 'bottom', left: 'left' }[trailDirection];
+      cell.style.setProperty('--snake-trail-fill', `linear-gradient(to ${cssDirection}, ${color}, ${previousColor})`);
+    }
   });
 
   updateEasterHud();
@@ -1685,7 +2033,11 @@ function stepSnakeGame() {
 
   if (snakeAutoSolve) {
     const autoDirection = getAutoSolveDirection();
-    if (autoDirection) snakeNextDirection = autoDirection;
+    if (!autoDirection) {
+      finishSnakeGame();
+      return;
+    }
+    snakeNextDirection = autoDirection;
   }
 
   if (snakeBody.length > 1 && SNAKE_OPPOSITE[snakeDirection] === snakeNextDirection) {
@@ -1700,9 +2052,11 @@ function stepSnakeGame() {
 
   snakeDirection = snakeNextDirection;
   snakeBody = result.body;
+  if (snakeAutoSolve) advanceSnakeAutoPlan();
 
   if (result.ateFood) {
     if (snakeBody.length >= SNAKE_TARGET_LENGTH) {
+      snakeFood = null;
       finishSnakeGame({ won: true });
       return;
     }
@@ -1716,6 +2070,9 @@ function resetEasterGame() {
   buildSnakeBoard();
   stopSnakeLoop();
   snakeBody = SNAKE_START.map(cloneSegment);
+  snakeHamiltonianCycle = SNAKE_HAMILTONIAN_CYCLE;
+  snakeHamiltonianIndex = indexSnakeCycle(snakeHamiltonianCycle);
+  snakeAutoPlan = null;
   snakeDirection = 'right';
   snakeNextDirection = 'right';
   snakeGameOver = false;
@@ -1730,6 +2087,7 @@ function openEasterEgg() {
   trackEvent('easter_egg_open', {
     trigger: 'profile_photo_click',
   });
+  snakeAutoSolve = true;
   resetEasterGame();
   easterEggBackdrop.classList.add('open');
   easterEggBackdrop.setAttribute('aria-hidden', 'false');
@@ -1748,11 +2106,13 @@ function closeEasterEgg() {
 
 function setSnakeDirection(directionKey) {
   if (!directionKey) return;
-  snakeAutoSolve = false;
   if (snakeBody.length > 1 && SNAKE_OPPOSITE[snakeDirection] === directionKey) return;
+  const wasAuto = snakeAutoSolve;
+  snakeAutoSolve = false;
+  snakeAutoPlan = null;
   snakeNextDirection = directionKey;
   updateEasterHud();
-  startSnakeLoop();
+  if (wasAuto && !snakeGameOver && !snakeWon) startSnakeLoop();
 }
 
 if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus && easterEggReset && easterEggAuto) {
@@ -1770,8 +2130,13 @@ if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus &
   easterEggReset.addEventListener('click', resetEasterGame);
   easterEggAuto.addEventListener('click', () => {
     snakeAutoSolve = !snakeAutoSolve;
+    // A manual route may not fit the cycle. Never force it onto a fixed tour.
+    if (snakeAutoSolve) {
+      resetEasterGame();
+      return;
+    }
     updateEasterHud();
-    startSnakeLoop();
+    if (!snakeGameOver && !snakeWon) startSnakeLoop();
   });
   easterEggControls.forEach((button) => {
     button.addEventListener('click', () => {
@@ -1826,7 +2191,7 @@ if (navToggle && navLinks) {
 
 /* ---------------- Reveal-on-scroll ---------------- */
 const revealEls = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window && revealEls.length) {
+if ('IntersectionObserver' in window && revealEls.length && !bodyElement.classList.contains('portfolio-page')) {
   htmlElement.classList.add('js-reveal');
 
   // Mark anything already in viewport visible immediately to avoid blank flashes.
@@ -1857,226 +2222,71 @@ if ('IntersectionObserver' in window && revealEls.length) {
   }, 1200);
 }
 
-/* ---------------- Non-looping Vertical Coverflow ---------------- */
-const sectionIds = ['hero-card', 'about', 'ai-featured', 'experience', 'projects', 'awards', 'activities', 'skills', 'coursework'];
+/* ---------------- Native Section Navigation ---------------- */
+const sectionIds = ['hero-card', 'about', 'experience', 'projects', 'awards', 'activities', 'skills', 'coursework'];
 const navAnchors = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
 const railAnchors = Array.from(document.querySelectorAll('.section-rail a[data-rail-target]'));
 const sectionMap = sectionIds
   .map((id) => ({ id, el: document.getElementById(id) }))
-  .filter((x) => x.el);
-const portfolioCarousel = document.getElementById('portfolio-carousel');
-const carouselCards = sectionMap.map((section) => section.el);
-const carouselModeQuery = window.matchMedia('(min-width: 761px)');
-let activeCarouselIndex = 0;
-let dragState = null;
-let carouselSyncFrame = 0;
-let wheelGestureFrame = 0;
-let lastWheelInputAt = 0;
-let suppressCarouselClick = false;
-const WHEEL_GESTURE_IDLE_MS = 160;
-
-function isCarouselMode() {
-  return carouselModeQuery.matches;
-}
+  .filter((section) => section.el);
+let activeSectionId = null;
 
 function setActiveSection(id) {
-  navAnchors.forEach((a) => {
-    a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-  });
-  railAnchors.forEach((a) => {
-    a.classList.toggle('active', a.dataset.railTarget === id);
-  });
-  sectionMap.forEach((section) => {
-    section.el.classList.toggle('spotlight-active', section.id === id);
-  });
-}
-
-function getNearestCarouselIndex() {
-  if (!portfolioCarousel || !carouselCards.length) return 0;
-  const centerY = portfolioCarousel.scrollTop + portfolioCarousel.clientHeight / 2;
-  return carouselCards.reduce((nearestIndex, card, index) => {
-    const cardCenter = card.offsetTop + card.offsetHeight / 2;
-    const nearestCard = carouselCards[nearestIndex];
-    const nearestCenter = nearestCard.offsetTop + nearestCard.offsetHeight / 2;
-    return Math.abs(cardCenter - centerY) < Math.abs(nearestCenter - centerY)
-      ? index
-      : nearestIndex;
-  }, 0);
-}
-
-function updateCarouselStates(index) {
-  carouselCards.forEach((card, cardIndex) => {
-    const distance = cardIndex - index;
-    let state = 'future';
-    if (distance === 0) state = 'active';
-    else if (distance === -1) state = 'before';
-    else if (distance === 1) state = 'after';
-    else if (distance < 0) state = 'past';
-    card.dataset.coverflowState = state;
+  if (id === activeSectionId) return;
+  activeSectionId = id;
+  [...navAnchors, ...railAnchors].forEach((anchor) => {
+    const isActive = (anchor.dataset.railTarget || anchor.hash.slice(1)) === id;
+    anchor.classList.toggle('active', isActive);
+    if (isActive) anchor.setAttribute('aria-current', 'location');
+    else anchor.removeAttribute('aria-current');
   });
 }
 
-function setCarouselIndex(index, { scroll = true, behavior = 'smooth' } = {}) {
-  if (!carouselCards.length) return;
-  const nextIndex = Math.max(0, Math.min(index, carouselCards.length - 1));
-  activeCarouselIndex = nextIndex;
-  const activeCard = carouselCards[nextIndex];
-  updateCarouselStates(nextIndex);
-  setActiveSection(activeCard.id);
-  if (scroll && activeCard && portfolioCarousel) {
-    if (!isCarouselMode()) {
-      activeCard.scrollIntoView({ behavior, block: 'start' });
-      return;
-    }
-    const targetTop = activeCard.offsetTop - (portfolioCarousel.clientHeight - activeCard.offsetHeight) / 2;
-    const maxTop = portfolioCarousel.scrollHeight - portfolioCarousel.clientHeight;
-    portfolioCarousel.scrollTo({
-      top: Math.max(0, Math.min(targetTop, maxTop)),
-      behavior,
-    });
-  }
-}
+if (bodyElement.classList.contains('portfolio-page') && sectionMap.length) {
+  setActiveSection(sectionMap[0].id);
 
-function syncCarouselFromScroll() {
-  carouselSyncFrame = 0;
-  if (!isCarouselMode()) return;
-  const nearestIndex = getNearestCarouselIndex();
-  if (nearestIndex !== activeCarouselIndex) setCarouselIndex(nearestIndex, { scroll: false });
-}
-
-function settleWheelGesture(timestamp) {
-  if (!isCarouselMode()) {
-    wheelGestureFrame = 0;
-    portfolioCarousel.classList.remove('is-wheel-driving');
-    return;
-  }
-  const idleFor = timestamp - lastWheelInputAt;
-  if (idleFor < WHEEL_GESTURE_IDLE_MS) {
-    wheelGestureFrame = requestAnimationFrame(settleWheelGesture);
-    return;
-  }
-
-  wheelGestureFrame = 0;
-  portfolioCarousel.classList.remove('is-wheel-driving');
-  setCarouselIndex(getNearestCarouselIndex());
-}
-
-if (portfolioCarousel && carouselCards.length) {
-  portfolioCarousel.addEventListener('scroll', () => {
-    if (carouselSyncFrame) return;
-    carouselSyncFrame = requestAnimationFrame(syncCarouselFromScroll);
-  }, { passive: true });
-
-  window.addEventListener('wheel', (event) => {
-    if (!isCarouselMode()) return;
-    if (bodyElement.classList.contains('modal-open')) return;
-    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-
-    const multiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-    portfolioCarousel.classList.add('is-wheel-driving');
-    portfolioCarousel.scrollTop += event.deltaY * multiplier;
-    lastWheelInputAt = performance.now();
-    event.preventDefault();
-    if (!wheelGestureFrame) wheelGestureFrame = requestAnimationFrame(settleWheelGesture);
-  }, { passive: false });
-
-  portfolioCarousel.addEventListener('pointerdown', (event) => {
-    if (!isCarouselMode()) return;
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
-    if (event.target.closest('.hero-photo-wrap')) return;
-    if (event.target.closest('input, summary, select, textarea, [contenteditable="true"]')) return;
-    dragState = {
-      pointerId: event.pointerId,
-      startY: event.clientY,
-      startScrollTop: portfolioCarousel.scrollTop,
-      moved: false,
-    };
-  });
-
-  document.addEventListener('pointermove', (event) => {
-    if (!dragState || dragState.pointerId !== event.pointerId) return;
-    const deltaY = event.clientY - dragState.startY;
-    if (Math.abs(deltaY) > 4 && !dragState.moved) {
-      dragState.moved = true;
-      portfolioCarousel.setPointerCapture(event.pointerId);
-      portfolioCarousel.classList.add('is-dragging');
-    }
-    if (!dragState.moved) return;
-    event.preventDefault();
-    portfolioCarousel.scrollTop = dragState.startScrollTop - deltaY;
-  }, { passive: false });
-
-  const finishDrag = (event) => {
-    if (!dragState || dragState.pointerId !== event.pointerId) return;
-    const moved = dragState.moved;
-    dragState = null;
-    portfolioCarousel.classList.remove('is-dragging');
-    if (portfolioCarousel.hasPointerCapture(event.pointerId)) portfolioCarousel.releasePointerCapture(event.pointerId);
-    if (moved) {
-      suppressCarouselClick = true;
-      requestAnimationFrame(() => { suppressCarouselClick = false; });
-      setCarouselIndex(getNearestCarouselIndex());
-    }
+  const progress = document.querySelector('.page-progress');
+  let progressFrame = 0;
+  const updateProgress = () => {
+    progressFrame = 0;
+    const distance = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = `scaleX(${distance > 0 ? window.scrollY / distance : 0})`;
+    const readingLine = Math.min(window.innerHeight * 0.25, 240);
+    const active = window.scrollY >= distance - 2
+      ? sectionMap[sectionMap.length - 1]
+      : sectionMap.reduce((current, section) =>
+        section.el.getBoundingClientRect().top <= readingLine ? section : current,
+      sectionMap[0]);
+    setActiveSection(active.id);
   };
-  document.addEventListener('pointerup', finishDrag);
-  document.addEventListener('pointercancel', finishDrag);
-  portfolioCarousel.addEventListener('dragstart', (event) => event.preventDefault());
-  portfolioCarousel.addEventListener('click', (event) => {
-    if (!suppressCarouselClick) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    suppressCarouselClick = false;
-  }, true);
-
-  portfolioCarousel.addEventListener('keydown', (event) => {
-    if (!isCarouselMode()) return;
-    const previousKeys = ['ArrowUp', 'PageUp'];
-    const nextKeys = ['ArrowDown', 'PageDown', ' '];
-    if (previousKeys.includes(event.key)) {
-      event.preventDefault();
-      setCarouselIndex(activeCarouselIndex - 1);
-    } else if (nextKeys.includes(event.key)) {
-      event.preventDefault();
-      setCarouselIndex(activeCarouselIndex + 1);
-    } else if (event.key === 'Home') {
-      event.preventDefault();
-      setCarouselIndex(0);
-    } else if (event.key === 'End') {
-      event.preventDefault();
-      setCarouselIndex(carouselCards.length - 1);
-    }
-  });
-
-  railAnchors.forEach((anchor) => {
-    anchor.addEventListener('click', (event) => {
-      event.preventDefault();
-      const targetIndex = carouselCards.findIndex((card) => card.id === anchor.dataset.railTarget);
-      if (targetIndex >= 0) setCarouselIndex(targetIndex);
-    });
-  });
-
-  navAnchors.forEach((anchor) => {
-    anchor.addEventListener('click', (event) => {
-      const targetId = anchor.getAttribute('href').slice(1);
-      const targetIndex = carouselCards.findIndex((card) => card.id === targetId);
-      if (targetIndex < 0) return;
-      event.preventDefault();
-      setCarouselIndex(targetIndex);
-    });
-  });
-
-  carouselModeQuery.addEventListener('change', (event) => {
-    dragState = null;
-    portfolioCarousel.classList.remove('is-dragging', 'is-wheel-driving');
-    if (wheelGestureFrame) cancelAnimationFrame(wheelGestureFrame);
-    wheelGestureFrame = 0;
-    if (event.matches) setCarouselIndex(activeCarouselIndex, { scroll: false });
-  });
-
-  setCarouselIndex(0, { scroll: false });
+  window.addEventListener('scroll', () => {
+    if (!progressFrame) progressFrame = requestAnimationFrame(updateProgress);
+  }, { passive: true });
+  window.addEventListener('resize', updateProgress, { passive: true });
+  updateProgress();
 }
 
 /* ---------------- 60-second Introduction Modal ---------------- */
+if (bodyElement.classList.contains('portfolio-page')) {
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    const dialog = document.querySelector('.modal-backdrop.open .modal-panel, .easter-backdrop.open .easter-panel');
+    if (!dialog) return;
+    const controls = Array.from(dialog.querySelectorAll('a[href], button, input, select, textarea, iframe, [tabindex]'))
+      .filter((element) => !element.disabled && element.tabIndex >= 0 && element.getClientRects().length);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first) return;
+    if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+}
+
 const briefToggle = document.querySelector('.brief-toggle');
 const briefModalBackdrop = document.getElementById('hero-brief-modal');
 const briefModalClose = document.getElementById('brief-modal-close');
@@ -2286,12 +2496,12 @@ document.querySelectorAll('[data-award]').forEach((card) => {
   });
 });
 
-modalClose.addEventListener('click', closeDetail);
-modalBackdrop.addEventListener('click', (e) => {
+modalClose?.addEventListener('click', closeDetail);
+modalBackdrop?.addEventListener('click', (e) => {
   if (e.target === modalBackdrop) closeDetail();
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) closeDetail();
+  if (e.key === 'Escape' && modalBackdrop?.classList.contains('open')) closeDetail();
 });
 
 function attachAnalyticsHandlers() {
@@ -2355,7 +2565,7 @@ function attachViewTracking() {
     { threshold: 0.45, rootMargin: '0px 0px -12% 0px' }
   );
 
-  Array.from(document.querySelectorAll('main > section')).forEach((section, index) => {
+  Array.from(document.querySelectorAll('main > section, .portfolio-content > section, [data-analytics-section]')).forEach((section, index) => {
     section.dataset.analyticsIndex = String(index);
     sectionObserver.observe(section);
   });
@@ -2386,7 +2596,7 @@ function attachViewTracking() {
 }
 
 /* ---------------- Initialize ---------------- */
-setLanguage(currentLang, { persist: false });
+setLanguage(currentLang);
 attachCopyHandlers();
 attachAnalyticsHandlers();
 attachViewTracking();
