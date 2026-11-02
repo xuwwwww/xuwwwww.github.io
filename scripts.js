@@ -1226,6 +1226,8 @@ const easterEggBackdrop = document.getElementById('easter-egg');
 const easterEggBoard = document.getElementById('easter-board');
 const easterEggStatus = document.getElementById('easter-status');
 const easterEggReset = document.getElementById('easter-reset');
+const easterEggSize = document.getElementById('easter-size');
+const easterEggSizeMirror = document.getElementById('easter-size-mirror');
 const easterEggAuto = document.getElementById('easter-auto');
 const easterEggScore = document.getElementById('easter-score');
 const easterEggMode = document.getElementById('easter-mode');
@@ -1233,8 +1235,12 @@ const easterEggLive = document.getElementById('easter-live');
 const easterEggControls = Array.from(document.querySelectorAll('.easter-control'));
 const heroPhotoTrigger = document.getElementById('hero-photo-trigger');
 
-const SNAKE_SIZE = 12;
-const SNAKE_TARGET_LENGTH = SNAKE_SIZE * SNAKE_SIZE;
+const SNAKE_MIN_SIZE = 12;
+const SNAKE_MAX_SIZE = 24;
+let SNAKE_SIZE = SNAKE_MIN_SIZE;
+let SNAKE_TARGET_LENGTH = SNAKE_SIZE * SNAKE_SIZE;
+let SNAKE_CYCLE_LENGTH = SNAKE_TARGET_LENGTH;
+let SNAKE_RESERVED_CELL = -1;
 const SNAKE_TICK_MS = 110;
 const SNAKE_AUTO_SPEED_MULTIPLIER = 1.2;
 const SNAKE_START = [
@@ -1264,17 +1270,10 @@ const SNAKE_OPPOSITE = {
   down: 'up',
   left: 'right',
 };
-const SNAKE_HAMILTONIAN_CYCLE = buildSnakeHamiltonianCycle();
-const SNAKE_CYCLE_TEMPLATES = buildSnakeCycleTemplates();
-const SNAKE_NEIGHBORS = Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
-  const point = snakeCellPoint(id);
-  return SNAKE_DIRECTIONS.map((direction) => ({ x: point.x + direction.dx, y: point.y + direction.dy }))
-    .filter(isInsideBoard).map(snakeCellId);
-});
-const SNAKE_EDGE_DEPTHS = Uint8Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
-  const { x, y } = snakeCellPoint(id);
-  return Math.min(x, y, SNAKE_SIZE - 1 - x, SNAKE_SIZE - 1 - y);
-});
+let SNAKE_HAMILTONIAN_CYCLE = buildSnakeHamiltonianCycle();
+let SNAKE_CYCLE_TEMPLATES = buildSnakeCycleTemplates();
+let SNAKE_NEIGHBORS = buildSnakeNeighbors();
+let SNAKE_EDGE_DEPTHS = buildSnakeEdgeDepths();
 
 let easterBoardCells = [];
 let snakeBody = [];
@@ -1303,7 +1302,7 @@ function snakeCellPoint(id) {
 }
 
 function indexSnakeCycle(cycle) {
-  const indices = new Int16Array(SNAKE_TARGET_LENGTH);
+  const indices = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
   cycle.forEach((point, index) => { indices[snakeCellId(point)] = index; });
   return indices;
 }
@@ -1313,11 +1312,30 @@ function getCycleIndex(point) {
 }
 
 function getCycleDistance(fromIndex, toIndex) {
-  return (toIndex - fromIndex + SNAKE_TARGET_LENGTH) % SNAKE_TARGET_LENGTH;
+  return (toIndex - fromIndex + SNAKE_CYCLE_LENGTH) % SNAKE_CYCLE_LENGTH;
 }
 
 function buildSnakeHamiltonianCycle() {
   const cycle = [];
+  if (SNAKE_SIZE % 2) {
+    // An odd square has no Hamiltonian cycle. Cover all but the bottom-right
+    // corner with a cycle, reserving that corner for the final apple.
+    const width = SNAKE_SIZE - 1;
+    cycle.push({ x: 0, y: 0 });
+    for (let x = 0; x < width; x += 1) {
+      for (let step = 1; step < SNAKE_SIZE; step += 1) {
+        cycle.push({ x, y: x % 2 ? SNAKE_SIZE - step : step });
+      }
+    }
+    for (let x = width - 1; x >= 1; x -= 1) cycle.push({ x, y: 0 });
+    return cycle.flatMap((point, i) => {
+      const next = cycle[(i + 1) % cycle.length];
+      if (point.x === width - 1 && next.x === point.x && point.y % 2 && next.y === point.y - 1) {
+        return [point, { x: width, y: point.y }, { x: width, y: next.y }];
+      }
+      return [point];
+    });
+  }
 
   for (let x = 0; x < SNAKE_SIZE; x += 1) {
     cycle.push({ x, y: 0 });
@@ -1344,10 +1362,15 @@ function buildSnakeHamiltonianCycle() {
 
 function buildSnakeCycleTemplates() {
   const templates = [];
-  for (let rotation = 0; rotation < 4; rotation += 1) {
+  // Only identity/transpose preserve the reserved corner on odd boards.
+  for (let rotation = 0; rotation < (SNAKE_SIZE % 2 ? 2 : 4); rotation += 1) {
     let cycle = SNAKE_HAMILTONIAN_CYCLE.map((point) => {
       let { x, y } = point;
-      for (let turn = 0; turn < rotation; turn += 1) [x, y] = [SNAKE_SIZE - 1 - y, x];
+      if (SNAKE_SIZE % 2) {
+        if (rotation) [x, y] = [y, x];
+      } else {
+        for (let turn = 0; turn < rotation; turn += 1) [x, y] = [SNAKE_SIZE - 1 - y, x];
+      }
       return { x, y };
     });
     templates.push({ cycle, indices: indexSnakeCycle(cycle) });
@@ -1355,6 +1378,40 @@ function buildSnakeCycleTemplates() {
     templates.push({ cycle, indices: indexSnakeCycle(cycle) });
   }
   return templates;
+}
+
+function buildSnakeNeighbors() {
+  return Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
+    if (id === SNAKE_RESERVED_CELL) return [];
+    const point = snakeCellPoint(id);
+    return SNAKE_DIRECTIONS.map(direction => ({ x: point.x + direction.dx, y: point.y + direction.dy }))
+      .filter(isInsideBoard).map(snakeCellId).filter(next => next !== SNAKE_RESERVED_CELL);
+  });
+}
+
+function buildSnakeEdgeDepths() {
+  return Uint8Array.from({ length: SNAKE_TARGET_LENGTH }, (_, id) => {
+    const { x, y } = snakeCellPoint(id);
+    return Math.min(x, y, SNAKE_SIZE - 1 - x, SNAKE_SIZE - 1 - y);
+  });
+}
+
+function setSnakeBoardSize(size) {
+  if (!Number.isInteger(size) || size < SNAKE_MIN_SIZE || size > SNAKE_MAX_SIZE) return false;
+  if (size !== SNAKE_SIZE) {
+    stopSnakeLoop();
+    SNAKE_SIZE = size;
+    SNAKE_TARGET_LENGTH = size * size;
+    SNAKE_CYCLE_LENGTH = SNAKE_TARGET_LENGTH - size % 2;
+    SNAKE_RESERVED_CELL = size % 2 ? SNAKE_TARGET_LENGTH - 1 : -1;
+    SNAKE_HAMILTONIAN_CYCLE = buildSnakeHamiltonianCycle();
+    SNAKE_CYCLE_TEMPLATES = buildSnakeCycleTemplates();
+    SNAKE_NEIGHBORS = buildSnakeNeighbors();
+    SNAKE_EDGE_DEPTHS = buildSnakeEdgeDepths();
+    easterBoardCells = [];
+  }
+  resetEasterGame();
+  return true;
 }
 
 function cloneSegment(segment) {
@@ -1420,14 +1477,18 @@ function simulateSnakeMove(body, directionKey, food) {
 }
 
 function hasSnakeCycleOrder(body, indices = snakeHamiltonianIndex) {
+  if (body.length && indices[snakeCellId(body[0])] < 0) return false;
   // Tail -> body -> head must fit within one lap, including every shortcut.
   // A reachable tail alone does not preserve this invariant.
   let span = 0;
   for (let index = body.length - 1; index > 0; index -= 1) {
-    const distance = getCycleDistance(indices[snakeCellId(body[index])], indices[snakeCellId(body[index - 1])]);
+    const from = indices[snakeCellId(body[index])];
+    const to = indices[snakeCellId(body[index - 1])];
+    if (from < 0 || to < 0) return false;
+    const distance = getCycleDistance(from, to);
     if (!distance) return false;
     span += distance;
-    if (span >= SNAKE_TARGET_LENGTH) return false;
+    if (span >= SNAKE_CYCLE_LENGTH) return false;
   }
   return true;
 }
@@ -1550,13 +1611,29 @@ function getSnakePathEdgeCost(body, path) {
 }
 
 function simulateSnakePath(body, food, path) {
-  let resultBody = body;
+  if (!path.length) return body;
+  // Keep a tail-to-head queue instead of cloning the entire body at each step.
+  const queue = new Int16Array(body.length + path.length);
+  const occupied = new Uint8Array(SNAKE_TARGET_LENGTH);
+  body.forEach((point, i) => {
+    const id = snakeCellId(point);
+    queue[body.length - 1 - i] = id;
+    occupied[id] = 1;
+  });
+  let tail = 0;
+  let end = body.length;
+  let head = getSnakeHead(body);
   for (const direction of path) {
-    const result = simulateSnakeMove(resultBody, direction, food);
-    if (!result) return null;
-    resultBody = result.body;
+    head = getNextPoint(head, direction);
+    if (!isInsideBoard(head)) return null;
+    const id = snakeCellId(head);
+    const eating = food && isSamePoint(head, food);
+    if (occupied[id] && (eating || id !== queue[tail])) return null;
+    if (!eating) occupied[queue[tail++]] = 0;
+    queue[end++] = id;
+    occupied[id] = 1;
   }
-  return resultBody;
+  return Array.from({ length: end - tail }, (_, i) => snakeCellPoint(queue[end - 1 - i]));
 }
 
 function buildSnakeCompletionCycle(body) {
@@ -1575,7 +1652,7 @@ function buildSnakeCompletionCycle(body) {
     const used = new Uint8Array(SNAKE_TARGET_LENGTH);
     cycle.forEach((id) => { used[id] = 1; });
     let changed = true;
-    while (changed && cycle.length < SNAKE_TARGET_LENGTH) {
+    while (changed && cycle.length < SNAKE_CYCLE_LENGTH) {
       changed = false;
       const edgeCount = cycle.length - fixedBody.length + 1;
       for (let scan = 0; scan < edgeCount; scan += 1) {
@@ -1597,12 +1674,12 @@ function buildSnakeCompletionCycle(body) {
         if (changed) break;
       }
     }
-    if (cycle.length === SNAKE_TARGET_LENGTH) return cycle.map(snakeCellPoint);
+    if (cycle.length === SNAKE_CYCLE_LENGTH) return cycle.map(snakeCellPoint);
   }
   return null;
 }
 
-function rewireSnakeCompletionCycle(body) {
+function rewireSnakeCompletionCycle(body, preferredCycle = null) {
   const bodyIds = body.map(snakeCellId);
   const spanOf = (indices) => {
     let span = 0;
@@ -1613,6 +1690,13 @@ function rewireSnakeCompletionCycle(body) {
   };
   let bestCycle = snakeHamiltonianCycle;
   let bestSpan = spanOf(snakeHamiltonianIndex);
+  if (preferredCycle) {
+    const span = spanOf(indexSnakeCycle(preferredCycle));
+    if (span < bestSpan) {
+      bestSpan = span;
+      bestCycle = preferredCycle;
+    }
+  }
   for (const template of SNAKE_CYCLE_TEMPLATES) {
     const span = spanOf(template.indices);
     if (span < bestSpan) {
@@ -1627,11 +1711,12 @@ function rewireSnakeCompletionCycle(body) {
   const head = body[0];
   const distance = (id) => Math.abs(id % SNAKE_SIZE - head.x) + Math.abs(Math.floor(id / SNAKE_SIZE) - head.y);
   squares.sort((a, b) => distance(a) - distance(b));
-  let budget = 1600;
+  // Each candidate traverses the tour; keep the total work bounded as it grows.
+  let budget = Math.floor(1600 * SNAKE_MIN_SIZE * SNAKE_MIN_SIZE / SNAKE_CYCLE_LENGTH);
   for (let iteration = 0; iteration < 4 && budget > 0; iteration += 1) {
     const ids = bestCycle.map(snakeCellId);
-    const first = new Int16Array(SNAKE_TARGET_LENGTH);
-    const second = new Int16Array(SNAKE_TARGET_LENGTH);
+    const first = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
+    const second = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
     ids.forEach((id, index) => {
       first[id] = ids[(index + 1) % ids.length];
       second[id] = ids[(index + ids.length - 1) % ids.length];
@@ -1641,6 +1726,7 @@ function rewireSnakeCompletionCycle(body) {
       const b = a + 1;
       const c = a + SNAKE_SIZE;
       const d = c + 1;
+      if (d === SNAKE_RESERVED_CELL) return null;
       if (connected(a, b) && connected(c, d) && !connected(a, c) && !connected(b, d)) return [a, b, c, d];
       if (connected(a, c) && connected(b, d) && !connected(a, b) && !connected(c, d)) return [a, c, b, d];
       return null;
@@ -1660,7 +1746,7 @@ function rewireSnakeCompletionCycle(body) {
     const oldSpan = bestSpan;
     let nextCycle = null;
     // One square flip splits a tour. Only commit after a second flip joins
-    // the two components into a single 144-cell tour again.
+    // the two components into a single full completion tour again.
     for (const cutSquare of squares) {
       const cut = squareFlip(cutSquare);
       if (!cut) continue;
@@ -1680,7 +1766,7 @@ function rewireSnakeCompletionCycle(body) {
         if (budget-- <= 0) break;
         flip(join);
         const candidate = [];
-        const indices = new Int16Array(SNAKE_TARGET_LENGTH);
+        const indices = new Int16Array(SNAKE_TARGET_LENGTH).fill(-1);
         previous = -1;
         current = bodyIds[bodyIds.length - 1];
         do {
@@ -1689,15 +1775,15 @@ function rewireSnakeCompletionCycle(body) {
           const next = first[current] === previous ? second[current] : first[current];
           previous = current;
           current = next;
-        } while (current !== candidate[0] && candidate.length <= SNAKE_TARGET_LENGTH);
-        if (candidate.length === SNAKE_TARGET_LENGTH) {
+        } while (current !== candidate[0] && candidate.length <= SNAKE_CYCLE_LENGTH);
+        if (candidate.length === SNAKE_CYCLE_LENGTH) {
           const forwardSpan = spanOf(indices);
-          const reverseSpan = (body.length - 1) * SNAKE_TARGET_LENGTH - forwardSpan;
+          const reverseSpan = (body.length - 1) * SNAKE_CYCLE_LENGTH - forwardSpan;
           const span = Math.min(forwardSpan, reverseSpan);
           if (span < bestSpan) {
             bestSpan = span;
             nextCycle = (forwardSpan < reverseSpan ? candidate : candidate.reverse()).map(snakeCellPoint);
-            if (span < SNAKE_TARGET_LENGTH) return nextCycle;
+            if (span < SNAKE_CYCLE_LENGTH) return nextCycle;
           }
         }
         flip(join, true);
@@ -1717,6 +1803,7 @@ function certifySnakeFoodPath(path) {
   return certifySnakeBody(body);
 }
 
+
 function certifySnakeBody(body) {
   const key = body.map(snakeCellId).join(',');
   if (snakeFoodPathCache.has(key)) return snakeFoodPathCache.get(key);
@@ -1729,57 +1816,132 @@ function certifySnakeBody(body) {
       }
     }
   }
-  cycle ||= rewireSnakeCompletionCycle(body) || buildSnakeCompletionCycle(body);
+  // Any ordered completion tour contains an empty head-to-tail arc. Reject a
+  // disconnected landing before attempting expensive tour rewiring.
+  if (!cycle && findShortestSnakePath(body, getSnakeTail(body))) {
+    cycle = rewireSnakeCompletionCycle(body) || buildSnakeCompletionCycle(body);
+  }
   // A shared prefix can lead to the same landing body on successive ticks.
   // Reuse its proof (or failed search) until eating changes the board and tour.
   snakeFoodPathCache.set(key, cycle);
   return cycle;
 }
 
-function findSafeSnakeFoodPath(body, food, indices = snakeHamiltonianIndex, maxLength = SNAKE_TARGET_LENGTH - 1) {
-  const head = getSnakeHead(body);
-  const headIndex = indices[snakeCellId(head)];
-  const foodDistance = getCycleDistance(headIndex, indices[snakeCellId(food)]);
-  const tailDistance = getCycleDistance(headIndex, indices[snakeCellId(getSnakeTail(body))]);
-  // Keep the safety arc, but apply the same shortest-first, edge-second ranking.
-  const shortest = findShortestSnakePath(body, food, 0, null, (from, to) => {
-    const distance = getCycleDistance(headIndex, indices[to]);
-    return distance > getCycleDistance(headIndex, indices[from])
-      && distance <= foodDistance && distance < tailDistance;
-  });
-  if (shortest) return shortest.length <= maxLength ? shortest : null;
-  if (foodDistance > maxLength) return null;
-  // The food can lie in a gap behind the current tail. Following the tour lets
-  // that tail vacate cells; a static blocked-cell search cannot see this route.
-  const cells = new Int16Array(SNAKE_TARGET_LENGTH);
-  indices.forEach((index, id) => { cells[index] = id; });
-  const path = [];
-  let previous = head;
-  for (let step = 1; step <= foodDistance; step += 1) {
-    const point = snakeCellPoint(cells[(headIndex + step) % SNAKE_TARGET_LENGTH]);
-    path.push(getDirectionBetween(previous, point));
-    previous = point;
+function findSafeSnakeFoodPath(body, food, indices = snakeHamiltonianIndex, maxLength = SNAKE_CYCLE_LENGTH - 1) {
+  if (!hasSnakeCycleOrder(body, indices)) return null;
+  const start = snakeCellId(getSnakeHead(body));
+  const goal = snakeCellId(food);
+  if (indices[goal] < 0) return null;
+  const headIndex = indices[start];
+  const distances = Int16Array.from(indices, index => getCycleDistance(headIndex, index));
+  const foodDistance = distances[goal];
+  maxLength = Math.min(maxLength, foodDistance);
+  const heuristic = id => Math.abs(id % SNAKE_SIZE - food.x)
+    + Math.abs(Math.floor(id / SNAKE_SIZE) - food.y);
+  if (!foodDistance || heuristic(start) > maxLength) return null;
+  // A state includes arrival time: a body cell may be blocked now but free then.
+  // Increasing tour positions prevent crossing our new trail or passing the tail,
+  // so histories reaching the same (cell, time) have identical future clearance.
+  const stateCount = (maxLength + 1) * SNAKE_TARGET_LENGTH;
+  const edgeCosts = new Int16Array(stateCount).fill(32767);
+  const parents = new Int32Array(stateCount).fill(-1);
+  const buckets = Array.from({ length: maxLength + 1 }, () => []);
+  edgeCosts[start] = 0;
+  buckets[heuristic(start)].push({ state: start, cost: 0 });
+  for (let estimate = heuristic(start); estimate <= maxLength; estimate += 1) {
+    const bucket = buckets[estimate];
+    while (bucket.length) {
+      let best = 0;
+      for (let i = 1; i < bucket.length; i += 1) {
+        if (bucket[i].cost < bucket[best].cost) best = i;
+      }
+      const { state, cost } = bucket[best];
+      bucket[best] = bucket[bucket.length - 1];
+      bucket.pop();
+      if (edgeCosts[state] !== cost) continue;
+      const id = state % SNAKE_TARGET_LENGTH;
+      const step = Math.floor(state / SNAKE_TARGET_LENGTH);
+      if (id === goal) {
+        const path = [];
+        for (let cursor = state; parents[cursor] !== -1; cursor = parents[cursor]) {
+          path.push(getDirectionBetween(snakeCellPoint(parents[cursor] % SNAKE_TARGET_LENGTH),
+            snakeCellPoint(cursor % SNAKE_TARGET_LENGTH)));
+        }
+        return path.reverse();
+      }
+      const arrival = step + 1;
+      if (arrival > maxLength) continue;
+      // Compare against the tail AFTER this move; growth keeps it one cell back.
+      const tailLimit = arrival < body.length - 1
+        ? distances[snakeCellId(body[body.length - 1 - arrival])] : SNAKE_CYCLE_LENGTH;
+      const eatingTailLimit = arrival < body.length
+        ? distances[snakeCellId(body[body.length - arrival])] : SNAKE_CYCLE_LENGTH;
+      for (const next of SNAKE_NEIGHBORS[id]) {
+        const distance = distances[next];
+        const limit = next === goal ? eatingTailLimit : tailLimit;
+        if (distance <= distances[id] || distance > foodDistance || distance >= limit) continue;
+        const priority = arrival + heuristic(next);
+        if (priority > maxLength) continue;
+        const nextState = arrival * SNAKE_TARGET_LENGTH + next;
+        const nextCost = cost + SNAKE_EDGE_DEPTHS[next];
+        if (nextCost >= edgeCosts[nextState]) continue;
+        edgeCosts[nextState] = nextCost;
+        parents[nextState] = state;
+        buckets[priority].push({ state: nextState, cost: nextCost });
+      }
+    }
   }
-  return simulateSnakePath(body, food, path) ? path : null;
+  return null;
 }
 
-function findSafeSnakeFoodPlan(body, food, maxLength, maxEdgeCost = Infinity) {
+function findSafeSnakeFoodPlan(body, food, maxLength, maxEdgeCost = Infinity, optimalCycle = null) {
   const tours = [{ cycle: snakeHamiltonianCycle, indices: snakeHamiltonianIndex }, ...SNAKE_CYCLE_TEMPLATES];
   if (snakeAutoPlan && !tours.some(({ cycle }) => cycle === snakeAutoPlan.cycle)) {
     tours.push({ cycle: snakeAutoPlan.cycle, indices: indexSnakeCycle(snakeAutoPlan.cycle) });
   }
   let best = null;
   for (const { cycle, indices } of tours) {
+    // Following an optimal route leaves an optimal suffix on the same tour.
+    // Other tours still need checking: moving the tail can unlock a new one.
+    if (cycle === optimalCycle) continue;
     if (!hasSnakeCycleOrder(body, indices)) continue;
     const path = findSafeSnakeFoodPath(body, food, indices, maxLength);
     if (!path?.length || path.length > maxLength) continue;
     const edgeCost = getSnakePathEdgeCost(body, path);
     if (path.length === maxLength && edgeCost >= maxEdgeCost) continue;
-    best = { path, cycle };
+    best = { path, cycle, optimalCycle: cycle };
     maxLength = path.length;
     maxEdgeCost = edgeCost;
   }
   return best;
+}
+
+
+function findSnakeFoodApproachPlan(maxLength, maxEdgeCost = Infinity) {
+  const foodId = snakeCellId(snakeFood);
+  const candidates = [];
+  const seen = new Set();
+  for (const id of SNAKE_NEIGHBORS[foodId]) {
+    const approach = snakeCellPoint(id);
+    for (let order = 0; order < 4; order += 1) {
+      const prefix = findShortestSnakePath(snakeBody, approach, order, null, (_, to) => to !== foodId);
+      if (!prefix) continue;
+      const path = [...prefix, getDirectionBetween(approach, snakeFood)];
+      if (path.length > maxLength) continue;
+      const edgeCost = getSnakePathEdgeCost(snakeBody, path);
+      if (path.length === maxLength && edgeCost >= maxEdgeCost) continue;
+      const key = path.join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      candidates.push({ path, edgeCost });
+    }
+  }
+  candidates.sort((a, b) => a.path.length - b.path.length || a.edgeCost - b.edgeCost);
+  for (const { path } of candidates) {
+    const cycle = certifySnakeFoodPath(path);
+    if (cycle) return { path, cycle, appleApproach: true };
+  }
+  return null;
 }
 
 function findSafeSnakeFirstStepPlan(direction, maxLength) {
@@ -1794,6 +1956,110 @@ function findSafeSnakeFirstStepPlan(direction, maxLength) {
     plan = { path, cycle };
   }
   return { path: [direction, ...plan.path], cycle: plan.cycle };
+}
+
+function shortcutSnakeFoodPlan(plan, preferredDirection = null) {
+  const head = getSnakeHead();
+  const candidates = [];
+  let point = head;
+  plan.path.forEach((direction, index) => {
+    point = getNextPoint(point, direction);
+    if (index < 2) return;
+    const direct = getDirectionBetween(head, point);
+    if (direct && (!preferredDirection || direct === preferredDirection)) {
+      candidates.push([direct, ...plan.path.slice(index + 1)]);
+    }
+  });
+  candidates.sort((a, b) => a.length - b.length
+    || getSnakePathEdgeCost(snakeBody, a) - getSnakePathEdgeCost(snakeBody, b));
+  const indices = candidates.length ? indexSnakeCycle(plan.cycle) : null;
+  for (const path of candidates) {
+    const landing = simulateSnakePath(snakeBody, snakeFood, path);
+    if (!landing) continue;
+    if (hasSnakeCycleOrder(landing, indices)) return { path, cycle: plan.cycle };
+    // Only a local corner may request a new tour; long cuts keep the old proof.
+    if (plan.path.length - path.length === 2) {
+      const cycle = certifySnakeFoodPath(path);
+      if (cycle) return { path, cycle };
+    }
+  }
+  return plan;
+}
+
+function compactSnakeCompletionCycle(body, preferredCycle) {
+  const span = (indices) => {
+    let distance = 0;
+    for (let i = 1; i < body.length; i += 1) {
+      distance += getCycleDistance(indices[snakeCellId(body[i])], indices[snakeCellId(body[i - 1])]);
+    }
+    return distance;
+  };
+  let best = preferredCycle;
+  let bestSpan = span(indexSnakeCycle(best));
+  for (const { cycle, indices } of SNAKE_CYCLE_TEMPLATES) {
+    const candidateSpan = span(indices);
+    if (candidateSpan < bestSpan && hasSnakeCycleOrder(body, indices)) {
+      best = cycle;
+      bestSpan = candidateSpan;
+    }
+  }
+  // A valid but loose tour can strand empty cells behind a short snake. Tighten
+  // the certificate, not the actual body, before planning the next apple.
+  if (bestSpan - body.length + 1 >= SNAKE_SIZE) {
+    const rewired = rewireSnakeCompletionCycle(body, best);
+    if (rewired && span(indexSnakeCycle(rewired)) < bestSpan) best = rewired;
+  }
+  return best;
+}
+
+function getSnakeTailGap(body) {
+  const head = getSnakeHead(body);
+  const tail = getSnakeTail(body);
+  return Math.abs(head.x - tail.x) + Math.abs(head.y - tail.y);
+}
+
+function findSnakeTailShortcutPlan(maxLength, completionCycle) {
+  // On a checkerboard, odd-length snakes cannot have adjacent head/tail cells.
+  const tightGap = snakeBody.length % 2 ? 2 : 1;
+  if (!completionCycle || maxLength < 2 || getSnakeTailGap(snakeBody) <= tightGap) return null;
+  const queue = [{ body: snakeBody, path: [] }];
+  const horizon = Math.min(8, maxLength - 1);
+  let best = null;
+  const indices = indexSnakeCycle(completionCycle);
+  // Simulate the moving tail, rather than pathfinding to where it used to be.
+  // A short interception is useful only with a complete, budgeted route to food.
+  for (let cursor = 0; cursor < queue.length && cursor < 96; cursor += 1) {
+    const current = queue[cursor];
+    if (current.path.length && getSnakeTailGap(current.body) === tightGap) {
+      const remaining = maxLength - current.path.length;
+      let retreat = null;
+      if (hasSnakeCycleOrder(current.body, indices)) {
+        const path = findSafeSnakeFoodPath(current.body, snakeFood, indices, remaining);
+        if (path?.length) retreat = { path, cycle: completionCycle };
+      }
+      if (retreat) {
+        const path = [...current.path, ...retreat.path];
+        if (!best || path.length < best.path.length
+          || (path.length === best.path.length && getSnakePathEdgeCost(snakeBody, path) < getSnakePathEdgeCost(snakeBody, best.path))) {
+          best = { path, cycle: retreat.cycle, tailShortcutSteps: current.path.length };
+          maxLength = path.length;
+        }
+      }
+    }
+    if (current.path.length >= horizon || current.path.length + 1 >= maxLength) continue;
+    const successors = [];
+    for (const { key } of SNAKE_DIRECTIONS) {
+      const result = simulateSnakeMove(current.body, key, snakeFood);
+      if (!result || result.ateFood || getSnakeTailGap(result.body) >= getSnakeTailGap(current.body)) continue;
+      successors.push({ body: result.body, path: [...current.path, key] });
+    }
+    successors.sort((a, b) => getSnakeTailGap(a.body) - getSnakeTailGap(b.body));
+    for (const next of successors) {
+      if (queue.length >= 96) break;
+      queue.push(next);
+    }
+  }
+  return best;
 }
 
 function getSafeSnakeCycleDirection() {
@@ -1821,8 +2087,28 @@ function getSafeSnakeCycleDirection() {
   return bestDirection;
 }
 
+function findSnakeFinalCornerPlan() {
+  if (snakeBody.length !== SNAKE_CYCLE_LENGTH || !hasSnakeCycleOrder(snakeBody)) return null;
+  const path = [];
+  let point = getSnakeHead();
+  let index = getCycleIndex(point);
+  for (let step = 0; step < SNAKE_CYCLE_LENGTH; step += 1) {
+    const finalDirection = getDirectionBetween(point, snakeFood);
+    if (finalDirection) return { path: [...path, finalDirection], cycle: snakeHamiltonianCycle, finalCorner: true };
+    index = (index + 1) % SNAKE_CYCLE_LENGTH;
+    const next = snakeHamiltonianCycle[index];
+    path.push(getDirectionBetween(point, next));
+    point = next;
+  }
+  return null;
+}
+
 function getAutoSolveDirection() {
   if (!snakeFood) return null;
+  if (snakeCellId(snakeFood) === SNAKE_RESERVED_CELL) {
+    if (!snakeAutoPlan?.finalCorner) snakeAutoPlan = findSnakeFinalCornerPlan();
+    return snakeAutoPlan?.path[0] || null;
+  }
   const shortest = findShortestSnakePath(snakeBody, snakeFood);
   const remaining = snakeAutoPlan
     ? snakeAutoPlan.path.length
@@ -1852,8 +2138,17 @@ function getAutoSolveDirection() {
   // longer certified shortcut still beats the pending route. Compare it too.
   const safePlan = findSafeSnakeFoodPlan(snakeBody, snakeFood,
     snakeAutoPlan?.path.length ?? remaining,
-    snakeAutoPlan ? getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path) : Infinity);
+    snakeAutoPlan ? getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path) : Infinity,
+    snakeAutoPlan?.optimalCycle);
   if (safePlan) snakeAutoPlan = safePlan;
+  // Failing the shortest route does not justify a long sweep: try entering
+  // the apple from its other sides, with a complete landing proof for each.
+  if (snakeAutoPlan && (!shortest || (snakeAutoPlan.path.length >= shortest.length * 2
+    && snakeAutoPlan.path.length - shortest.length >= SNAKE_SIZE))) {
+    const approachPlan = findSnakeFoodApproachPlan(snakeAutoPlan.path.length,
+      getSnakePathEdgeCost(snakeBody, snakeAutoPlan.path));
+    if (approachPlan) snakeAutoPlan = approachPlan;
+  }
   // A shortest first step need not force us to finish the same static route.
   // Require a complete retreat to this apple within the OLD remaining budget;
   // unlike one-step-only rewiring, this cannot reset the budget and chase tails.
@@ -1865,15 +2160,27 @@ function getAutoSolveDirection() {
       snakeAutoPlan = stepPlan;
     }
   }
-  if (snakeAutoPlan) return snakeAutoPlan.path[0];
+  if (snakeAutoPlan) {
+    snakeAutoPlan = shortcutSnakeFoodPlan(snakeAutoPlan, shortest?.[0]);
+    if (!shortest || snakeAutoPlan.path.length > shortest.length) {
+      const tailPlan = findSnakeTailShortcutPlan(snakeAutoPlan.path.length - 1, snakeAutoPlan.cycle);
+      if (tailPlan) snakeAutoPlan = shortcutSnakeFoodPlan(tailPlan, shortest?.[0]);
+    }
+    return snakeAutoPlan.path[0];
+  }
   return getSafeSnakeCycleDirection();
 }
 
 function advanceSnakeAutoPlan() {
   if (!snakeAutoPlan) return;
   snakeAutoPlan.path.shift();
+  if (snakeAutoPlan.tailShortcutSteps) snakeAutoPlan.tailShortcutSteps -= 1;
   if (snakeAutoPlan.path.length) return;
-  snakeHamiltonianCycle = snakeAutoPlan.cycle;
+  if (snakeAutoPlan.finalCorner) {
+    snakeAutoPlan = null;
+    return;
+  }
+  snakeHamiltonianCycle = compactSnakeCompletionCycle(snakeBody, snakeAutoPlan.cycle);
   snakeHamiltonianIndex = indexSnakeCycle(snakeHamiltonianCycle);
   snakeAutoPlan = null;
 }
@@ -1886,6 +2193,7 @@ function placeSnakeFood() {
   for (let y = 0; y < SNAKE_SIZE; y += 1) {
     for (let x = 0; x < SNAKE_SIZE; x += 1) {
       const point = { x, y };
+      if (snakeAutoSolve && snakeBody.length < SNAKE_CYCLE_LENGTH && snakeCellId(point) === SNAKE_RESERVED_CELL) continue;
       if (!occupied.has(toSnakeKey(point))) emptyCells.push(point);
     }
   }
@@ -1990,6 +2298,9 @@ function renderSnakeBoard() {
 function buildSnakeBoard() {
   if (!easterEggBoard || easterBoardCells.length) return;
 
+  easterEggBoard.style.setProperty('--snake-size', SNAKE_SIZE);
+  easterEggBoard.setAttribute('aria-rowcount', SNAKE_SIZE);
+  easterEggBoard.setAttribute('aria-colcount', SNAKE_SIZE);
   easterEggBoard.innerHTML = '';
   easterBoardCells = Array.from({ length: SNAKE_TARGET_LENGTH }, (_, index) => {
     const cell = document.createElement('div');
@@ -2127,7 +2438,19 @@ if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus &
     }
   });
 
-  easterEggReset.addEventListener('click', resetEasterGame);
+  const resetWithSize = () => {
+    if (easterEggSize && !easterEggSize.reportValidity()) return;
+    setSnakeBoardSize(easterEggSize ? Number(easterEggSize.value) : SNAKE_SIZE);
+  };
+  easterEggReset.addEventListener('click', resetWithSize);
+  easterEggSize?.addEventListener('input', () => {
+    if (easterEggSizeMirror) easterEggSizeMirror.textContent = easterEggSize.value || '?';
+  });
+  easterEggSize?.addEventListener('keydown', event => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    resetWithSize();
+  });
   easterEggAuto.addEventListener('click', () => {
     snakeAutoSolve = !snakeAutoSolve;
     // A manual route may not fit the cycle. Never force it onto a fixed tour.
@@ -2155,6 +2478,8 @@ if (heroPhotoTrigger && easterEggBackdrop && easterEggBoard && easterEggStatus &
       closeEasterEgg();
       return;
     }
+
+    if (event.target === easterEggSize) return;
 
     const directionKey = SNAKE_DIRECTION_MAP[event.code] || SNAKE_DIRECTION_MAP[event.key];
     if (!directionKey) return;

@@ -7,7 +7,7 @@ const { Worker, isMainThread, parentPort, workerData } = require('node:worker_th
 const { availableParallelism } = require('node:os');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'scripts.js'), 'utf8');
-const start = source.indexOf('const SNAKE_SIZE =');
+const start = source.indexOf('const SNAKE_MIN_SIZE =');
 const end = source.indexOf('if (heroPhotoTrigger &&', start);
 assert.ok(start >= 0 && end > start, 'Load the actual game implementation');
 let randomState = 1;
@@ -35,13 +35,19 @@ const game = new Function('Math', 'easterEggBoard', 'setInterval', 'clearInterva
     safePlan: findSafeSnakeFoodPlan,
     safePath: findSafeSnakeFoodPath,
     firstStepPlan: findSafeSnakeFirstStepPlan,
+    shortcut: shortcutSnakeFoodPlan,
+    tailShortcut: findSnakeTailShortcutPlan,
+    tailGap: getSnakeTailGap,
+    compactCycle: compactSnakeCompletionCycle,
+    approachPlan: findSnakeFoodApproachPlan,
+    setPlan: (path, cycle) => { snakeAutoPlan = { path: [...path], cycle }; },
     completeCycle: buildSnakeCompletionCycle,
     simulatePath: simulateSnakePath,
     setFood: (food) => { snakeFood = food; snakeAutoPlan = null; snakeFoodPathCache.clear(); },
     step: stepSnakeGame,
     reset: resetEasterGame,
     state: () => ({ body: snakeBody, food: snakeFood, won: snakeWon, dead: snakeGameOver, auto: snakeAutoSolve, plan: snakeAutoPlan }),
-    arrange: (body, food, direction = null) => {
+    arrange: (body, food, direction = null, cycle = SNAKE_HAMILTONIAN_CYCLE) => {
       snakeBody = body.map(cloneSegment);
       snakeFood = food && cloneSegment(food);
       snakeDirection = direction || getDirectionBetween(body[1], body[0]) || 'right';
@@ -51,7 +57,7 @@ const game = new Function('Math', 'easterEggBoard', 'setInterval', 'clearInterva
       snakeWon = false;
       snakeAutoPlan = null;
       snakeFoodPathCache.clear();
-      snakeHamiltonianCycle = SNAKE_HAMILTONIAN_CYCLE;
+      snakeHamiltonianCycle = cycle;
       snakeHamiltonianIndex = indexSnakeCycle(snakeHamiltonianCycle);
     },
     cycleIndex: getCycleIndex,
@@ -202,6 +208,204 @@ test('A longer outer detour never replaces a shorter central route', () => {
   assert.deepEqual(game.shortest(body, { x: 4, y: 2 }), ['up', 'up', 'up', 'up']);
 });
 
+test('Cut a safe three-sided detour into a direct turn in every orientation', () => {
+  const rotatePoint = ({ x, y }) => ({ x: 11 - y, y: x });
+  const rotateDirection = { up: 'right', right: 'down', down: 'left', left: 'up' };
+  let body = game.start;
+  let food = { x: 4, y: 7 };
+  let detour = ['right', 'down', 'left'];
+  let direct = 'down';
+  for (let rotation = 0; rotation < 4; rotation += 1) {
+    game.arrange(body, food);
+    const cycle = game.certify(detour);
+    assert.ok(cycle);
+    const plan = game.shortcut({ path: detour, cycle });
+    assert.deepEqual(plan.path, [direct]);
+    assert.ok(game.simulatePath(body, food, plan.path));
+    checkCycle(plan.cycle);
+    game.setPlan(detour, cycle);
+    assert.equal(game.next(), direct, 'Actual Auto Solve takes the direct turn');
+    body = body.map(rotatePoint);
+    food = rotatePoint(food);
+    detour = detour.map(direction => rotateDirection[direction]);
+    direct = rotateDirection[direct];
+  }
+});
+
+test('Do not cut a corner through body cells that have not vacated yet', () => {
+  const body = [{ x: 4, y: 4 }, { x: 3, y: 4 }, { x: 3, y: 5 }, { x: 4, y: 5 }, { x: 4, y: 6 }];
+  const food = { x: 4, y: 7 };
+  game.arrange(body, food);
+  const detour = ['right', 'down', 'left', 'down', 'down'];
+  assert.ok(game.simulatePath(body, food, detour));
+  assert.equal(game.simulatePath(body, food, ['down', 'down', 'down']), null);
+  const cycle = game.certify(detour);
+  assert.ok(cycle);
+  const plan = { path: detour, cycle };
+  assert.equal(game.shortcut(plan), plan, 'Retain the safe route when a direct turn hits the body');
+});
+
+test('A local shortcut keeps the already certified completion tour when it still fits', () => {
+  const food = { x: 4, y: 10 };
+  game.arrange(game.start, food);
+  const path = ['right', 'down', 'left', 'down', 'down', 'down', 'down'];
+  const cycle = game.certify(path);
+  assert.ok(cycle);
+  const shortened = game.shortcut({ path, cycle });
+  assert.equal(shortened.path.length, path.length - 2);
+  assert.deepEqual(game.simulatePath(game.start, food, shortened.path), game.simulatePath(game.start, food, path));
+  assert.equal(shortened.cycle, cycle, 'Do not rewire the completion tour just because a detour was removed');
+  const original = { path, cycle };
+  assert.equal(game.shortcut(original, 'right'), original, 'Do not replace the selected shortest heading with an unrelated shortcut');
+});
+
+test('After eating, a tighter safe tour removes artificial gaps without moving the body', () => {
+  const body = [{ x: 4, y: 5 }, { x: 4, y: 6 }, { x: 3, y: 6 }, { x: 2, y: 6 }];
+  const original = JSON.stringify(body);
+  const span = cycle => {
+    const indices = new Int16Array(144);
+    cycle.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+    return body.slice(1).reduce((sum, p, i) => sum
+      + (indices[body[i].y * 12 + body[i].x] - indices[p.y * 12 + p.x] + 144) % 144, 0);
+  };
+  assert.equal(span(game.baseCycle), 139);
+  const compact = game.compactCycle(body, game.baseCycle);
+  assert.equal(span(compact), body.length - 1, 'Shrink the loose tour all the way to the actual body span');
+  assert.equal(JSON.stringify(body), original);
+  checkCycle(compact);
+  const indices = new Int16Array(144);
+  compact.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+  assert.ok(game.ordered(body, indices));
+  const contiguous = Array.from({ length: 60 }, (_, i) => game.baseCycle[(144 - i) % 144]);
+  assert.equal(game.compactCycle(contiguous, game.baseCycle), game.baseCycle, 'Leave an already tight tour unchanged');
+});
+
+test('A short snake is not forced to sweep merely because its safety tour is loose', () => {
+  const body = [{ x: 4, y: 5 }, { x: 4, y: 6 }, { x: 3, y: 6 }, { x: 2, y: 6 }];
+  const span = indices => body.slice(1).reduce((sum, p, i) => sum
+    + (indices[body[i].y * 12 + body[i].x] - indices[p.y * 12 + p.x] + 144) % 144, 0);
+  const old = game.templates.filter(t => game.ordered(body, t.indices)).sort((a, b) => span(a.indices) - span(b.indices))[0];
+  game.arrange(body, { x: 0, y: 0 });
+  const compact = game.compactCycle(body, old.cycle);
+  const indices = new Int16Array(144);
+  compact.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+  let freed = 0;
+  for (let id = 0; id < 144; id += 1) {
+    const food = { x: id % 12, y: Math.floor(id / 12) };
+    if (body.some(p => p.x === food.x && p.y === food.y)) continue;
+    const shortest = game.shortest(body, food);
+    const before = game.safePath(body, food, old.indices);
+    const after = game.safePath(body, food, indices);
+    if (after.length !== shortest.length || before.length < after.length + 4) continue;
+    assert.ok(game.simulatePath(body, food, after));
+    assert.ok(game.ordered(game.simulatePath(body, food, after), indices));
+    freed += 1;
+  }
+  assert.ok(freed > 0, 'Open safe shortest routes by changing the proof, not by taking a normalization lap');
+});
+
+test('Auto Solve tries a different apple entry before accepting a long sweep', () => {
+  randomState = 1;
+  game.reset();
+  let exercised = false;
+  for (let step = 0; step < 2500 && !game.state().won; step += 1) {
+    const before = game.state();
+    const budget = before.plan?.path.length ?? game.cycleDistance(game.cycleIndex(before.body[0]), game.cycleIndex(before.food));
+    game.next();
+    const plan = game.state().plan;
+    if (plan?.appleApproach && plan !== before.plan) {
+      assert.ok(plan.path.length <= budget);
+      let body = before.body;
+      for (let i = 0; i < plan.path.length; i += 1) {
+        const result = game.simulate(body, plan.path[i], before.food);
+        assert.ok(result);
+        assert.equal(result.ateFood, i === plan.path.length - 1, 'Reach the apple only at the last move of the certified approach');
+        body = result.body;
+      }
+      const indices = new Int16Array(144);
+      plan.cycle.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+      assert.ok(game.ordered(body, indices));
+      exercised = true;
+      break;
+    }
+    game.step();
+    assert.equal(game.state().dead, false);
+  }
+  assert.ok(exercised);
+});
+
+test('Intercept the moving tail from three cells away instead of chasing its old position', () => {
+  const body = [{ x: 4, y: 4 }, { x: 4, y: 3 }, { x: 3, y: 3 }, { x: 2, y: 3 }, { x: 2, y: 4 }, { x: 1, y: 4 }];
+  const food = { x: 0, y: 4 };
+  game.arrange(body, food);
+  assert.equal(game.tailGap(body), 3);
+  assert.ok(game.shortest(body, food).length > 4, 'Static obstacles hide the moving-tail shortcut');
+  const cycle = game.certify(['left', 'left', 'left', 'left']);
+  assert.ok(cycle);
+  const plan = game.tailShortcut(4, cycle);
+  assert.ok(plan);
+  assert.equal(plan.path.length, 4);
+  assert.equal(plan.cycle, cycle, 'Retain the existing completion certificate');
+  assert.equal(plan.tailShortcutSteps, 1);
+  assert.equal(plan.path[0], 'left');
+  const interception = game.simulatePath(body, food, plan.path.slice(0, plan.tailShortcutSteps));
+  assert.equal(game.tailGap(interception), 1);
+  assert.notDeepEqual(interception[0], body.at(-1), 'Intercept the future tail, not its stale cell');
+  const landing = game.simulatePath(body, food, plan.path);
+  const indices = new Int16Array(144);
+  plan.cycle.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+  assert.ok(landing && game.ordered(landing, indices));
+  assert.equal(game.tailShortcut(3, cycle), null, 'Do not buy tail proximity by extending the food budget');
+});
+
+test('Actual Auto Solve uses cells released by the moving tail in a shorter complete food route', () => {
+  randomState = 1;
+  game.reset();
+  let intercepted = false;
+  for (let step = 0; step < 2000 && !game.state().won; step += 1) {
+    const before = game.state();
+    const staticPath = game.shortest(before.body, before.food);
+    game.next();
+    const plan = game.state().plan;
+    if (plan && (!staticPath || plan.path.length < staticPath.length)) {
+      const initiallyBlocked = new Set(before.body.slice(1, -1).map(p => p.y * 12 + p.x));
+      let body = before.body;
+      let crossesReleasedCell = false;
+      for (const direction of plan.path) {
+        const result = game.simulate(body, direction, before.food);
+        assert.ok(result, 'The shortcut is collision-free at its actual arrival time');
+        body = result.body;
+        crossesReleasedCell ||= initiallyBlocked.has(body[0].y * 12 + body[0].x);
+      }
+      if (crossesReleasedCell) {
+        const indices = new Int16Array(144);
+        plan.cycle.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+        assert.ok(game.ordered(body, indices), 'The entire shortcut retains a full-board completion proof');
+        intercepted = true;
+        break;
+      }
+    }
+    game.step();
+    assert.equal(game.state().dead, false);
+  }
+  assert.equal(intercepted, true, 'Exercise the production decision, not just the isolated helper');
+});
+
+test('Odd-length snakes aim for the closest possible two-cell tail gap', () => {
+  const body = [{ x: 4, y: 4 }, { x: 4, y: 3 }, { x: 3, y: 3 }, { x: 2, y: 3 }, { x: 1, y: 3 }];
+  const food = { x: 0, y: 4 };
+  game.arrange(body, food);
+  const cycle = game.certify(['left', 'left', 'left', 'left']);
+  assert.ok(cycle);
+  assert.equal(game.tailGap(body), 4);
+  const plan = game.tailShortcut(4, cycle);
+  assert.ok(plan);
+  assert.equal(plan.tailShortcutSteps, 1);
+  const intercept = game.simulatePath(body, food, plan.path.slice(0, plan.tailShortcutSteps));
+  assert.equal(game.tailGap(intercept), 2);
+  assert.ok(game.simulatePath(body, food, plan.path));
+});
+
 test('Alternative routes stay shortest and are ranked by edge proximity', () => {
   const body = [{ x: 4, y: 6 }, { x: 5, y: 6 }, { x: 6, y: 6 }];
   const food = { x: 1, y: 2 };
@@ -238,10 +442,13 @@ test('Above the former 80% threshold, keep taking the safe shortest route', () =
   assert.deepEqual(game.state().body[0], food);
 });
 
-test('Try another equal-length route before abandoning the shortest distance', () => {
-  randomState = 1;
-  game.reset();
-  for (let step = 0; step < 90; step += 1) game.step();
+test('Do not abandon an available equal-length alternative for a longer sweep', () => {
+  const body = [[10, 4], [10, 3], [10, 2], [9, 2], [8, 2], [7, 2], [7, 3], [7, 4],
+    [7, 5], [8, 5], [9, 5], [10, 5], [10, 6], [10, 7], [11, 7]].map(([x, y]) => ({ x, y }));
+  const cycleIds = '95,107,119,131,143,142,141,140,139,138,137,136,135,134,133,132,120,121,122,123,124,125,126,127,128,129,130,118,117,116,115,114,113,112,111,110,109,108,96,97,98,99,100,101,102,103,104,105,106,94,93,92,91,90,89,88,87,86,85,84,72,73,74,75,76,77,78,79,80,81,82,70,69,68,67,66,65,64,63,62,61,60,48,49,50,51,52,53,54,55,56,57,45,44,43,42,41,40,39,38,37,36,24,25,26,27,28,29,30,31,32,33,34,22,21,20,19,18,17,16,15,14,13,12,0,1,2,3,4,5,6,7,8,9,10,11,23,35,47,46,58,59,71,83';
+  const cycle = cycleIds.split(',').map(Number).map(id => ({ x: id % 12, y: Math.floor(id / 12) }));
+  checkCycle(cycle);
+  game.arrange(body, { x: 5, y: 7 }, null, cycle);
   const state = game.state();
   assert.equal(state.body.length, 15);
   const shortest = game.shortest(state.body, state.food);
@@ -249,9 +456,116 @@ test('Try another equal-length route before abandoning the shortest distance', (
   assert.equal(game.certify(shortest), null, 'The outermost shortest route has no completion certificate');
   const alternative = [...game.alternatives(state.body, state.food, shortest.length)].find(route => game.certify(route));
   assert.ok(alternative, 'Another route with exactly the same number of steps is safe');
-  assert.equal(game.next(), alternative[0]);
-  assert.equal(game.state().plan.path.length, shortest.length, 'Do not fall back to a longer sweep');
-  assert.equal(routeEdgeCost(state.body[0], game.state().plan.path), routeEdgeCost(state.body[0], alternative));
+  game.next();
+  const plan = game.state().plan;
+  assert.ok(plan.path.length <= shortest.length, 'A moving-tail route may even beat the static shortest distance');
+  if (plan.path.length === shortest.length) {
+    assert.ok(routeEdgeCost(state.body[0], plan.path) <= routeEdgeCost(state.body[0], alternative));
+  }
+  assert.ok(game.simulatePath(state.body, state.food, plan.path));
+});
+
+function referenceMovingRoute(body, food, indices, maxLength) {
+  const id = p => p.y * 12 + p.x;
+  const origin = indices[id(body[0])];
+  const progress = p => (indices[id(p)] - origin + 144) % 144;
+  const foodDistance = progress(food);
+  let layer = [{ body, cost: 0 }];
+  for (let step = 1; step <= maxLength; step += 1) {
+    const nextLayer = new Map();
+    let bestGoal = Infinity;
+    for (const current of layer) {
+      for (const direction of ['up', 'right', 'down', 'left']) {
+        const result = game.simulate(current.body, direction, food);
+        if (!result) continue;
+        const head = result.body[0];
+        if (progress(head) <= progress(current.body[0]) || progress(head) > foodDistance) continue;
+        if (!game.ordered(result.body, indices)) continue;
+        const cost = current.cost + edgeDepth(head);
+        if (result.ateFood) {
+          bestGoal = Math.min(bestGoal, cost);
+          continue;
+        }
+        const key = result.body.map(id).join(',');
+        if (!nextLayer.has(key) || cost < nextLayer.get(key).cost) nextLayer.set(key, { body: result.body, cost });
+      }
+    }
+    if (Number.isFinite(bestGoal)) return { length: step, edgeCost: bestGoal };
+    layer = [...nextLayer.values()];
+  }
+  return null;
+}
+
+test('Time-aware A* matches exact moving-body search: shortest first, perimeter only on ties', () => {
+  let seed = 817;
+  const random = n => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed % n;
+  };
+  let releasedCellRoutes = 0;
+  let cases = 0;
+  for (const { cycle, indices } of game.templates) {
+    for (let sample = 0; sample < 40; sample += 1) {
+      const body = [cycle[random(144)]];
+      let span = 0;
+      const length = 3 + random(14);
+      for (let i = 1; i < length; i += 1) {
+        const tail = body.at(-1);
+        const tailId = tail.y * 12 + tail.x;
+        const choices = referenceNeighbors[tailId].map(id => ({ x: id % 12, y: Math.floor(id / 12) }))
+          .filter(p => !body.some(q => q.x === p.x && q.y === p.y))
+          .filter(p => span + (indices[tailId] - indices[p.y * 12 + p.x] + 144) % 144 < 144);
+        if (!choices.length) break;
+        const next = choices[random(choices.length)];
+        span += (indices[tailId] - indices[next.y * 12 + next.x] + 144) % 144;
+        body.push(next);
+      }
+      assert.ok(game.ordered(body, indices));
+      const occupied = new Set(body.map(p => p.y * 12 + p.x));
+      const choices = cycle.filter(p => !occupied.has(p.y * 12 + p.x)
+        && Math.abs(p.x - body[0].x) + Math.abs(p.y - body[0].y) <= 8);
+      if (!choices.length) continue;
+      const food = choices[random(choices.length)];
+      const expected = referenceMovingRoute(body, food, indices, 8);
+      const actual = game.safePath(body, food, indices, 8);
+      cases += 1;
+      assert.equal(actual?.length ?? null, expected?.length ?? null,
+        JSON.stringify({ template: game.templates.findIndex(t => t.indices === indices), body, food }));
+      if (!actual) continue;
+      assert.equal(routeEdgeCost(body[0], actual), expected.edgeCost);
+      let moving = body;
+      let released = false;
+      for (const direction of actual) {
+        const result = game.simulate(moving, direction, food);
+        assert.ok(result, 'Never enter a body cell before it is released, or cross the new trail');
+        moving = result.body;
+        assert.ok(game.ordered(moving, indices), 'Preserve the completion proof at every step, including growth');
+        released ||= occupied.has(moving[0].y * 12 + moving[0].x);
+      }
+      if (released) releasedCellRoutes += 1;
+    }
+  }
+  assert.equal(cases, 320);
+  assert.ok(releasedCellRoutes > 0, 'Exercise future vacancies, not only initially empty routes');
+});
+
+test('Time-aware search never assumes the tail moves on an eating step', () => {
+  const body = Array.from({ length: 144 }, (_, i) => game.baseCycle[(144 - i) % 144]);
+  const indices = new Int16Array(144);
+  game.baseCycle.forEach((p, i) => { indices[p.y * 12 + p.x] = i; });
+  assert.equal(game.safePath(body, body.at(-1), indices, 1), null);
+});
+
+test('A vacating tail unlocks the gap beyond it, without an extra lap', () => {
+  const body = [[6, 4], [6, 3], [7, 3], [8, 3], [8, 4], [7, 4]].map(([x, y]) => ({ x, y }));
+  const food = { x: 4, y: 8 };
+  const { indices } = game.templates[0];
+  assert.ok(game.ordered(body, indices));
+  const path = game.safePath(body, food, indices, 8);
+  assert.equal(path.length, 8);
+  assert.deepEqual(path.slice(0, 2), ['right', 'down'], 'Enter the released tail cell, then cut into the newly open gap');
+  assert.ok(game.simulatePath(body, food, path));
+  assert.equal(game.safePath(body, food, indices, 7), null, 'A tight food budget is never silently extended');
 });
 
 test('Safety-constrained routes still minimize steps before edge distance', () => {

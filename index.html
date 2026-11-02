@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Sora:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=language-20261101-r4">
+  <link rel="stylesheet" href="styles.css?v=snake-size-20261102-r15">
   <link rel="stylesheet" href="portfolio.css?v=compact-20261101-r4">
 
   <!-- Google Analytics -->
@@ -1022,7 +1022,14 @@
         </div>
         <div class="easter-actions">
           <button class="easter-auto active" id="easter-auto" type="button" aria-pressed="true">Auto Solve: On</button>
-          <button class="easter-reset" id="easter-reset" type="button">Reset</button>
+          <div class="easter-reset-group">
+            <div class="easter-size">
+              <label class="sr-only" for="easter-size"><span class="lang-en">Board width, 12 to 24</span><span class="lang-zh-TW">棋盤邊長，12 到 24</span></label>
+              <input id="easter-size" type="number" min="12" max="24" step="1" value="12" inputmode="numeric" required aria-describedby="easter-size-note">
+              <span aria-hidden="true">×</span><output id="easter-size-mirror" for="easter-size">12</output>
+            </div>
+            <button class="easter-reset" id="easter-reset" type="button">Reset</button>
+          </div>
         </div>
       </div>
       <p class="easter-status" id="easter-status">Score: 0</p>
@@ -1037,6 +1044,10 @@
         <button class="easter-control easter-control-down" type="button" data-direction="down" aria-label="Move down">↓</button>
         <button class="easter-control easter-control-right" type="button" data-direction="right" aria-label="Move right">→</button>
       </div>
+      <p class="easter-size-note" id="easter-size-note">
+        <span class="lang-en">12–24 per side. Apply with Reset or Enter. Odd boards save one corner for the final apple in Auto Solve.</span>
+        <span class="lang-zh-TW">邊長 12–24，按 Reset 或 Enter 套用。奇數棋盤的自動模式會保留一個角落給最後一顆蘋果。</span>
+      </p>
       <p class="easter-hint">
         <span class="lang-en">Arrow keys or WASD for manual play. Switching to Auto Solve starts a new game.</span>
         <span class="lang-zh-TW">方向鍵或 WASD 可切換手動操作。開啟 Auto Solve 會重新開局。</span>
@@ -1049,6 +1060,6 @@
     </div>
   </div>
 
-  <script src="scripts.js?v=projects-20261101-r12"></script>
+  <script src="scripts.js?v=snake-route-20261102-r16"></script>
 </body>
 </html>

@@ -82,9 +82,12 @@ test('Both language entries show the requested TOEFL score', () => {
 
 test('Updated pages load the same script revision and retain valid UTF-8', () => {
   const decoder = new TextDecoder('utf-8', { fatal: true });
-  for (const file of ['index.html', 'ai-systems.html', 'scripts.js']) {
+  for (const file of ['index.html', 'ai-systems.html', 'scripts.js', 'styles.css']) {
     const text = decoder.decode(fs.readFileSync(path.join(root, file)));
     assert.ok(!text.includes('\uFFFD'), file);
-    if (file.endsWith('.html')) assert.match(text, /scripts\.js\?v=projects-20261101-r12/);
+    if (file.endsWith('.html')) {
+      assert.match(text, /scripts\.js\?v=snake-route-20261102-r16/);
+      assert.match(text, /styles\.css\?v=snake-size-20261102-r15/);
+    }
   }
 });
