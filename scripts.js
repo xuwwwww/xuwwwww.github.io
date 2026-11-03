@@ -1102,13 +1102,13 @@ const AWARDS = {
 const DETAILS = { ...PROJECTS, ...AWARDS };
 const DETAIL_RESOURCE_LINKS = {
   'perfrunbench': [
-    { label: 'PerfRunbench Poster', url: 'assets/research/perfrunbench-poster.pdf' },
+    { label: 'PerfRunbench Poster', url: 'assets/research/perfrunbench-poster.pdf', pageUrl: 'projects/perfrunbench/' },
   ],
   'moe-dugan': [
-    { label: 'CS Poster', url: 'assets/research/CS_poster.pdf' },
+    { label: 'CS Poster', url: 'assets/research/CS_poster.pdf', pageUrl: 'projects/moe-dugan/' },
   ],
   'clinical-nlp': [
-    { label: 'EE Poster', url: 'assets/research/EE_poster.pdf' },
+    { label: 'EE Poster', url: 'assets/research/EE_poster.pdf', pageUrl: 'projects/clinical-nlp/' },
   ],
 };
 
@@ -2682,6 +2682,17 @@ function renderDetail(id) {
   modalSummary.textContent = data.summary || '';
 
   modalSections.innerHTML = '';
+  const projectPage = extraLinks.find(link => link.pageUrl);
+  if (projectPage) {
+    const row = document.createElement('div');
+    row.className = 'modal-link-row';
+    const link = document.createElement('a');
+    link.className = 'modal-link';
+    link.href = projectPage.pageUrl;
+    link.textContent = currentLang === 'zh-TW' ? '開啟專案獨立頁' : 'Open project page';
+    row.appendChild(link);
+    modalSections.appendChild(row);
+  }
   (data.sections || []).forEach((sec) => {
     const h = document.createElement('h4');
     h.textContent = sec.heading;

@@ -34,7 +34,7 @@ test('PerfRunbench uses the same project card and modal entry as its peers', () 
   }
 });
 
-test('Poster is available only through the existing modal resource renderer', () => {
+test('Homepage poster actions stay inside the existing project modal', () => {
   assert.equal(resources.perfrunbench.length, 1);
   const poster = resources.perfrunbench[0];
   assert.equal(poster.url, 'assets/research/perfrunbench-poster.pdf');
@@ -49,28 +49,38 @@ test('Poster is available only through the existing modal resource renderer', ()
   assert.equal(resources['clinical-nlp'][0].url, 'assets/research/EE_poster.pdf');
 });
 
-test('Opening the project renders its poster preview and full PDF link in either language', () => {
+test('Opening each poster project keeps its preview and adds its standalone page in either language', () => {
   const start = source.indexOf('function renderDetail(id) {');
   const end = source.indexOf('function openDetail(', start);
   assert.ok(start >= 0 && end > start);
   const createElement = tag => ({ tag, children: [], appendChild(child) { this.children.push(child); } });
   for (const lang of ['en', 'zh-TW']) {
-    const nodes = Object.fromEntries(['modalPeriod', 'modalTitle', 'modalOrg', 'modalTags', 'modalSummary', 'modalSections']
-      .map(name => [name, createElement('div')]));
-    new Function('DETAILS', 'DETAIL_RESOURCE_LINKS', 'currentLang', 'document', ...Object.keys(nodes),
-      `${source.slice(start, end)}\nrenderDetail('perfrunbench');`)(
-      details, resources, lang, { createElement }, ...Object.values(nodes));
-    assert.equal(nodes.modalTitle.textContent, 'PerfRunbench');
-    const descendants = [];
-    const collect = node => { descendants.push(node); node.children.forEach(collect); };
-    collect(nodes.modalSections);
-    const frames = descendants.filter(node => node.tag === 'iframe');
-    assert.equal(frames.length, 1);
-    assert.equal(frames[0].src, 'assets/research/perfrunbench-poster.pdf#page=1&view=FitH');
-    const link = descendants.find(node => node.tag === 'a' && node.href === 'assets/research/perfrunbench-poster.pdf');
-    assert.ok(link);
-    assert.equal(link.target, '_blank');
-    assert.ok(link.textContent.includes(lang === 'en' ? 'Open full' : '完整開啟'));
+    for (const id of ['perfrunbench', 'moe-dugan', 'clinical-nlp', 'emg']) {
+      const nodes = Object.fromEntries(['modalPeriod', 'modalTitle', 'modalOrg', 'modalTags', 'modalSummary', 'modalSections']
+        .map(name => [name, createElement('div')]));
+      new Function('DETAILS', 'DETAIL_RESOURCE_LINKS', 'currentLang', 'document', ...Object.keys(nodes),
+        `${source.slice(start, end)}\nrenderDetail('${id}');`)(
+        details, resources, lang, { createElement }, ...Object.values(nodes));
+      assert.equal(nodes.modalTitle.textContent, details[id][lang === 'en' ? 'en' : 'zh'].title);
+      const descendants = [];
+      const collect = node => { descendants.push(node); node.children.forEach(collect); };
+      collect(nodes.modalSections);
+      const frames = descendants.filter(node => node.tag === 'iframe');
+      const resource = resources[id]?.[0];
+      assert.equal(frames.length, resource ? 1 : 0);
+      if (!resource) {
+        assert.ok(!descendants.some(node => node.href?.startsWith('projects/')));
+        continue;
+      }
+      assert.equal(frames[0].src, `${resource.url}#page=1&view=FitH`);
+      const pageLink = descendants.find(node => node.tag === 'a' && node.href === resource.pageUrl);
+      assert.ok(pageLink);
+      assert.equal(pageLink.textContent, lang === 'en' ? 'Open project page' : '開啟專案獨立頁');
+      const link = descendants.find(node => node.tag === 'a' && node.href === resource.url);
+      assert.ok(link);
+      assert.equal(link.target, '_blank');
+      assert.ok(link.textContent.includes(lang === 'en' ? 'Open full' : '完整開啟'));
+    }
   }
 });
 
@@ -86,7 +96,7 @@ test('Updated pages load the same script revision and retain valid UTF-8', () =>
     const text = decoder.decode(fs.readFileSync(path.join(root, file)));
     assert.ok(!text.includes('\uFFFD'), file);
     if (file.endsWith('.html')) {
-      assert.match(text, /scripts\.js\?v=snake-route-20261102-r16/);
+      assert.match(text, /scripts\.js\?v=project-pages-20261103-r17/);
       assert.match(text, /styles\.css\?v=snake-size-20261102-r15/);
     }
   }
